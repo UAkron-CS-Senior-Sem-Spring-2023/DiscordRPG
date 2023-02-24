@@ -1,45 +1,36 @@
 import discord
 import inspect
-import class
-
+import classes
 import os
+
+from discord.ext import commands
 from dotenv import load_dotenv
 
 load_dotenv() 
-
 TOKEN = os.getenv("TOKEN")
 
-intents = discord.Intents.default()
+intents = discord.Intents.all()
 intents.message_content = True
 
-client = discord.Client(intents=intents)
+bot = commands.Bot(command_prefix='/',intents=intents)
 
-@client.event
-async def on_ready():
+@bot.command(name='createCharacter', help='create your character')
+async def createCharacter(ctx, name: str, characterClass: str):
+    test1 = classes.Character(name, characterClass)
+    await ctx.send(test1.viewCharacter())
 
-    print('We have successfully loggged in as {0.user}'.format(client))
+#{message.author.display_name}
 
-@client.event
-async def on_message(message):
-    if message.author == client.user:
+# if message.content.lower() == '/help':
+#     commandList = f"""
+#                   List of commands:
+#                   /createCharacter - create your character
+#                   /viewCharacter [name] - view selected character's stats and equiptment 
+#                   /classList - view list of classes
+#                   /classStats [className] - view stats of selected class
+#                   """
+#     await message.channel.send(inspect.cleandoc(commandList))
 
-        return
+#     return
 
-#    if message.content.lower() == 'hello':
-#        await message.channel.send(f'Hello, {message.author.display_name}!')
-
-#        return
-
-    if message.content.lower() == '/help':
-        commandList = f"""
-                      List of commands:
-                      /createCharacter - create your character
-                      /viewCharacter [name] - view selected character's stats and equiptment 
-                      /classList - view list of classes
-                      /classStats [className] - view stats of selected class
-                      """
-        await message.channel.send(inspect.cleandoc(commandList))
-
-        return
-
-client.run(TOKEN)
+bot.run(TOKEN)
