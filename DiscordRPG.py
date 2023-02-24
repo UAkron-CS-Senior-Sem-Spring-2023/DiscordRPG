@@ -1,5 +1,7 @@
 import discord
 import inspect
+import class
+
 import os
 from dotenv import load_dotenv
 
