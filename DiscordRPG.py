@@ -1,5 +1,5 @@
 import discord
-# import inspect
+import inspect
 import classes
 import os
 
@@ -18,6 +18,41 @@ bot = commands.Bot(command_prefix='/',intents=intents)
 async def createCharacter(ctx, name: str, characterClass: str):
     test1 = classes.Character(name, characterClass)
     await ctx.send(test1.viewCharacter())
+
+@bot.command(name='classList', help='view the list of starting classes')
+async def classList(ctx):
+    response = f"""
+                Cleric
+                Hunter
+                Mage
+                Paladin
+                Theif
+                Warrior
+                """
+    await ctx.send(inspect.cleandoc(response))
+    
+@bot.command(name='classStats', help="view stats of selected class")
+async def classStats(ctx, name):
+    if(name == 'Cleric' or name == 'cleric'):
+        charClass = classes.Cleric()
+        await ctx.send(charClass.displayStats())
+    elif(name == 'Hunter' or name == 'hunter'):
+        charClass = classes.Hunter()
+        await ctx.send(charClass.displayStats())
+    elif(name == 'Mage' or name == 'mage'):
+        charClass = classes.Mage()
+        await ctx.send(charClass.displayStats())
+    elif(name == 'Paladin' or name == 'paladin'):
+        charClass = classes.Paladin()
+        await ctx.send(charClass.displayStats())
+    elif(name == 'Theif' or name == 'thief'):
+        charClass = classes.Thief()
+        await ctx.send(charClass.displayStats())
+    elif(name == 'Warrior' or name == 'warrior'):
+        charClass = classes.Warrior()
+        await ctx.send(charClass.displayStats())
+    else:
+        await ctx.send('That is not one of the starting classes.')
 
 #{message.author.display_name}
 
