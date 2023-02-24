@@ -1,5 +1,5 @@
 import discord
-import inspect
+# import inspect
 import classes
 import os
 
