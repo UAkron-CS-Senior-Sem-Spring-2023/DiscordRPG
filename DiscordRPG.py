@@ -23,15 +23,10 @@ async def on_message(message):
 
         return
 
-    if message.content.lower() == 'hello':
-        await message.channel.send(f'Hello, {message.author.display_name}!')
+#    if message.content.lower() == 'hello':
+#        await message.channel.send(f'Hello, {message.author.display_name}!')
 
-        return
-
-    if message.content.lower() == 'bye':
-        await message.channel.send(f'See you later, {message.author.display_name}!')
-
-        return
+#        return
 
     if message.content.lower() == '/help':
         commandList = f"""
@@ -42,5 +37,7 @@ async def on_message(message):
                       /classStats [className] - view stats of selected class
                       """
         await message.channel.send(inspect.cleandoc(commandList))
+
+        return
 
 client.run(TOKEN)
