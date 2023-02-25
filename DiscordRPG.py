@@ -17,7 +17,7 @@ bot = commands.Bot(command_prefix='/',intents=intents)
 @bot.command(name='createCharacter', help='create your character')
 async def createCharacter(ctx, name: str, characterClass: str):
     test1 = classes.Character(name, characterClass)
-    await ctx.send(test1.viewCharacter())
+    await ctx.send("Your character has been created")
 
 @bot.command(name='classList', help='view the list of starting classes')
 async def classList(ctx):
@@ -54,18 +54,18 @@ async def classStats(ctx, name):
     else:
         await ctx.send('That is not one of the starting classes.')
 
+@bot.command(name='viewCharacter', help="view selected character's stats and equiptment")
+async def viewCharacter(ctx, name):
+    test1 = classes.Character(name, "Warrior")
+    await ctx.send(test1.viewCharacter())
+
 #{message.author.display_name}
 
-# if message.content.lower() == '/help':
-#     commandList = f"""
-#                   List of commands:
-#                   /createCharacter - create your character
-#                   /viewCharacter [name] - view selected character's stats and equiptment 
-#                   /classList - view list of classes
-#                   /classStats [className] - view stats of selected class
-#                   """
-#     await message.channel.send(inspect.cleandoc(commandList))
-
-#     return
+# '/help':
+#  List of commands:
+#  /createCharacter - create your character
+#  /viewCharacter [name] - view selected character's stats and equiptment 
+#  /classList - view list of classes
+#  /classStats [className] - view stats of selected class
 
 bot.run(TOKEN)

@@ -20,23 +20,27 @@ class Cleric:
         self._str = 6
         self._dex = 2
         self._int = 6
+        self._health = self._vigor * 4
+        self._mana = self._int * 5
 
     #methods
     def displayStats(self):
-        return (self._name + "\nVIG: " + str(self._vigor) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
+        return (self._name + "\nHealth: " + str(self._health) + "   Mana: " + str(self._mana) + "\nVIG: " + str(self._vigor) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
     
 class Hunter:
     #Constructor
     def __init__(self):
         self._name = "Hunter"
         self._vigor = 5
-        self._str = 5
+        self._str = 2
         self._dex = 8
-        self._int = 2
+        self._int = 5
+        self._health = self._vigor * 4
+        self._mana = self._int * 5
 
     #methods
     def displayStats(self):
-        return (self._name + "\nVIG: " + str(self._vigor) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
+        return (self._name + "\nHealth: " + str(self._health) + "   Mana: " + str(self._mana) + "\nVIG: " + str(self._vigor) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
 
 class Mage:
     #Constructor
@@ -46,10 +50,12 @@ class Mage:
         self._str = 2
         self._dex = 3
         self._int = 10
+        self._health = self._vigor * 4
+        self._mana = self._int * 5
 
     #methods
     def displayStats(self):
-        return (self._name + "\nVIG: " + str(self._vigor) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
+        return (self._name + "\nHealth: " + str(self._health) + "   Mana: " + str(self._mana) + "\nVIG: " + str(self._vigor) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
 
 class Paladin:
     #Constructor
@@ -59,10 +65,12 @@ class Paladin:
         self._str = 7
         self._dex = 2
         self._int = 4
+        self._health = self._vigor * 4
+        self._mana = self._int * 5
 
     #methods
     def displayStats(self):
-        return (self._name + "\nVIG: " + str(self._vigor) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
+        return (self._name + "\nHealth: " + str(self._health) + "   Mana: " + str(self._mana) + "\nVIG: " + str(self._vigor) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
 
 class Thief:
     #Constructor
@@ -72,10 +80,12 @@ class Thief:
         self._str = 2
         self._dex = 8
         self._int = 6
+        self._health = self._vigor * 4
+        self._mana = self._int * 5
 
     #methods
     def displayStats(self):
-        return (self._name + "\nVIG: " + str(self._vigor) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
+        return (self._name + "\nHealth: " + str(self._health) + "   Mana: " + str(self._mana) + "\nVIG: " + str(self._vigor) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
 
 class Warrior:
     #Constructor
@@ -85,7 +95,9 @@ class Warrior:
         self._str = 8
         self._dex = 4
         self._int = 2
+        self._health = self._vigor * 4
+        self._mana = self._int * 5
 
     #methods
     def displayStats(self):
-        return (self._name + "\nVIG: " + str(self._vigor) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
+        return (self._name + "\nHealth: " + str(self._health) + "   Mana: " + str(self._mana) + "\nVIG: " + str(self._vigor) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
