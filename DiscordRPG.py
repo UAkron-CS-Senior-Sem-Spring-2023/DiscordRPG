@@ -1,6 +1,7 @@
 import discord
 import inspect
 import classes
+import monsters
 import os
 
 from discord.ext import commands
