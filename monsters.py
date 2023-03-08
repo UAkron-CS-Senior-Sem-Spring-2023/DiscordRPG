@@ -66,6 +66,19 @@ class Elf:
 # On Par - Goblin
 # Miniboss - Troll
 
+class GiantSpider:
+    # constructor
+    def __init__(self, level):
+        self._name = "Giant Spider"
+        self._level = level
+        self._vigor = 4 + self._level
+        self._str = 2
+        self._dex = 4 + (self._level*2)
+        self._int = 2
+        self._health = self._vigor * 4 
+
+    # methods
+
 class Goblin:
     # constructor
     def __init__(self, level):
