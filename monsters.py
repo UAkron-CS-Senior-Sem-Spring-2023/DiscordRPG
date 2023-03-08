@@ -4,8 +4,13 @@
 # 1 - 20(level 1) + 5(per level) - "on par" with player
 # 1 - 25(level 1) + 7(per level) - "area miniboses"
 
+# Location - Forest
+# Weaker - Boar and Wolf
+# On Par - Elf
+# Miniboss - Treant
+
 class Boar:
-    #constructor
+    # constructor
     def __init__(self, level):
         self._name = "Boar"
         self._level = level
@@ -15,10 +20,10 @@ class Boar:
         self._int = 1
         self._health = self._vigor * 4 
 
-    #methods
+    # methods
 
 class Wolf:
-    #constructor
+    # constructor
     def __init__(self, level):
         self._name = "Wolf"
         self._level = level
@@ -28,10 +33,10 @@ class Wolf:
         self._int = 2
         self._health = self._vigor * 4 
 
-    #methods
+    # methods
 
 class Treant:
-    #constructor
+    # constructor
     def __init__(self, level):
         self._name = "Treant"
         self._level = level
@@ -44,7 +49,7 @@ class Treant:
     #methods
 
 class Elf:
-    #constructor
+    # constructor
     def __init__(self, level):
         self._name = "Elf"
         self._level = level
@@ -54,10 +59,15 @@ class Elf:
         self._int = 2 + (self._level*2)
         self._health = self._vigor * 4 
 
-    #methods
+    # methods
+
+# Location - Cave
+# Weaker - Giant Spider and Roper
+# On Par - Goblin
+# Miniboss - Troll
 
 class Goblin:
-    #constructor
+    # constructor
     def __init__(self, level):
         self._name = "Goblin"
         self._level = level
@@ -67,4 +77,4 @@ class Goblin:
         self._int = 3
         self._health = self._vigor * 4 
 
-    #methods
+    # methods

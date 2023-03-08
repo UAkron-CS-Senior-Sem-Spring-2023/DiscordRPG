@@ -1,11 +1,11 @@
 class Character:
-    #constructor
+    # constructor
     def __init__(self, name, characterClass):
         self._name = name
         self._charcterClass = characterClass
         self._level = 1
 
-    #methods
+    # methods
     def viewCharacter(self):
         return (self._name + "\n" + self._charcterClass + " Level " + str(self._level))
 
@@ -13,7 +13,7 @@ class Character:
         self.level = self.level + 1
 
 class Cleric:
-    #Constructor
+    # constructor
     def __init__(self):
         self._name = "Cleric"
         self._vigor = 6
@@ -23,12 +23,12 @@ class Cleric:
         self._health = self._vigor * 4
         self._mana = self._int * 5
 
-    #methods
+    # methods
     def displayStats(self):
         return (self._name + "\nHealth: " + str(self._health) + "   Mana: " + str(self._mana) + "\nVIG: " + str(self._vigor) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
     
 class Hunter:
-    #Constructor
+    # constructor
     def __init__(self):
         self._name = "Hunter"
         self._vigor = 5
@@ -38,12 +38,12 @@ class Hunter:
         self._health = self._vigor * 4
         self._mana = self._int * 5
 
-    #methods
+    # methods
     def displayStats(self):
         return (self._name + "\nHealth: " + str(self._health) + "   Mana: " + str(self._mana) + "\nVIG: " + str(self._vigor) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
 
 class Mage:
-    #Constructor
+    # constructor
     def __init__(self):
         self._name = "Mage"
         self._vigor = 5
@@ -58,7 +58,7 @@ class Mage:
         return (self._name + "\nHealth: " + str(self._health) + "   Mana: " + str(self._mana) + "\nVIG: " + str(self._vigor) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
 
 class Paladin:
-    #Constructor
+    # constructor
     def __init__(self):
         self._name = "Paladin"
         self._vigor = 7
@@ -68,12 +68,12 @@ class Paladin:
         self._health = self._vigor * 4
         self._mana = self._int * 5
 
-    #methods
+    # methods
     def displayStats(self):
         return (self._name + "\nHealth: " + str(self._health) + "   Mana: " + str(self._mana) + "\nVIG: " + str(self._vigor) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
 
 class Thief:
-    #Constructor
+    # constructor
     def __init__(self):
         self._name = "Theif"
         self._vigor = 4
@@ -83,12 +83,12 @@ class Thief:
         self._health = self._vigor * 4
         self._mana = self._int * 5
 
-    #methods
+    # methods
     def displayStats(self):
         return (self._name + "\nHealth: " + str(self._health) + "   Mana: " + str(self._mana) + "\nVIG: " + str(self._vigor) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
 
 class Warrior:
-    #Constructor
+    # constructor
     def __init__(self):
         self._name = "Warrior"
         self._vigor = 6
@@ -98,6 +98,6 @@ class Warrior:
         self._health = self._vigor * 4
         self._mana = self._int * 5
 
-    #methods
+    # methods
     def displayStats(self):
         return (self._name + "\nHealth: " + str(self._health) + "   Mana: " + str(self._mana) + "\nVIG: " + str(self._vigor) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))

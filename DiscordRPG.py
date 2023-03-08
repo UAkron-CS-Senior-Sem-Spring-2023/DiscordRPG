@@ -60,7 +60,7 @@ async def viewCharacter(ctx, name):
     test1 = classes.Character(name, "Warrior")
     await ctx.send(test1.viewCharacter())
 
-#{message.author.display_name}
+# {message.author.display_name}
 
 # '/help':
 #  List of commands:
