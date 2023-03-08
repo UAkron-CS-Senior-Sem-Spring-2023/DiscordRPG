@@ -79,6 +79,19 @@ class GiantSpider:
 
     # methods
 
+class Roper:
+    # constructor
+    def __init__(self, level):
+        self._name = "Roper"
+        self._level = level
+        self._vigor = 4 + self._level
+        self._str = 3 + self._level
+        self._dex = 3 + self._level
+        self._int = 2
+        self._health = self._vigor * 4 
+
+    # methods
+
 class Goblin:
     # constructor
     def __init__(self, level):
