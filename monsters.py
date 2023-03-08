@@ -30,7 +30,9 @@ class Boar:
         self._health = self._vigor * 4 
 
     # methods
-
+    def displayStats(self):
+        return (self._name + " Level: " + str(self._level) + "\nHealth: " + str(self._health) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
+    
 class Wolf:
     # constructor
     def __init__(self, level):
@@ -44,6 +46,8 @@ class Wolf:
         self._health = self._vigor * 4 
 
     # methods
+    def displayStats(self):
+        return (self._name + " Level: " + str(self._level) + "\nHealth: " + str(self._health) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
 
 class Treant:
     # constructor
@@ -58,6 +62,8 @@ class Treant:
         self._health = self._vigor * 4 
 
     #methods
+    def displayStats(self):
+        return (self._name + " Level: " + str(self._level) + "\nHealth: " + str(self._health) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
 
 class Elf:
     # constructor
@@ -72,6 +78,8 @@ class Elf:
         self._health = self._vigor * 4 
 
     # methods
+    def displayStats(self):
+        return (self._name + " Level: " + str(self._level) + "\nHealth: " + str(self._health) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
 
 # Location - Cave
 # Weaker - Giant Spider and Roper
@@ -91,6 +99,8 @@ class GiantSpider:
         self._health = self._vigor * 4 
 
     # methods
+    def displayStats(self):
+        return (self._name + " Level: " + str(self._level) + "\nHealth: " + str(self._health) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
 
 class Roper:
     # constructor
@@ -105,6 +115,8 @@ class Roper:
         self._health = self._vigor * 4 
 
     # methods
+    def displayStats(self):
+        return (self._name + " Level: " + str(self._level) + "\nHealth: " + str(self._health) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
 
 class Troll:
     # constructor
@@ -119,6 +131,8 @@ class Troll:
         self._health = self._vigor * 4 
 
     # methods
+    def displayStats(self):
+        return (self._name + " Level: " + str(self._level) + "\nHealth: " + str(self._health) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
 
 class Goblin:
     # constructor
@@ -133,3 +147,5 @@ class Goblin:
         self._health = self._vigor * 4 
 
     # methods
+    def displayStats(self):
+        return (self._name + " Level: " + str(self._level) + "\nHealth: " + str(self._health) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
