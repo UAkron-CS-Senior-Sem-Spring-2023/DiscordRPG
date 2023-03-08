@@ -1,3 +1,7 @@
+# All character classes
+# All start with 20 points distributed amonf the stats
+# All gain 5 skill points to be distributed after level up
+
 class Character:
     # constructor
     def __init__(self, name, characterClass):
