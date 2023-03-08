@@ -1,3 +1,9 @@
+# All monster classes
+# All locations will have four different monster types
+# 2 - 15(level 1) + 4(per level) - "weaker" than player
+# 1 - 20(level 1) + 5(per level) - "on par" with player
+# 1 - 25(level 1) + 7(per level) - "area miniboses"
+
 class Boar:
     #constructor
     def __init__(self, level):
