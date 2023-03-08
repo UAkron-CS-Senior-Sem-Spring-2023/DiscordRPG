@@ -37,13 +37,26 @@ class Treant:
 
     #methods
 
+class Elf:
+    #constructor
+    def __init__(self, level):
+        self._name = "Elf"
+        self._level = level
+        self._vigor = 4 + self._level
+        self._str = 3
+        self._dex = 4 + (self._level*2)
+        self._int = 2 + (self._level*2)
+        self._health = self._vigor * 4 
+
+    #methods
+
 class Goblin:
     #constructor
     def __init__(self, level):
         self._name = "Goblin"
         self._level = level
         self._vigor = 5 + self._level
-        self._str = 3 + self._level
+        self._str = 3 + (self._level*2)
         self._dex = 5 + (self._level*2)
         self._int = 3
         self._health = self._vigor * 4 
