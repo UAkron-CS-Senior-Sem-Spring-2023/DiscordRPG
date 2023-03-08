@@ -60,10 +60,22 @@ async def viewCharacter(ctx, name):
     test1 = classes.Character(name, "Warrior")
     await ctx.send(test1.viewCharacter())
 
-# @bot.command(name='monsterList', help="view a list of all monsters")
-# async def viewCharacter(ctx, name):
-#     test1 = classes.Character(name, "Warrior")
-#     await ctx.send(test1.viewCharacter())
+@bot.command(name='monsterList', help="view a list of all monsters")
+async def monsterList(ctx):
+    response = f"""
+                Forest:
+                Boar
+                Wolf
+                Treant
+                Elf
+
+                Cave: 
+                Giant Spider
+                Roper
+                Troll
+                Goblin
+                """
+    await ctx.send(inspect.cleandoc(response))
 
 # {message.author.display_name}
 
