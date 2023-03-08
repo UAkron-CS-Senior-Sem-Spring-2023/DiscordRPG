@@ -60,6 +60,11 @@ async def viewCharacter(ctx, name):
     test1 = classes.Character(name, "Warrior")
     await ctx.send(test1.viewCharacter())
 
+# @bot.command(name='monsterList', help="view a list of all monsters")
+# async def viewCharacter(ctx, name):
+#     test1 = classes.Character(name, "Warrior")
+#     await ctx.send(test1.viewCharacter())
+
 # {message.author.display_name}
 
 # '/help':

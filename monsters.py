@@ -20,6 +20,7 @@
 class Boar:
     # constructor
     def __init__(self, level):
+        self._location = "Forest"
         self._name = "Boar"
         self._level = level
         self._vigor = 4 + (self._level*2)
@@ -33,6 +34,7 @@ class Boar:
 class Wolf:
     # constructor
     def __init__(self, level):
+        self._location = "Forest"
         self._name = "Wolf"
         self._level = level
         self._vigor = 4 + self._level
@@ -46,6 +48,7 @@ class Wolf:
 class Treant:
     # constructor
     def __init__(self, level):
+        self._location = "Forest"
         self._name = "Treant"
         self._level = level
         self._vigor = 8 + (self._level*4)
@@ -59,6 +62,7 @@ class Treant:
 class Elf:
     # constructor
     def __init__(self, level):
+        self._location = "Forest"
         self._name = "Elf"
         self._level = level
         self._vigor = 4 + self._level
@@ -77,6 +81,7 @@ class Elf:
 class GiantSpider:
     # constructor
     def __init__(self, level):
+        self._location = "Cave"
         self._name = "Giant Spider"
         self._level = level
         self._vigor = 4 + self._level
@@ -90,6 +95,7 @@ class GiantSpider:
 class Roper:
     # constructor
     def __init__(self, level):
+        self._location = "Cave"
         self._name = "Roper"
         self._level = level
         self._vigor = 4 + self._level
@@ -103,6 +109,7 @@ class Roper:
 class Troll:
     # constructor
     def __init__(self, level):
+        self._location = "Cave"
         self._name = "Troll"
         self._level = level
         self._vigor = 8 + (self._level*3)
@@ -116,6 +123,7 @@ class Troll:
 class Goblin:
     # constructor
     def __init__(self, level):
+        self._location = "Cave"
         self._name = "Goblin"
         self._level = level
         self._vigor = 5 + self._level
