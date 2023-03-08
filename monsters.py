@@ -100,6 +100,19 @@ class Roper:
 
     # methods
 
+class Troll:
+    # constructor
+    def __init__(self, level):
+        self._name = "Troll"
+        self._level = level
+        self._vigor = 8 + (self._level*3)
+        self._str = 5 + (self._level*3)
+        self._dex = 3 + self._level
+        self._int = 2
+        self._health = self._vigor * 4 
+
+    # methods
+
 class Goblin:
     # constructor
     def __init__(self, level):
