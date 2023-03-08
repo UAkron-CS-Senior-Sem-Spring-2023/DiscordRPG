@@ -1,10 +1,18 @@
 # All monster classes
 # All locations will have four different monster types
+# Locations have different difficulties(Easy, Medium, Hard)
+#
+# Easy Locations(Forest, Cave)
 # 2 - 15(level 1) + 4(per level) - "weaker" than player
 # 1 - 20(level 1) + 5(per level) - "on par" with player
 # 1 - 25(level 1) + 7(per level) - "area miniboses"
+#
+# Medium Locations
+#
+# Hard Locations
+#
 
-# Location - Forest
+# Location - Forest(Easy)
 # Weaker - Boar and Wolf
 # On Par - Elf
 # Miniboss - Treant
