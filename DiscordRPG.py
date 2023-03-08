@@ -77,6 +77,35 @@ async def monsterList(ctx):
                 """
     await ctx.send(inspect.cleandoc(response))
 
+@bot.command(name='monsterStats', help="view stats of selected monster of given level(default = 1)")
+async def classStats(ctx, name, level = 1):
+    if(name == 'Boar' or name == 'Boar'):
+        monster = monsters.Boar(level)
+        await ctx.send(monster.displayStats())
+    elif(name == 'Wolf' or name == 'wolf'):
+        monster = monsters.Wolf(level)
+        await ctx.send(monster.displayStats())
+    elif(name == 'Treant' or name == 'mage'):
+        monster = monsters.Treant(level)
+        await ctx.send(monster.displayStats())
+    elif(name == 'Elf' or name == 'Elf'):
+        monster = monsters.Elf(level)
+        await ctx.send(monster.displayStats())
+    elif(name == 'Giant Spider' or name == 'Giant spider' or name == 'giant Spider' or name == 'giant spider'):
+        monster = monsters.GiantSpider(level)
+        await ctx.send(monster.displayStats())
+    elif(name == 'Roper' or name == 'roper'):
+        monster = monsters.Roper(level)
+        await ctx.send(monster.displayStats())
+    elif(name == 'Troll' or name == 'troll'):
+        monster = monsters.Troll(level)
+        await ctx.send(monster.displayStats())
+    elif(name == 'Goblin' or name == 'goblin'):
+        monster = monsters.Goblin(level)
+        await ctx.send(monster.displayStats())
+    else:
+        await ctx.send('That is not currently a monster.')
+
 # {message.author.display_name}
 
 # '/help':
