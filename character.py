@@ -5,7 +5,7 @@ class Character:
     # constructor
     def __init__(self, name, characterClass, userID):
         self._name = name
-        self._charcterClass = characterClass
+        self._charcterClass = characterClass.lower()
         self._userID = userID
         self._level = 0
         self._vigor = 0
