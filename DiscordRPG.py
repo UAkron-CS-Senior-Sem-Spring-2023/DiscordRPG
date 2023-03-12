@@ -99,8 +99,6 @@ async def view_character(ctx, name: str):
             await ctx.response.send_message("The selected character does not exist for this user")
         else:
             output = "Character Name: {} Character Class: {} Character Level: {}  Character Health {}/{} Character Mana {}/{}".format(result[0], result[1], result[2], result[3], result[4], result[5], result[6])
-            #output = "Character Name: {}".format(result[0])
-            #output = "Character Name: {} CharacterClass: {} Character Level: {} Character Health: {}/{} Character Mana: {}/{}".format(result)
             await ctx.response.send_message(output)
         cursor.close()
         cnx.close()
