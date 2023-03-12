@@ -15,6 +15,11 @@ intents.message_content = True
 
 bot = commands.Bot(command_prefix='/',intents=intents)
 
+@bot.event
+async def on_ready():
+    await bot.change_presence(status=discord.Status.online, activity=discord.Game('On an adventure!'))
+    print("Bot is running")
+
 @bot.command(name='createCharacter', help='create your character')
 async def createCharacter(ctx, name: str, characterClass: str):
     test1 = classes.Character(name, characterClass)
