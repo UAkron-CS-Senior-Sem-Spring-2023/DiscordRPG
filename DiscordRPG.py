@@ -1,14 +1,19 @@
 import discord
+import mysql.connector
+from mysql.connector import errorcode
 import inspect
 import classes
+import character
 import monsters
 import os
+
 
 from discord.ext import commands
 from dotenv import load_dotenv
 
 load_dotenv() 
 TOKEN = os.getenv("TOKEN")
+
 
 intents = discord.Intents.all()
 intents.message_content = True
@@ -17,8 +22,33 @@ bot = commands.Bot(command_prefix='/',intents=intents)
 
 @bot.command(name='createCharacter', help='create your character')
 async def createCharacter(ctx, name: str, characterClass: str):
-    test1 = classes.Character(name, characterClass)
-    await ctx.send("Your character has been created")
+    match characterClass.lower():
+        case "cleric":
+            test1 = character.Character(name, characterClass, ctx.author.id)
+            await ctx.send("Your character has been created")
+        case "hunter":
+            test1 = character.Character(name, characterClass, ctx.author.id)
+            await ctx.send("Your character has been created")
+        case "mage":
+            test1 = character.Character(name, characterClass, ctx.author.id)
+            await ctx.send("Your character has been created")
+        case "paladin":
+            test1 = character.Character(name, characterClass, ctx.author.id)
+            await ctx.send("Your character has been created")
+        case "theif":
+            test1 = character.Character(name, characterClass, ctx.author.id)
+            await ctx.send("Your character has been created")
+        case "warrior":
+            test1 = character.Character(name, characterClass, ctx.author.id)
+            await ctx.send("Your character has been created")
+        case _:
+            await ctx.send("Invalid class name. Please choose one of the classes")
+    
+    
+@createCharacter.error
+async def createCharacter_error(ctx, error):
+    if isinstance(error, commands.MissingRequiredArgument):
+        await ctx.send("Missing Required arguments. Please include a name followed by a class")
 
 @bot.command(name='classList', help='view the list of starting classes')
 async def classList(ctx):
@@ -57,7 +87,7 @@ async def classStats(ctx, name):
 
 @bot.command(name='viewCharacter', help="view selected character's stats and equiptment")
 async def viewCharacter(ctx, name):
-    test1 = classes.Character(name, "Warrior")
+    test1 = character.Character(name, "Warrior")
     await ctx.send(test1.viewCharacter())
 
 @bot.command(name='monsterList', help="view a list of all monsters")

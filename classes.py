@@ -2,19 +2,19 @@
 # All start with 20 points distributed amonf the stats
 # All gain 5 skill points to be distributed after level up
 
-class Character:
+#class Character:
     # constructor
-    def __init__(self, name, characterClass):
-        self._name = name
-        self._charcterClass = characterClass
-        self._level = 1
+    #def __init__(self, name, characterClass):
+        #self._name = name
+        #self._charcterClass = characterClass
+        #self._level = 1
 
     # methods
-    def viewCharacter(self):
-        return (self._name + "\n" + self._charcterClass + " Level " + str(self._level))
+    #def viewCharacter(self):
+        #return (self._name + "\n" + self._charcterClass + " Level " + str(self._level))
 
-    def levelUp(self):
-        self.level = self.level + 1
+    #def levelUp(self):
+        #self.level = self.level + 1
 
 class Cleric:
     # constructor
