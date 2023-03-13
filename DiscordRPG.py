@@ -163,13 +163,12 @@ async def monster_stats(ctx, name: str, level: int = 1):
     else:
         await ctx.response.send_message('That is not currently a monster.')
 
-# {message.author.display_name}
-
-# '/help':
-#  List of commands:
-#  /createCharacter - create your character
-#  /viewCharacter [name] - view selected character's stats and equiptment 
-#  /classList - view list of classes
-#  /classStats [className] - view stats of selected class
+@tree.command(name='adventure', description='Start an adventure', guild=discord.Object(id=GUILD_ID))
+async def adventure(ctx, name: str, location: str):
+    match location.lower():
+        case "forest":
+            pass
+        case "cave":
+            pass
 
 client.run(TOKEN)
