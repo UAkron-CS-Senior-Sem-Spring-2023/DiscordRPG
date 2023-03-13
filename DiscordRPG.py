@@ -22,16 +22,18 @@ intents.message_content = True
 client = discord.Client(command_prefix='/',intents=intents)
 tree = app_commands.CommandTree(client)
 
-
-
-
-
+# the ready event for the bot
+# syncs the commands with the discord Slash Commands
+# sets the bots status and game
 @client.event
 async def on_ready():
     await tree.sync(guild=discord.Object(id=GUILD_ID))
     await client.change_presence(status=discord.Status.online, activity=discord.Game('On an adventure!'))
     print("Bot is running")
 
+# create a character
+# takes a name and class name as arguments
+# stores the character in the database 
 @tree.command(name='create_character', description='create your character', guild=discord.Object(id=GUILD_ID))
 async def create_character(ctx, name: str, character_class: str):
     match character_class.lower():
@@ -56,6 +58,8 @@ async def create_character(ctx, name: str, character_class: str):
         case _:
             await ctx.response.send_message("Invalid class name. Please choose one of the classes")
 
+# see the list of all starting classes
+# returns a response with all classes as a list
 @tree.command(name='class_list', description='view the list of starting classes', guild=discord.Object(id=GUILD_ID))
 async def class_list(ctx):
     response = f"""
@@ -67,7 +71,10 @@ async def class_list(ctx):
                 Warrior
                 """
     await ctx.response.send_message(inspect.cleandoc(response))
-    
+
+# view the stats of a starting class
+# takes the class name as an arguments
+# returns the class and stat values to the user
 @tree.command(name='class_stats', description="view stats of selected class", guild=discord.Object(id=GUILD_ID))
 async def class_stats(ctx, name: str):
     match name.lower():
@@ -92,6 +99,9 @@ async def class_stats(ctx, name: str):
         case _:
             await ctx.response.send_message('That is not one of the starting classes.')
 
+# view stats and eqiptment of character with given name
+# takes character's name as an argument
+# returns the name, class, level, health, and mana of that character stored in the database
 @tree.command(name='view_character', description="view selected character's stats and equiptment", guild=discord.Object(id=GUILD_ID))
 async def view_character(ctx, name: str):
     try:
@@ -117,6 +127,8 @@ async def view_character(ctx, name: str):
     else:
         cnx.close()
 
+# view all the monsters based on location
+# returns all monster names in list form
 @tree.command(name='monster_list', description="view a list of all monsters", guild=discord.Object(id=GUILD_ID))
 async def monster_list(ctx):
     response = f"""
@@ -134,7 +146,10 @@ async def monster_list(ctx):
                 """
     await ctx.response.send_message(inspect.cleandoc(response))
 
-@tree.command(name='monster_stats', description="view stats of selected monster of given level(default = 1)", guild=discord.Object(id=GUILD_ID))
+# view the stats of selected monster
+# takes the monster's name and level as arguments
+# returns the stats of the chosen monster with selected level (default of 1)
+@tree.command(name='monster_stats', description="view stats of selected monster of given level (default = 1)", guild=discord.Object(id=GUILD_ID))
 async def monster_stats(ctx, name: str, level: int = 1):
     match name.lower():
         case "boar":
@@ -164,6 +179,9 @@ async def monster_stats(ctx, name: str, level: int = 1):
         case _:
             await ctx.response.send_message('This is not one of the current monsters.')
 
+# runs the battles against a monster (demo version)
+# takes character name and location as arguments
+# returns outcome of battle
 @tree.command(name='adventure', description='Start an adventure', guild=discord.Object(id=GUILD_ID))
 async def adventure(ctx, name: str, location: str):
     match location.lower():
