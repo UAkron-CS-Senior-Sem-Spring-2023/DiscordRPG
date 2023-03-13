@@ -6,12 +6,12 @@ import classes
 import character
 import monsters
 import os
-
+import random
 from discord.ext import commands
 from discord import app_commands
 from dotenv import load_dotenv
 
-
+random.seed()
 load_dotenv() 
 TOKEN = os.getenv("TOKEN")
 GUILD_ID = os.getenv("GUILD_ID")
@@ -186,8 +186,183 @@ async def monster_stats(ctx, name: str, level: int = 1):
 async def adventure(ctx, name: str, location: str):
     match location.lower():
         case "forest":
-            pass
+            chance = random.randint(1, 100)
+            if(chance < 36):
+                player_health = 24
+                player_str = 8
+                monster_name = "Boar"
+                monster_health = 24
+                monster_str = 5
+                encounter = "You have encountered a " + monster_name + "\n" + name + " Health: " + str(player_health) + "  " + monster_name + " Health: " + str(monster_health)
+                while(monster_health > 0 and player_health > 0):
+                    player_damage = random.randint(1, player_str)
+                    monster_damage = random.randint(1, monster_str)
+                    damage = "You did " + str(player_damage) + " damage the " + monster_name + " did " + str(monster_damage) + " damage"
+                    player_health = player_health - monster_damage
+                    monster_health = monster_health - player_damage
+                    health = name + " Health: " + str(player_health) + "  " + monster_name + " Health: " + str(monster_health)
+                    encounter = encounter + "\n\n" + damage + "\n" + health
+                if(monster_health <= 0):
+                    encounter = encounter + "\n\nYou have defeated the " + monster_name + "!"
+                    await ctx.response.send_message(encounter)
+                else:
+                    encounter = encounter + "\n\nYou were defeated by the " + monster_name + "!"
+                    await ctx.response.send_message(encounter)
+
+            elif(chance < 71):
+                player_health = 24
+                player_str = 8
+                monster_name = "Wolf"
+                monster_health = 20
+                monster_str = 5
+                encounter = "You have encountered a " + monster_name + "\n" + name + " Health: " + str(player_health) + "  " + monster_name + " Health: " + str(monster_health)
+                while(monster_health > 0 and player_health > 0):
+                    player_damage = random.randint(1, player_str)
+                    monster_damage = random.randint(1, monster_str)
+                    damage = "You did " + str(player_damage) + " damage the " + monster_name + " did " + str(monster_damage) + " damage"
+                    player_health = player_health - monster_damage
+                    monster_health = monster_health - player_damage
+                    health = name + " Health: " + str(player_health) + "  " + monster_name + " Health: " + str(monster_health)
+                    encounter = encounter + "\n\n" + damage + "\n" + health
+                if(monster_health <= 0):
+                    encounter = encounter + "\n\nYou have defeated the " + monster_name + "!"
+                    await ctx.response.send_message(encounter)
+                else:
+                    encounter = encounter + "\n\nYou were defeated by the " + monster_name + "!"
+                    await ctx.response.send_message(encounter)
+
+            elif(chance < 91):
+                player_health = 24
+                player_str = 8
+                monster_name = "Elf"
+                monster_health = 20
+                monster_str = 6
+                encounter = "You have encountered a " + monster_name + "\n" + name + " Health: " + str(player_health) + "  " + monster_name + " Health: " + str(monster_health)
+                while(monster_health > 0 and player_health > 0):
+                    player_damage = random.randint(1, player_str)
+                    monster_damage = random.randint(1, monster_str)
+                    damage = "You did " + str(player_damage) + " damage the " + monster_name + " did " + str(monster_damage) + " damage"
+                    player_health = player_health - monster_damage
+                    monster_health = monster_health - player_damage
+                    health = name + " Health: " + str(player_health) + "  " + monster_name + " Health: " + str(monster_health)
+                    encounter = encounter + "\n\n" + damage + "\n" + health
+                if(monster_health <= 0):
+                    encounter = encounter + "\n\nYou have defeated the " + monster_name + "!"
+                    await ctx.response.send_message(encounter)
+                else:
+                    encounter = encounter + "\n\nYou were defeated by the " + monster_name + "!"
+                    await ctx.response.send_message(encounter)
+
+            else:
+                player_health = 24
+                player_str = 8
+                monster_name = "Treant"
+                monster_health = 48
+                monster_str = 7
+                encounter = "You have encountered a " + monster_name + "\n" + name + " Health: " + str(player_health) + "  " + monster_name + " Health: " + str(monster_health)
+                while(monster_health > 0 and player_health > 0):
+                    player_damage = random.randint(1, player_str)
+                    monster_damage = random.randint(1, monster_str)
+                    damage = "You did " + str(player_damage) + " damage the " + monster_name + " did " + str(monster_damage) + " damage"
+                    player_health = player_health - monster_damage
+                    monster_health = monster_health - player_damage
+                    health = name + " Health: " + str(player_health) + "  " + monster_name + " Health: " + str(monster_health)
+                    encounter = encounter + "\n\n" + damage + "\n" + health
+                if(monster_health <= 0):
+                    encounter = encounter + "\n\nYou have defeated the " + monster_name + "!"
+                    await ctx.response.send_message(encounter)
+                else:
+                    encounter = encounter + "\n\nYou were defeated by the " + monster_name + "!"
+                    await ctx.response.send_message(encounter)
+
         case "cave":
-            pass
+            chance = random.randint(1, 100)
+            if(chance < 36):
+                player_health = 24
+                player_str = 8
+                monster_name = "Giant Spider"
+                monster_health = 20
+                monster_str = 6
+                encounter = "You have encountered a " + monster_name + "\n" + name + " Health: " + str(player_health) + "  " + monster_name + " Health: " + str(monster_health)
+                while(monster_health > 0 and player_health > 0):
+                    player_damage = random.randint(1, player_str)
+                    monster_damage = random.randint(1, monster_str)
+                    damage = "You did " + str(player_damage) + " damage the " + monster_name + " did " + str(monster_damage) + " damage"
+                    player_health = player_health - monster_damage
+                    monster_health = monster_health - player_damage
+                    health = name + " Health: " + str(player_health) + "  " + monster_name + " Health: " + str(monster_health)
+                    encounter = encounter + "\n\n" + damage + "\n" + health
+                if(monster_health <= 0):
+                    encounter = encounter + "\n\nYou have defeated the " + monster_name + "!"
+                    await ctx.response.send_message(encounter)
+                else:
+                    encounter = encounter + "\n\nYou were defeated by the " + monster_name + "!"
+                    await ctx.response.send_message(encounter)
+
+            elif(chance < 71):
+                player_health = 24
+                player_str = 8
+                monster_name = "Roper"
+                monster_health = 20
+                monster_str = 4
+                encounter = "You have encountered a " + monster_name + "\n" + name + " Health: " + str(player_health) + "  " + monster_name + " Health: " + str(monster_health)
+                while(monster_health > 0 and player_health > 0):
+                    player_damage = random.randint(1, player_str)
+                    monster_damage = random.randint(1, monster_str)
+                    damage = "You did " + str(player_damage) + " damage the " + monster_name + " did " + str(monster_damage) + " damage"
+                    player_health = player_health - monster_damage
+                    monster_health = monster_health - player_damage
+                    health = name + " Health: " + str(player_health) + "  " + monster_name + " Health: " + str(monster_health)
+                    encounter = encounter + "\n\n" + damage + "\n" + health
+                if(monster_health <= 0):
+                    encounter = encounter + "\n\nYou have defeated the " + monster_name + "!"
+                    await ctx.response.send_message(encounter)
+                else:
+                    encounter = encounter + "\n\nYou were defeated by the " + monster_name + "!"
+                    await ctx.response.send_message(encounter)
+
+            elif(chance < 91):
+                player_health = 24
+                player_str = 8
+                monster_name = "Goblin"
+                monster_health = 24
+                monster_str = 7
+                encounter = "You have encountered a " + monster_name + "\n" + name + " Health: " + str(player_health) + "  " + monster_name + " Health: " + str(monster_health)
+                while(monster_health > 0 and player_health > 0):
+                    player_damage = random.randint(1, player_str)
+                    monster_damage = random.randint(1, monster_str)
+                    damage = "You did " + str(player_damage) + " damage the " + monster_name + " did " + str(monster_damage) + " damage"
+                    player_health = player_health - monster_damage
+                    monster_health = monster_health - player_damage
+                    health = name + " Health: " + str(player_health) + "  " + monster_name + " Health: " + str(monster_health)
+                    encounter = encounter + "\n\n" + damage + "\n" + health
+                if(monster_health <= 0):
+                    encounter = encounter + "\n\nYou have defeated the " + monster_name + "!"
+                    await ctx.response.send_message(encounter)
+                else:
+                    encounter = encounter + "\n\nYou were defeated by the " + monster_name + "!"
+                    await ctx.response.send_message(encounter)
+
+            else:
+                player_health = 24
+                player_str = 8
+                monster_name = "Troll"
+                monster_health = 48
+                monster_str = 8
+                encounter = "You have encountered a " + monster_name + "\n" + name + " Health: " + str(player_health) + "  " + monster_name + " Health: " + str(monster_health)
+                while(monster_health > 0 and player_health > 0):
+                    player_damage = random.randint(1, player_str)
+                    monster_damage = random.randint(1, monster_str)
+                    damage = "You did " + str(player_damage) + " damage the " + monster_name + " did " + str(monster_damage) + " damage"
+                    player_health = player_health - monster_damage
+                    monster_health = monster_health - player_damage
+                    health = name + " Health: " + str(player_health) + "  " + monster_name + " Health: " + str(monster_health)
+                    encounter = encounter + "\n\n" + damage + "\n" + health
+                if(monster_health <= 0):
+                    encounter = encounter + "\n\nYou have defeated the " + monster_name + "!"
+                    await ctx.response.send_message(encounter)
+                else:
+                    encounter = encounter + "\n\nYou were defeated by the " + monster_name + "!"
+                    await ctx.response.send_message(encounter)
 
 client.run(TOKEN)
