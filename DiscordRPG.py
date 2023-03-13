@@ -22,6 +22,10 @@ intents.message_content = True
 client = discord.Client(command_prefix='/',intents=intents)
 tree = app_commands.CommandTree(client)
 
+
+
+
+
 @client.event
 async def on_ready():
     await tree.sync(guild=discord.Object(id=GUILD_ID))
@@ -92,7 +96,7 @@ async def view_character(ctx, name: str):
     try:
         cnx = mysql.connector.connect(user='bot', password='203v2Xm&zXQK', host='45.31.16.49', database='disrpg')
         cursor = cnx.cursor()
-        query = ("SELECT CharacterName, CharacterClass, CharacterLevel, HealthMax, HealthCurrent, ManaMax, ManaCurrent FROM characters WHERE UserID=%s AND CharacterName=%s")
+        query = ("SELECT CharacterName, CharacterClass, CharacterLevel, HealthCurrent, HealthMax, ManaCurrent, ManaMax FROM characters WHERE UserID=%s AND CharacterName=%s")
         cursor.execute(query, (ctx.user.id, name))
         result = cursor.fetchone()
         if not result:
