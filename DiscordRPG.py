@@ -70,26 +70,27 @@ async def class_list(ctx):
     
 @tree.command(name='class_stats', description="view stats of selected class", guild=discord.Object(id=GUILD_ID))
 async def class_stats(ctx, name: str):
-    if(name == 'Cleric' or name == 'cleric'):
-        charClass = classes.Cleric()
-        await ctx.response.send_message(charClass.displayStats())
-    elif(name == 'Hunter' or name == 'hunter'):
-        charClass = classes.Hunter()
-        await ctx.response.send_message(charClass.displayStats())
-    elif(name == 'Mage' or name == 'mage'):
-        charClass = classes.Mage()
-        await ctx.response.send_message(charClass.displayStats())
-    elif(name == 'Paladin' or name == 'paladin'):
-        charClass = classes.Paladin()
-        await ctx.response.send_message(charClass.displayStats())
-    elif(name == 'Theif' or name == 'thief'):
-        charClass = classes.Thief()
-        await ctx.response.send_message(charClass.displayStats())
-    elif(name == 'Warrior' or name == 'warrior'):
-        charClass = classes.Warrior()
-        await ctx.response.send_message(charClass.displayStats())
-    else:
-        await ctx.response.send_message('That is not one of the starting classes.')
+    match name.lower():
+        case "cleric":
+            charClass = classes.Cleric()
+            await ctx.response.send_message(charClass.displayStats())
+        case "hunter":
+            charClass = classes.Hunter()
+            await ctx.response.send_message(charClass.displayStats())
+        case "mage":
+            charClass = classes.Mage()
+            await ctx.response.send_message(charClass.displayStats())
+        case "paladin":
+            charClass = classes.Paladin()
+            await ctx.response.send_message(charClass.displayStats())
+        case "thief":
+            charClass = classes.Thief()
+            await ctx.response.send_message(charClass.displayStats())
+        case "warrior":
+            charClass = classes.Warrior()
+            await ctx.response.send_message(charClass.displayStats())
+        case _:
+            await ctx.response.send_message('That is not one of the starting classes.')
 
 @tree.command(name='view_character', description="view selected character's stats and equiptment", guild=discord.Object(id=GUILD_ID))
 async def view_character(ctx, name: str):
@@ -115,7 +116,6 @@ async def view_character(ctx, name: str):
             print(err)
     else:
         cnx.close()
-    
 
 @tree.command(name='monster_list', description="view a list of all monsters", guild=discord.Object(id=GUILD_ID))
 async def monster_list(ctx):
