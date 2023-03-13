@@ -61,16 +61,20 @@ async def create_character(ctx, name: str, character_class: str):
 # see the list of all starting classes
 # returns a response with all classes as a list
 @tree.command(name='class_list', description='view the list of starting classes', guild=discord.Object(id=GUILD_ID))
-async def class_list(ctx):
-    response = f"""
-                Cleric
-                Hunter
-                Mage
-                Paladin
-                Theif
-                Warrior
-                """
-    await ctx.response.send_message(inspect.cleandoc(response))
+async def class_list(ctx, member: discord.Member = None):
+    if member == None:
+        member = ctx.user
+
+    embed = discord.Embed(title = "Class List", description = "List of starting classes", color = discord.Color.purple())
+    embed.add_field(name = "Cleric", value = "Cleric Stats")
+    embed.add_field(name = "Hunter", value = "Hunter Stats")
+    embed.add_field(name = "Mage", value = "Mage Stats")
+    embed.add_field(name = "Paladin", value = "Paladin Stats")
+    embed.add_field(name = "Theif", value = "Theif Stats")
+    embed.add_field(name = "Warrior", value = "Warrior Stats")
+    embed.set_footer(text = f"{member.display_name} created this list")
+
+    await ctx.response.send_message(embed = embed)
 
 # view the stats of a starting class
 # takes the class name as an arguments
