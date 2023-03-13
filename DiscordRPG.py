@@ -136,32 +136,33 @@ async def monster_list(ctx):
 
 @tree.command(name='monster_stats', description="view stats of selected monster of given level(default = 1)", guild=discord.Object(id=GUILD_ID))
 async def monster_stats(ctx, name: str, level: int = 1):
-    if(name == 'Boar' or name == 'Boar'):
-        monster = monsters.Boar(level)
-        await ctx.response.send_message(monster.displayStats())
-    elif(name == 'Wolf' or name == 'wolf'):
-        monster = monsters.Wolf(level)
-        await ctx.response.send_message(monster.displayStats())
-    elif(name == 'Treant' or name == 'mage'):
-        monster = monsters.Treant(level)
-        await ctx.response.send_message(monster.displayStats())
-    elif(name == 'Elf' or name == 'Elf'):
-        monster = monsters.Elf(level)
-        await ctx.response.send_message(monster.displayStats())
-    elif(name == 'Giant Spider' or name == 'Giant spider' or name == 'giant Spider' or name == 'giant spider'):
-        monster = monsters.GiantSpider(level)
-        await ctx.response.send_message(monster.displayStats())
-    elif(name == 'Roper' or name == 'roper'):
-        monster = monsters.Roper(level)
-        await ctx.response.send_message(monster.displayStats())
-    elif(name == 'Troll' or name == 'troll'):
-        monster = monsters.Troll(level)
-        await ctx.response.send_message(monster.displayStats())
-    elif(name == 'Goblin' or name == 'goblin'):
-        monster = monsters.Goblin(level)
-        await ctx.response.send_message(monster.displayStats())
-    else:
-        await ctx.response.send_message('That is not currently a monster.')
+    match name.lower():
+        case "boar":
+            monster = monsters.Boar(level)
+            await ctx.response.send_message(monster.displayStats())
+        case "wolf":
+            monster = monsters.Wolf(level)
+            await ctx.response.send_message(monster.displayStats())
+        case "treant":
+            monster = monsters.Treant(level)
+            await ctx.response.send_message(monster.displayStats())
+        case "elf":
+            monster = monsters.Elf(level)
+            await ctx.response.send_message(monster.displayStats())
+        case "giant spider":
+            monster = monsters.GiantSpider(level)
+            await ctx.response.send_message(monster.displayStats())
+        case "roper":
+            monster = monsters.Roper(level)
+            await ctx.response.send_message(monster.displayStats())
+        case "troll":
+            monster = monsters.Troll(level)
+            await ctx.response.send_message(monster.displayStats())
+        case "goblin":
+            monster = monsters.Goblin(level)
+            await ctx.response.send_message(monster.displayStats())
+        case _:
+            await ctx.response.send_message('This is not one of the current monsters.')
 
 @tree.command(name='adventure', description='Start an adventure', guild=discord.Object(id=GUILD_ID))
 async def adventure(ctx, name: str, location: str):
