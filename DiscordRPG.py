@@ -1,6 +1,5 @@
 import discord
 import mysql.connector
-from mysql.connector import errorcode
 import inspect
 import classes
 import character
@@ -8,7 +7,7 @@ import monsters
 import os
 import random
 
-from discord.ext import commands
+from mysql.connector import errorcode
 from discord import app_commands
 from dotenv import load_dotenv
 
@@ -66,7 +65,23 @@ async def class_list(ctx, member: discord.Member = None):
     if member == None:
         member = ctx.user
 
-    embed = discord.Embed(title = "Class List", description = "List of starting classes", color = discord.Color.purple())
+    # view for class list
+    cleric_button = discord.ui.Button(label = "Cleric", custom_id = 'cleric', style = discord.ButtonStyle.gray, row = 0)
+    hunter_button = discord.ui.Button(label = "Hunter", custom_id = 'hunter', style = discord.ButtonStyle.gray, row = 0)
+    mage_button = discord.ui.Button(label = "Mage", custom_id = 'mage', style = discord.ButtonStyle.gray, row = 0)
+    paladin_button = discord.ui.Button(label = "Paladin", custom_id = 'paladin', style = discord.ButtonStyle.gray, row = 1)
+    thief_button = discord.ui.Button(label = "Theif", custom_id = 'theif', style = discord.ButtonStyle.gray, row = 1)
+    warrior_button = discord.ui.Button(label = "Warrior", custom_id = 'warrior', style = discord.ButtonStyle.gray, row = 1)
+    view = discord.ui.View()
+    view.add_item(cleric_button)
+    view.add_item(hunter_button)
+    view.add_item(mage_button)
+    view.add_item(paladin_button)
+    view.add_item(thief_button)
+    view.add_item(warrior_button)
+    
+    # embed for class_list
+    embed = discord.Embed(title = "Class List", description = "List of starting classes\nPress a button to view starting stats", color = discord.Color.purple())
     embed.add_field(name = "Cleric", value = "")
     embed.add_field(name = "Hunter", value = "")
     embed.add_field(name = "Mage", value = "")
@@ -75,7 +90,7 @@ async def class_list(ctx, member: discord.Member = None):
     embed.add_field(name = "Warrior", value = "")
     embed.set_footer(text = f"{member.display_name} created this list")
 
-    await ctx.response.send_message(embed = embed)
+    await ctx.response.send_message(embed = embed, view = view)
 
 # view the stats of a starting class
 # takes the class name as an arguments
