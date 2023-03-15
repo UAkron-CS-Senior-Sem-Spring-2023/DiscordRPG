@@ -7,6 +7,7 @@ import character
 import monsters
 import os
 import random
+
 from discord.ext import commands
 from discord import app_commands
 from dotenv import load_dotenv
@@ -134,21 +135,20 @@ async def view_character(ctx, name: str):
 # view all the monsters based on location
 # returns all monster names in list form
 @tree.command(name='monster_list', description="view a list of all monsters", guild=discord.Object(id=GUILD_ID))
-async def monster_list(ctx):
-    response = f"""
-                Forest:
-                Boar
-                Wolf
-                Treant
-                Elf
+async def monster_list(ctx, member: discord.Member = None):
+    if member == None:
+        member = ctx.user
 
-                Cave: 
-                Giant Spider
-                Roper
-                Troll
-                Goblin
-                """
-    await ctx.response.send_message(inspect.cleandoc(response))
+    embed = discord.Embed(title = "Monster List", description = "List of all current monsters", color = discord.Color.green())
+    embed.add_field(name = "Forest:", value = "", inline = False)
+    embed.add_field(name = "Boar            Wolf", value = "", inline = False)
+    embed.add_field(name = "Elf                Treant", value = "", inline = False)
+    embed.add_field(name = "Cave:", value = "", inline = False)
+    embed.add_field(name = "Giant Spider    Roper", value = "", inline = False)
+    embed.add_field(name = "Goblin                Troll", value = "", inline = False)
+    embed.set_footer(text = f"{member.display_name} created this list")
+
+    await ctx.response.send_message(embed = embed)
 
 # view the stats of selected monster
 # takes the monster's name and level as arguments
