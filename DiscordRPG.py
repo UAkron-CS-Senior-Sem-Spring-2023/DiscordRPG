@@ -82,12 +82,8 @@ async def class_list(ctx, member: discord.Member = None):
     
     # embed for class_list
     embed = discord.Embed(title = "Class List", description = "List of starting classes\nPress a button to view starting stats", color = discord.Color.purple())
-    embed.add_field(name = "Cleric", value = "")
-    embed.add_field(name = "Hunter", value = "")
-    embed.add_field(name = "Mage", value = "")
-    embed.add_field(name = "Paladin", value = "")
-    embed.add_field(name = "Theif", value = "")
-    embed.add_field(name = "Warrior", value = "")
+    embed.add_field(name = "Cleric    |    Hunter    |    Mage", value = "", inline = False)
+    embed.add_field(name = "Paladin    |    Theif    |    Warrior", value = "")
     embed.set_footer(text = f"{member.display_name} created this list")
 
     await ctx.response.send_message(embed = embed, view = view)
