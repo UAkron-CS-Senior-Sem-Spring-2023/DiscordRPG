@@ -82,8 +82,6 @@ async def class_list(ctx, member: discord.Member = None):
     
     # embed for class_list
     embed = discord.Embed(title = "Class List", description = "List of starting classes\nPress a button to view starting stats", color = discord.Color.purple())
-    embed.add_field(name = "Cleric    |    Hunter    |    Mage", value = "", inline = False)
-    embed.add_field(name = "Paladin    |    Theif    |    Warrior", value = "")
     embed.set_footer(text = f"{member.display_name} created this list")
 
     await ctx.response.send_message(embed = embed, view = view)
@@ -151,10 +149,10 @@ async def monster_list(ctx, member: discord.Member = None):
         member = ctx.user
     
     # view for monster_list
-    boar_button = discord.ui.Button(label = "Boar", custom_id = 'boar', style = discord.ButtonStyle.gray, row = 0)
-    wolf_button = discord.ui.Button(label = "Wolf", custom_id = 'wolf', style = discord.ButtonStyle.gray, row = 0)
-    elf_button = discord.ui.Button(label = "Elf", custom_id = 'elf', style = discord.ButtonStyle.gray, row = 0)
-    treant_button = discord.ui.Button(label = "Treant", custom_id = 'treant', style = discord.ButtonStyle.gray, row = 0)
+    boar_button = discord.ui.Button(label = "Boar", custom_id = 'boar', style = discord.ButtonStyle.green, row = 0)
+    wolf_button = discord.ui.Button(label = "Wolf", custom_id = 'wolf', style = discord.ButtonStyle.green, row = 0)
+    elf_button = discord.ui.Button(label = "Elf", custom_id = 'elf', style = discord.ButtonStyle.green, row = 0)
+    treant_button = discord.ui.Button(label = "Treant", custom_id = 'treant', style = discord.ButtonStyle.green, row = 0)
     spider_button = discord.ui.Button(label = "Giant Spider", custom_id = 'spider', style = discord.ButtonStyle.gray, row = 1)
     roper_button = discord.ui.Button(label = "Roper", custom_id = 'roper', style = discord.ButtonStyle.gray, row = 1)
     goblin_button = discord.ui.Button(label = "Goblin", custom_id = 'goblin', style = discord.ButtonStyle.gray, row = 1)
@@ -171,10 +169,9 @@ async def monster_list(ctx, member: discord.Member = None):
 
     # embed for monster_list
     embed = discord.Embed(title = "Monster List", description = "List of all current monsters\nSelect a button to view starting stats for the monster", color = discord.Color.green())
-    embed.add_field(name = "Forest:", value = "", inline = False)
-    embed.add_field(name = "Boar    |    Wolf    |    Elf     |   Treant", value = "")
-    embed.add_field(name = "Cave:", value = "", inline = False)
-    embed.add_field(name = "Giant Spider    |    Roper    |    Goblin    |    Troll", value = "")
+    embed.add_field(name = "Locations:", value = "", inline = False)
+    embed.add_field(name = "Forest", value = "", inline = False)
+    embed.add_field(name = "Cave", value = "", inline = False)
     embed.set_footer(text = f"{member.display_name} created this list")
 
     await ctx.response.send_message(embed = embed, view = view)

@@ -31,7 +31,7 @@ class Boar:
 
     # methods
     def displayStats(self):
-        return (self._name + " Level: " + str(self._level) + "\nHealth: " + str(self._health) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
+        return ("Location: " + str(self._location) + "\n" + self._name + " Level: " + str(self._level) + "\nHealth: " + str(self._health) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
     
 class Wolf:
     # constructor
@@ -47,7 +47,7 @@ class Wolf:
 
     # methods
     def displayStats(self):
-        return (self._name + " Level: " + str(self._level) + "\nHealth: " + str(self._health) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
+        return ("Location: " + str(self._location) + "\n" + self._name + " Level: " + str(self._level) + "\nHealth: " + str(self._health) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
 
 class Treant:
     # constructor
@@ -63,7 +63,7 @@ class Treant:
 
     #methods
     def displayStats(self):
-        return (self._name + " Level: " + str(self._level) + "\nHealth: " + str(self._health) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
+        return ("Location: " + str(self._location) + "\n" + self._name + " Level: " + str(self._level) + "\nHealth: " + str(self._health) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
 
 class Elf:
     # constructor
@@ -79,7 +79,7 @@ class Elf:
 
     # methods
     def displayStats(self):
-        return (self._name + " Level: " + str(self._level) + "\nHealth: " + str(self._health) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
+        return ("Location: " + str(self._location) + "\n" + self._name + " Level: " + str(self._level) + "\nHealth: " + str(self._health) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
 
 # Location - Cave
 # Weaker - Giant Spider and Roper
@@ -100,7 +100,7 @@ class GiantSpider:
 
     # methods
     def displayStats(self):
-        return (self._name + " Level: " + str(self._level) + "\nHealth: " + str(self._health) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
+        return ("Location: " + str(self._location) + "\n" + self._name + " Level: " + str(self._level) + "\nHealth: " + str(self._health) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
 
 class Roper:
     # constructor
@@ -116,7 +116,7 @@ class Roper:
 
     # methods
     def displayStats(self):
-        return (self._name + " Level: " + str(self._level) + "\nHealth: " + str(self._health) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
+        return ("Location: " + str(self._location) + "\n" + self._name + " Level: " + str(self._level) + "\nHealth: " + str(self._health) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
 
 class Troll:
     # constructor
@@ -132,7 +132,7 @@ class Troll:
 
     # methods
     def displayStats(self):
-        return (self._name + " Level: " + str(self._level) + "\nHealth: " + str(self._health) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
+        return ("Location: " + str(self._location) + "\n" + self._name + " Level: " + str(self._level) + "\nHealth: " + str(self._health) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
 
 class Goblin:
     # constructor
@@ -148,4 +148,4 @@ class Goblin:
 
     # methods
     def displayStats(self):
-        return (self._name + " Level: " + str(self._level) + "\nHealth: " + str(self._health) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
+        return ("Location: " + str(self._location) + "\n" + self._name + " Level: " + str(self._level) + "\nHealth: " + str(self._health) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
