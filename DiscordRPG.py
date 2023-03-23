@@ -129,33 +129,6 @@ async def class_list(ctx, member: discord.Member = None):
 
     await ctx.response.send_message(embed = embed, view = view)
 
-# view the stats of a starting class
-# takes the class name as an arguments
-# returns the class and stat values to the user
-@tree.command(name='class_stats', description="view stats of selected class", guild=discord.Object(id=GUILD_ID))
-async def class_stats(ctx, name: str):
-    match name.lower():
-        case "cleric":
-            charClass = classes.Cleric()
-            await ctx.response.send_message(charClass.displayStats())
-        case "hunter":
-            charClass = classes.Hunter()
-            await ctx.response.send_message(charClass.displayStats())
-        case "mage":
-            charClass = classes.Mage()
-            await ctx.response.send_message(charClass.displayStats())
-        case "paladin":
-            charClass = classes.Paladin()
-            await ctx.response.send_message(charClass.displayStats())
-        case "thief":
-            charClass = classes.Thief()
-            await ctx.response.send_message(charClass.displayStats())
-        case "warrior":
-            charClass = classes.Warrior()
-            await ctx.response.send_message(charClass.displayStats())
-        case _:
-            await ctx.response.send_message('That is not one of the starting classes.')
-
 # view stats and eqiptment of character with given name
 # takes character's name as an argument
 # returns the name, class, level, health, and mana of that character stored in the database
