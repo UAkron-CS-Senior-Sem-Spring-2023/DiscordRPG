@@ -258,39 +258,6 @@ async def monster_list(ctx, member: discord.Member = None):
 
     await ctx.response.send_message(embed = embed, view = view)
 
-# view the stats of selected monster
-# takes the monster's name and level as arguments
-# returns the stats of the chosen monster with selected level (default of 1)
-@tree.command(name='monster_stats', description="view stats of selected monster of given level (default = 1)", guild=discord.Object(id=GUILD_ID))
-async def monster_stats(ctx, name: str, level: int = 1):
-    match name.lower():
-        case "boar":
-            monster = monsters.Boar(level)
-            await ctx.response.send_message(monster.displayStats())
-        case "wolf":
-            monster = monsters.Wolf(level)
-            await ctx.response.send_message(monster.displayStats())
-        case "treant":
-            monster = monsters.Treant(level)
-            await ctx.response.send_message(monster.displayStats())
-        case "elf":
-            monster = monsters.Elf(level)
-            await ctx.response.send_message(monster.displayStats())
-        case "giant spider":
-            monster = monsters.GiantSpider(level)
-            await ctx.response.send_message(monster.displayStats())
-        case "roper":
-            monster = monsters.Roper(level)
-            await ctx.response.send_message(monster.displayStats())
-        case "troll":
-            monster = monsters.Troll(level)
-            await ctx.response.send_message(monster.displayStats())
-        case "goblin":
-            monster = monsters.Goblin(level)
-            await ctx.response.send_message(monster.displayStats())
-        case _:
-            await ctx.response.send_message('This is not one of the current monsters.')
-
 # runs the battles against a monster (demo version)
 # takes character name and location as arguments
 # returns outcome of battle
