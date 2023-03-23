@@ -2,20 +2,6 @@
 # All start with 20 points distributed amonf the stats
 # All gain 5 skill points to be distributed after level up
 
-#class Character:
-    # constructor
-    #def __init__(self, name, characterClass):
-        #self._name = name
-        #self._charcterClass = characterClass
-        #self._level = 1
-
-    # methods
-    #def viewCharacter(self):
-        #return (self._name + "\n" + self._charcterClass + " Level " + str(self._level))
-
-    #def levelUp(self):
-        #self.level = self.level + 1
-
 class Cleric:
     # constructor
     def __init__(self):
@@ -29,7 +15,7 @@ class Cleric:
 
     # methods
     def displayStats(self):
-        return (self._name + "\nHealth: " + str(self._health) + "   Mana: " + str(self._mana) + "\nVIG: " + str(self._vigor) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
+        return ("\nHealth: " + str(self._health) + "   Mana: " + str(self._mana) + "\nVIG: " + str(self._vigor) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
     
 class Hunter:
     # constructor
@@ -44,7 +30,7 @@ class Hunter:
 
     # methods
     def displayStats(self):
-        return (self._name + "\nHealth: " + str(self._health) + "   Mana: " + str(self._mana) + "\nVIG: " + str(self._vigor) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
+        return ("\nHealth: " + str(self._health) + "   Mana: " + str(self._mana) + "\nVIG: " + str(self._vigor) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
 
 class Mage:
     # constructor
@@ -59,7 +45,7 @@ class Mage:
 
     #methods
     def displayStats(self):
-        return (self._name + "\nHealth: " + str(self._health) + "   Mana: " + str(self._mana) + "\nVIG: " + str(self._vigor) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
+        return ("\nHealth: " + str(self._health) + "   Mana: " + str(self._mana) + "\nVIG: " + str(self._vigor) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
 
 class Paladin:
     # constructor
@@ -74,7 +60,7 @@ class Paladin:
 
     # methods
     def displayStats(self):
-        return (self._name + "\nHealth: " + str(self._health) + "   Mana: " + str(self._mana) + "\nVIG: " + str(self._vigor) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
+        return ("\nHealth: " + str(self._health) + "   Mana: " + str(self._mana) + "\nVIG: " + str(self._vigor) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
 
 class Thief:
     # constructor
@@ -89,7 +75,7 @@ class Thief:
 
     # methods
     def displayStats(self):
-        return (self._name + "\nHealth: " + str(self._health) + "   Mana: " + str(self._mana) + "\nVIG: " + str(self._vigor) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
+        return ("\nHealth: " + str(self._health) + "   Mana: " + str(self._mana) + "\nVIG: " + str(self._vigor) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
 
 class Warrior:
     # constructor
@@ -104,4 +90,4 @@ class Warrior:
 
     # methods
     def displayStats(self):
-        return (self._name + "\nHealth: " + str(self._health) + "   Mana: " + str(self._mana) + "\nVIG: " + str(self._vigor) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
+        return ("\nHealth: " + str(self._health) + "   Mana: " + str(self._mana) + "\nVIG: " + str(self._vigor) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))

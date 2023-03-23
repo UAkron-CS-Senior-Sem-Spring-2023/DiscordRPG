@@ -1,6 +1,5 @@
 import discord
 import mysql.connector
-import inspect
 import classes
 import character
 import monsters
@@ -80,8 +79,52 @@ async def class_list(ctx, member: discord.Member = None):
     view.add_item(thief_button)
     view.add_item(warrior_button)
     
+    # button callbacks
+    async def cleric_callback(interaction):
+        charClass = classes.Cleric()
+        button_embed = discord.Embed(title = "Cleric", description = "Starting stats for a cleric", color = discord.Color.from_rgb(255, 255, 255))
+        button_embed.add_field(name = charClass.displayStats(), value = "")
+        await interaction.response.send_message(embed = button_embed)
+
+    async def hunter_callback(interaction):
+        charClass = classes.Hunter()
+        button_embed = discord.Embed(title = "Hunter", description = "Starting stats for a hunter", color = discord.Color.from_rgb(0, 51, 0))
+        button_embed.add_field(name = charClass.displayStats(), value = "")
+        await interaction.response.send_message(embed = button_embed)
+    
+    async def mage_callback(interaction):
+        charClass = classes.Mage()
+        button_embed = discord.Embed(title = "Mage", description = "Starting stats for a mage", color = discord.Color.from_rgb(0, 0, 153))
+        button_embed.add_field(name = charClass.displayStats(), value = "")
+        await interaction.response.send_message(embed = button_embed)
+
+    async def paladin_callback(interaction):
+        charClass = classes.Paladin()
+        button_embed = discord.Embed(title = "Paladin", description = "Starting stats for a paladin", color = discord.Color.from_rgb(153, 0, 0))
+        button_embed.add_field(name = charClass.displayStats(), value = "")
+        await interaction.response.send_message(embed = button_embed)
+
+    async def thief_callback(interaction):
+        charClass = classes.Thief()
+        button_embed = discord.Embed(title = "Thief", description = "Starting stats for a thief", color = discord.Color.from_rgb(0, 0, 0))
+        button_embed.add_field(name = charClass.displayStats(), value = "")
+        await interaction.response.send_message(embed = button_embed)
+
+    async def warrior_callback(interaction):
+        charClass = classes.Warrior()
+        button_embed = discord.Embed(title = "Warrior", description = "Starting stats for a warrior", color = discord.Color.from_rgb(64, 64, 64))
+        button_embed.add_field(name = charClass.displayStats(), value = "")
+        await interaction.response.send_message(embed = button_embed)
+
+    cleric_button.callback = cleric_callback
+    hunter_button.callback = hunter_callback
+    mage_button.callback = mage_callback
+    paladin_button.callback = paladin_callback
+    thief_button.callback = thief_callback
+    warrior_button.callback = warrior_callback
+
     # embed for class_list
-    embed = discord.Embed(title = "Class List", description = "List of starting classes\nPress a button to view starting stats", color = discord.Color.purple())
+    embed = discord.Embed(title = "Class List", description = "List of starting classes\nPress a button to view starting stats", color = discord.Color.from_rgb(255, 255, 0))
     embed.set_footer(text = f"{member.display_name} created this list")
 
     await ctx.response.send_message(embed = embed, view = view)
