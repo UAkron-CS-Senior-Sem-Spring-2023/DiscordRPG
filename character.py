@@ -5,7 +5,7 @@ class Character:
     # constructor
     def __init__(self, name, characterClass, userID):
         self._name = name
-        self._charcterClass = characterClass.lower()
+        self._characterClass = characterClass.lower()
         self._userID = userID
         self._level = 0
         self._vigor = 0
@@ -71,16 +71,24 @@ class Character:
                 self._mana = self._int * 5
                 self._maxHealth = self._health
                 self._maxMana = self._mana
-            case _:
-                print("Invalid class name. Please choose one of the classes")
+            #case _:
+                #print("Invalid class name. Please choose one of the classes")
+        
+
+    # methods
+    def viewCharacter(self):
+        return (self._name + "\n" + self._characterClass + " Level " + str(self._level))
+    
+    # Adds or updates the character from object to the database
+    def addCharacter(self):
         try:
             cnx = mysql.connector.connect(user='bot', password='203v2Xm&zXQK', host='45.31.16.49', database='disrpg')
             cursor = cnx.cursor()
-            query = ("INSERT INTO characters (UserID, CharacterName, CharacterClass, CharacterLevel, VigorBase, VigorCurrent, StrBase, StrCurrent, DexBase, DexCurrent, IntBase, IntCurrent, HealthBaseMax, HealthMax, HealthCurrent, ManaBaseMax, ManaMax, ManaCurrent) VALUES (%(UserID)s, %(CharacterName)s, %(CharacterClass)s, %(CharacterLevel)s, %(VigorBase)s, %(VigorCurrent)s, %(StrBase)s, %(StrCurrent)s, %(DexBase)s, %(DexCurrent)s, %(IntBase)s, %(IntCurrent)s, %(HealthBaseMax)s, %(HealthMax)s, %(HealthCurrent)s, %(ManaBaseMax)s, %(ManaMax)s, %(ManaCurrent)s)")
+            query = ("REPLACE INTO characters (UserID, CharacterName, CharacterClass, CharacterLevel, VigorBase, VigorCurrent, StrBase, StrCurrent, DexBase, DexCurrent, IntBase, IntCurrent, HealthBaseMax, HealthMax, HealthCurrent, ManaBaseMax, ManaMax, ManaCurrent) VALUES (%(UserID)s, %(CharacterName)s, %(CharacterClass)s, %(CharacterLevel)s, %(VigorBase)s, %(VigorCurrent)s, %(StrBase)s, %(StrCurrent)s, %(DexBase)s, %(DexCurrent)s, %(IntBase)s, %(IntCurrent)s, %(HealthBaseMax)s, %(HealthMax)s, %(HealthCurrent)s, %(ManaBaseMax)s, %(ManaMax)s, %(ManaCurrent)s)")
             data = {
-                'UserID': userID,
-                'CharacterName': name,
-                'CharacterClass': characterClass,
+                'UserID': self._userID,
+                'CharacterName': self._name,
+                'CharacterClass': self._characterClass,
                 'CharacterLevel': 1,
                 'VigorBase': self._vigor,
                 'VigorCurrent': self._vigor,
@@ -110,13 +118,9 @@ class Character:
                 print(err)
         else:
             cnx.close()
-
-    # methods
-    def viewCharacter(self):
-        return (self._name + "\n" + self._charcterClass + " Level " + str(self._level))
         
+    #gets a character with a certain name and user from the database and puts values into object
     def getCharacter(self, userID, name):
-        print("In getCharacter function")
         try:
             cnx = mysql.connector.connect(user='bot', password='203v2Xm&zXQK', host='45.31.16.49', database='disrpg')
             cursor = cnx.cursor()
@@ -127,7 +131,7 @@ class Character:
                 return
             else:
                 self._name = result[0]
-                self._charcterClass = result[1]
+                self._characterClass = result[1]
                 self._userID = userID
                 self._level = result[2]
                 self._vigor = result[3]
@@ -149,6 +153,62 @@ class Character:
                 print(err)
         else:
             cnx.close()
-
-    def levelUp(self):
-        self._level = self._level + 1
+    
+    #updates a character in the database from object
+    def updateCharacter(self):
+        try:
+            cnx = mysql.connector.connect(user='bot', password='203v2Xm&zXQK', host='45.31.16.49', database='disrpg')
+            cursor = cnx.cursor()
+            query = ("REPLACE INTO characters (UserID, CharacterName, CharacterClass, CharacterLevel, VigorBase, VigorCurrent, StrBase, StrCurrent, DexBase, DexCurrent, IntBase, IntCurrent, HealthBaseMax, HealthMax, HealthCurrent, ManaBaseMax, ManaMax, ManaCurrent) VALUES (%(UserID)s, %(CharacterName)s, %(CharacterClass)s, %(CharacterLevel)s, %(VigorBase)s, %(VigorCurrent)s, %(StrBase)s, %(StrCurrent)s, %(DexBase)s, %(DexCurrent)s, %(IntBase)s, %(IntCurrent)s, %(HealthBaseMax)s, %(HealthMax)s, %(HealthCurrent)s, %(ManaBaseMax)s, %(ManaMax)s, %(ManaCurrent)s)")
+            data = {
+                'UserID': self._userID,
+                'CharacterName': self._name,
+                'CharacterClass': self._characterClass,
+                'CharacterLevel': 1,
+                'VigorBase': self._vigor,
+                'VigorCurrent': self._vigor,
+                'StrBase': self._str,
+                'StrCurrent': self._str,
+                'DexBase': self._dex,
+                'DexCurrent': self._dex,
+                'IntBase': self._int,
+                'IntCurrent': self._int,
+                'HealthBaseMax': self._health,
+                'HealthMax': self._health,
+                'HealthCurrent': self._health,
+                'ManaBaseMax': self._mana,
+                'ManaMax': self._mana,
+                'ManaCurrent': self._mana,
+            }
+            cursor.execute(query, data)
+            cnx.commit()
+            cursor.close()
+            cnx.close()
+        except mysql.connector.Error as err:
+            if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+                print("Something is wrong with your user name or password")
+            elif err.errno == errorcode.ER_BAD_DB_ERROR:
+                print("Database does not exist")
+            else:
+                print(err)
+        else:
+            cnx.close()
+            
+    def deleteCharacter(self):
+        try:
+            cnx = mysql.connector.connect(user='bot', password='203v2Xm&zXQK', host='45.31.16.49', database='disrpg')
+            cursor = cnx.cursor()
+            query = ("DELETE FROM characters WHERE UserID=%s AND CharacterName=%s")
+            cursor.execute(query, (self._userID, self._name))
+            cnx.commit()
+            cursor.close()
+            cnx.close()
+        except mysql.connector.Error as err:
+            if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+                print("Something is wrong with your user name or password")
+            elif err.errno == errorcode.ER_BAD_DB_ERROR:
+                print("Database does not exist")
+            else:
+                print(err)
+        else:
+            cnx.close()
