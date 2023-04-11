@@ -153,7 +153,10 @@ class Character:
                 print(err)
         else:
             cnx.close()
-    
+            
+    def levelUp(self):
+        self._level = self._level + 1
+        
     #updates a character in the database from object
     def updateCharacter(self):
         try:
