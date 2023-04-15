@@ -38,21 +38,26 @@ async def create_character(ctx, name: str, character_class: str):
     match character_class.lower():
         case "cleric":
             test1 = character.Character(name, character_class, ctx.user.id)
+            test1.addCharacter()
             await ctx.response.send_message("Your character has been created")
         case "hunter":
             test1 = character.Character(name, character_class, ctx.user.id)
+            test1.addCharacter()
             await ctx.response.send_message("Your character has been created")
         case "mage":
             test1 = character.Character(name, character_class, ctx.user.id)
+            test1.addCharacter()
             await ctx.response.send_message("Your character has been created")
         case "paladin":
             test1 = character.Character(name, character_class, ctx.user.id)
             await ctx.response.send_message("Your character has been created")
         case "theif":
             test1 = character.Character(name, character_class, ctx.user.id)
+            test1.addCharacter()
             await ctx.response.send_message("Your character has been created")
         case "warrior":
             test1 = character.Character(name, character_class, ctx.user.id)
+            test1.addCharacter()
             await ctx.response.send_message("Your character has been created")
         case _:
             await ctx.response.send_message("Invalid class name. Please choose one of the classes")
@@ -134,28 +139,10 @@ async def class_list(ctx, member: discord.Member = None):
 # returns the name, class, level, health, and mana of that character stored in the database
 @tree.command(name='view_character', description="view selected character's stats and equiptment", guild=discord.Object(id=GUILD_ID))
 async def view_character(ctx, name: str):
-    try:
-        cnx = mysql.connector.connect(user='bot', password='203v2Xm&zXQK', host='45.31.16.49', database='disrpg')
-        cursor = cnx.cursor()
-        query = ("SELECT CharacterName, CharacterClass, CharacterLevel, HealthCurrent, HealthMax, ManaCurrent, ManaMax FROM characters WHERE UserID=%s AND CharacterName=%s")
-        cursor.execute(query, (ctx.user.id, name))
-        result = cursor.fetchone()
-        if not result:
-            await ctx.response.send_message("The selected character does not exist for this user")
-        else:
-            output = "Name: {} \nClass: {} Level: {}  \nHealth {}/{} Mana {}/{}".format(result[0], result[1], result[2], result[3], result[4], result[5], result[6])
-            await ctx.response.send_message(output)
-        cursor.close()
-        cnx.close()
-    except mysql.connector.Error as err:
-        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-            print("Something is wrong with your user name or password")
-        elif err.errno == errorcode.ER_BAD_DB_ERROR:
-            print("Database does not exist")
-        else:
-            print(err)
-    else:
-        cnx.close()
+    test = character.Character(name, "", ctx.user.id)
+    test.getCharacter(ctx.user.id, name)
+    output = "Name: {} \nClass: {} Level: {}  \nHealth {}/{} Mana {}/{}".format(test._name, test._level, test._characterClass, test._health, test._maxHealth, test._mana, test._maxMana)
+    await ctx.response.send_message(output)
 
 # view all the monsters based on location
 # returns all monster names in list form
