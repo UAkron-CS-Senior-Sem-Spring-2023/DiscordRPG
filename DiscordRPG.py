@@ -141,7 +141,7 @@ async def class_list(ctx, member: discord.Member = None):
 async def view_character(ctx, name: str):
     test = character.Character(name, "", ctx.user.id)
     test.getCharacter(ctx.user.id, name)
-    output = "Name: {} \nClass: {} Level: {}  \nHealth {}/{} Mana {}/{}".format(test._name, test._level, test._characterClass, test._health, test._maxHealth, test._mana, test._maxMana)
+    output = "Name: {} \nClass: {} Level: {}  \nHealth {}/{} Mana {}/{}".format(test._name, test._characterClass, test._level, test._health, test._maxHealth, test._mana, test._maxMana)
     await ctx.response.send_message(output)
 
 # view all the monsters based on location
@@ -430,5 +430,210 @@ async def adventure(ctx, name: str, location: str):
                 else:
                     encounter = encounter + "\n\nYou were defeated by the " + monster_name + "!"
                     await ctx.response.send_message(encounter)
+
+@tree.command(name='adventure2', description='Start an adventure', guild=discord.Object(id=GUILD_ID))
+async def adventure2(ctx, name: str, member: discord.Member = None):
+    if member == None:
+        member = ctx.user
+    
+    player = character.Character(name, "", ctx.user.id)
+    player.getCharacter(ctx.user.id, name)
+
+    # view for adventure
+    forest_button = discord.ui.Button(label = "Forest", custom_id = 'forest', style = discord.ButtonStyle.green, row = 0)
+    cave_button = discord.ui.Button(label = "Cave", custom_id = 'cave', style = discord.ButtonStyle.gray, row = 0)
+    view = discord.ui.View()
+    view.add_item(forest_button)
+    view.add_item(cave_button)
+
+    # button callbacks
+    async def forest_callback(interaction):
+        chance = random.randint(1, 100)
+        if(chance < 36):
+            player_health = 24
+            player_str = 8
+            monster_name = "Boar"
+            monster_health = 24
+            monster_str = 5
+            encounter = "You have encountered a " + monster_name + "\n" + name + " Health: " + str(player_health) + "  " + monster_name + " Health: " + str(monster_health)
+            while(monster_health > 0 and player_health > 0):
+                player_damage = random.randint(1, player_str)
+                monster_damage = random.randint(1, monster_str)
+                damage = "You did " + str(player_damage) + " damage the " + monster_name + " did " + str(monster_damage) + " damage"
+                player_health = player_health - monster_damage
+                monster_health = monster_health - player_damage
+                health = name + " Health: " + str(player_health) + "  " + monster_name + " Health: " + str(monster_health)
+                encounter = encounter + "\n\n" + damage + "\n" + health
+            if(monster_health <= 0):
+                encounter = encounter + "\n\nYou have defeated the " + monster_name + "!"
+                await interaction.response.send_message(encounter)
+            else:
+                encounter = encounter + "\n\nYou were defeated by the " + monster_name + "!"
+                await interaction.response.send_message(encounter)
+
+        elif(chance < 71):
+            player_health = 24
+            player_str = 8
+            monster_name = "Wolf"
+            monster_health = 20
+            monster_str = 5
+            encounter = "You have encountered a " + monster_name + "\n" + name + " Health: " + str(player_health) + "  " + monster_name + " Health: " + str(monster_health)
+            while(monster_health > 0 and player_health > 0):
+                player_damage = random.randint(1, player_str)
+                monster_damage = random.randint(1, monster_str)
+                damage = "You did " + str(player_damage) + " damage the " + monster_name + " did " + str(monster_damage) + " damage"
+                player_health = player_health - monster_damage
+                monster_health = monster_health - player_damage
+                health = name + " Health: " + str(player_health) + "  " + monster_name + " Health: " + str(monster_health)
+                encounter = encounter + "\n\n" + damage + "\n" + health
+            if(monster_health <= 0):
+                encounter = encounter + "\n\nYou have defeated the " + monster_name + "!"
+                await interaction.response.send_message(encounter)
+            else:
+                encounter = encounter + "\n\nYou were defeated by the " + monster_name + "!"
+                await interaction.response.send_message(encounter)
+
+        elif(chance < 91):
+            player_health = 24
+            player_str = 8
+            monster_name = "Elf"
+            monster_health = 20
+            monster_str = 6
+            encounter = "You have encountered a " + monster_name + "\n" + name + " Health: " + str(player_health) + "  " + monster_name + " Health: " + str(monster_health)
+            while(monster_health > 0 and player_health > 0):
+                player_damage = random.randint(1, player_str)
+                monster_damage = random.randint(1, monster_str)
+                damage = "You did " + str(player_damage) + " damage the " + monster_name + " did " + str(monster_damage) + " damage"
+                player_health = player_health - monster_damage
+                monster_health = monster_health - player_damage
+                health = name + " Health: " + str(player_health) + "  " + monster_name + " Health: " + str(monster_health)
+                encounter = encounter + "\n\n" + damage + "\n" + health
+            if(monster_health <= 0):
+                encounter = encounter + "\n\nYou have defeated the " + monster_name + "!"
+                await interaction.response.send_message(encounter)
+            else:
+                encounter = encounter + "\n\nYou were defeated by the " + monster_name + "!"
+                await interaction.response.send_message(encounter)
+
+        else:
+            player_health = 24
+            player_str = 8
+            monster_name = "Treant"
+            monster_health = 48
+            monster_str = 7
+            encounter = "You have encountered a " + monster_name + "\n" + name + " Health: " + str(player_health) + "  " + monster_name + " Health: " + str(monster_health)
+            while(monster_health > 0 and player_health > 0):
+                player_damage = random.randint(1, player_str)
+                monster_damage = random.randint(1, monster_str)
+                damage = "You did " + str(player_damage) + " damage the " + monster_name + " did " + str(monster_damage) + " damage"
+                player_health = player_health - monster_damage
+                monster_health = monster_health - player_damage
+                health = name + " Health: " + str(player_health) + "  " + monster_name + " Health: " + str(monster_health)
+                encounter = encounter + "\n\n" + damage + "\n" + health
+            if(monster_health <= 0):
+                encounter = encounter + "\n\nYou have defeated the " + monster_name + "!"
+                await interaction.response.send_message(encounter)
+            else:
+                encounter = encounter + "\n\nYou were defeated by the " + monster_name + "!"
+                await interaction.response.send_message(encounter)
+
+    async def cave_callback(interaction):
+        chance = random.randint(1, 100)
+        if(chance < 36):
+            player_health = 24
+            player_str = 8
+            monster_name = "Giant Spider"
+            monster_health = 20
+            monster_str = 6
+            encounter = "You have encountered a " + monster_name + "\n" + name + " Health: " + str(player_health) + "  " + monster_name + " Health: " + str(monster_health)
+            while(monster_health > 0 and player_health > 0):
+                player_damage = random.randint(1, player_str)
+                monster_damage = random.randint(1, monster_str)
+                damage = "You did " + str(player_damage) + " damage the " + monster_name + " did " + str(monster_damage) + " damage"
+                player_health = player_health - monster_damage
+                monster_health = monster_health - player_damage
+                health = name + " Health: " + str(player_health) + "  " + monster_name + " Health: " + str(monster_health)
+                encounter = encounter + "\n\n" + damage + "\n" + health
+            if(monster_health <= 0):
+                encounter = encounter + "\n\nYou have defeated the " + monster_name + "!"
+                await interaction.response.send_message(encounter)
+            else:
+                encounter = encounter + "\n\nYou were defeated by the " + monster_name + "!"
+                await interaction.response.send_message(encounter)
+
+        elif(chance < 71):
+            player_health = 24
+            player_str = 8
+            monster_name = "Roper"
+            monster_health = 20
+            monster_str = 4
+            encounter = "You have encountered a " + monster_name + "\n" + name + " Health: " + str(player_health) + "  " + monster_name + " Health: " + str(monster_health)
+            while(monster_health > 0 and player_health > 0):
+                player_damage = random.randint(1, player_str)
+                monster_damage = random.randint(1, monster_str)
+                damage = "You did " + str(player_damage) + " damage the " + monster_name + " did " + str(monster_damage) + " damage"
+                player_health = player_health - monster_damage
+                monster_health = monster_health - player_damage
+                health = name + " Health: " + str(player_health) + "  " + monster_name + " Health: " + str(monster_health)
+                encounter = encounter + "\n\n" + damage + "\n" + health
+            if(monster_health <= 0):
+                encounter = encounter + "\n\nYou have defeated the " + monster_name + "!"
+                await interaction.response.send_message(encounter)
+            else:
+                encounter = encounter + "\n\nYou were defeated by the " + monster_name + "!"
+                await interaction.response.send_message(encounter)
+
+        elif(chance < 91):
+            player_health = 24
+            player_str = 8
+            monster_name = "Goblin"
+            monster_health = 24
+            monster_str = 7
+            encounter = "You have encountered a " + monster_name + "\n" + name + " Health: " + str(player_health) + "  " + monster_name + " Health: " + str(monster_health)
+            while(monster_health > 0 and player_health > 0):
+                player_damage = random.randint(1, player_str)
+                monster_damage = random.randint(1, monster_str)
+                damage = "You did " + str(player_damage) + " damage the " + monster_name + " did " + str(monster_damage) + " damage"
+                player_health = player_health - monster_damage
+                monster_health = monster_health - player_damage
+                health = name + " Health: " + str(player_health) + "  " + monster_name + " Health: " + str(monster_health)
+                encounter = encounter + "\n\n" + damage + "\n" + health
+            if(monster_health <= 0):
+                encounter = encounter + "\n\nYou have defeated the " + monster_name + "!"
+                await interaction.response.send_message(encounter)
+            else:
+                encounter = encounter + "\n\nYou were defeated by the " + monster_name + "!"
+                await interaction.response.send_message(encounter)
+
+        else:
+            player_health = 24
+            player_str = 8
+            monster_name = "Troll"
+            monster_health = 48
+            monster_str = 8
+            encounter = "You have encountered a " + monster_name + "\n" + name + " Health: " + str(player_health) + "  " + monster_name + " Health: " + str(monster_health)
+            while(monster_health > 0 and player_health > 0):
+                player_damage = random.randint(1, player_str)
+                monster_damage = random.randint(1, monster_str)
+                damage = "You did " + str(player_damage) + " damage the " + monster_name + " did " + str(monster_damage) + " damage"
+                player_health = player_health - monster_damage
+                monster_health = monster_health - player_damage
+                health = name + " Health: " + str(player_health) + "  " + monster_name + " Health: " + str(monster_health)
+                encounter = encounter + "\n\n" + damage + "\n" + health
+            if(monster_health <= 0):
+                encounter = encounter + "\n\nYou have defeated the " + monster_name + "!"
+                await interaction.response.send_message(encounter)
+            else:
+                encounter = encounter + "\n\nYou were defeated by the " + monster_name + "!"
+                await interaction.response.send_message(encounter)
+
+    forest_button.callback = forest_callback
+    cave_button.callback = cave_callback
+
+    # embed for adventure
+    embed = discord.Embed(title = "Adventure", description = "Select the location you would like to adventure to\n", color = discord.Color.from_rgb(204, 102, 0))
+    embed.set_footer(text = f"{member.display_name} created this list")
+
+    await ctx.response.send_message(embed = embed, view = view)
 
 client.run(TOKEN)
