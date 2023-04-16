@@ -85,7 +85,7 @@ class Character:
         try:
             cnx = mysql.connector.connect(user='bot', password='203v2Xm&zXQK', host='45.31.16.49', database='disrpg')
             cursor = cnx.cursor()
-            query = ("REPLACE INTO characters (UserID, CharacterName, CharacterClass, CharacterLevel, VigorBase, VigorCurrent, StrBase, StrCurrent, DexBase, DexCurrent, IntBase, IntCurrent, HealthBaseMax, HealthMax, HealthCurrent, ManaBaseMax, ManaMax, ManaCurrent) VALUES (%(UserID)s, %(CharacterName)s, %(CharacterClass)s, %(CharacterLevel)s, %(VigorBase)s, %(VigorCurrent)s, %(StrBase)s, %(StrCurrent)s, %(DexBase)s, %(DexCurrent)s, %(IntBase)s, %(IntCurrent)s, %(HealthBaseMax)s, %(HealthMax)s, %(HealthCurrent)s, %(ManaBaseMax)s, %(ManaMax)s, %(ManaCurrent)s)")
+            query = ("INSERT INTO characters (UserID, CharacterName, CharacterClass, CharacterLevel, VigorBase, VigorCurrent, StrBase, StrCurrent, DexBase, DexCurrent, IntBase, IntCurrent, HealthBaseMax, HealthMax, HealthCurrent, ManaBaseMax, ManaMax, ManaCurrent) VALUES (%(UserID)s, %(CharacterName)s, %(CharacterClass)s, %(CharacterLevel)s, %(VigorBase)s, %(VigorCurrent)s, %(StrBase)s, %(StrCurrent)s, %(DexBase)s, %(DexCurrent)s, %(IntBase)s, %(IntCurrent)s, %(HealthBaseMax)s, %(HealthMax)s, %(HealthCurrent)s, %(ManaBaseMax)s, %(ManaMax)s, %(ManaCurrent)s)")
             data = {
                 'UserID': self._userID,
                 'CharacterName': self._name,
@@ -120,7 +120,7 @@ class Character:
         else:
             cnx.close()
         
-    #gets a character with a certain name and user from the database and puts values into object
+    #gets a character with a certain name and user from the database and puts values into object returns true if character found and false if it isn't
     def getCharacter(self, userID, name):
         try:
             cnx = mysql.connector.connect(user='bot', password='203v2Xm&zXQK', host='45.31.16.49', database='disrpg')
@@ -129,7 +129,7 @@ class Character:
             cursor.execute(query, (userID, name))
             result = cursor.fetchone()
             if not result:
-                return
+                return False
             else:
                 self._name = result[0]
                 self._characterClass = result[1]
@@ -145,15 +145,20 @@ class Character:
                 self._maxMana = result[9]
             cursor.close()
             cnx.close()
+            return True
         except mysql.connector.Error as err:
             if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
                 print("Something is wrong with your user name or password")
+                return False
             elif err.errno == errorcode.ER_BAD_DB_ERROR:
                 print("Database does not exist")
+                return False
             else:
                 print(err)
+                return False
         else:
             cnx.close()
+            return False
             
     def levelUp(self):
         self._level = self._level + 1
