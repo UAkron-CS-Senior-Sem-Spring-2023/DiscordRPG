@@ -17,6 +17,10 @@ class Character:
         self._mana = self._int * 5
         self._maxHealth = self._health
         self._maxMana = self._mana
+        self._xp = 0
+        self._gold = 0
+        self._healthPotions = 0
+        self._manaPotions = 0
         match characterClass.lower():
             case "cleric":
                 self._vigor = 6
@@ -85,7 +89,7 @@ class Character:
         try:
             cnx = mysql.connector.connect(user='bot', password='203v2Xm&zXQK', host='45.31.16.49', database='disrpg')
             cursor = cnx.cursor()
-            query = ("INSERT INTO characters (UserID, CharacterName, CharacterClass, CharacterLevel, VigorBase, VigorCurrent, StrBase, StrCurrent, DexBase, DexCurrent, IntBase, IntCurrent, HealthBaseMax, HealthMax, HealthCurrent, ManaBaseMax, ManaMax, ManaCurrent) VALUES (%(UserID)s, %(CharacterName)s, %(CharacterClass)s, %(CharacterLevel)s, %(VigorBase)s, %(VigorCurrent)s, %(StrBase)s, %(StrCurrent)s, %(DexBase)s, %(DexCurrent)s, %(IntBase)s, %(IntCurrent)s, %(HealthBaseMax)s, %(HealthMax)s, %(HealthCurrent)s, %(ManaBaseMax)s, %(ManaMax)s, %(ManaCurrent)s)")
+            query = ("INSERT INTO characters (UserID, CharacterName, CharacterClass, CharacterLevel, VigorBase, VigorCurrent, StrBase, StrCurrent, DexBase, DexCurrent, IntBase, IntCurrent, HealthBaseMax, HealthMax, HealthCurrent, ManaBaseMax, ManaMax, ManaCurrent, Xp, Gold, HealthPotions, ManaPotions) VALUES (%(UserID)s, %(CharacterName)s, %(CharacterClass)s, %(CharacterLevel)s, %(VigorBase)s, %(VigorCurrent)s, %(StrBase)s, %(StrCurrent)s, %(DexBase)s, %(DexCurrent)s, %(IntBase)s, %(IntCurrent)s, %(HealthBaseMax)s, %(HealthMax)s, %(HealthCurrent)s, %(ManaBaseMax)s, %(ManaMax)s, %(ManaCurrent)s, %(Xp)s, %(Gold)s, %(HealthPotions)s, %(ManaPotions)s)")
             data = {
                 'UserID': self._userID,
                 'CharacterName': self._name,
@@ -105,6 +109,10 @@ class Character:
                 'ManaBaseMax': self._mana,
                 'ManaMax': self._mana,
                 'ManaCurrent': self._mana,
+                'Xp' : self._xp,
+                'Gold' : self._gold,
+                'HealthPotions' : self._healthPotions,
+                'ManaPotions' : self._manaPotions
             }
             cursor.execute(query, data)
             cnx.commit()
@@ -128,7 +136,7 @@ class Character:
         try:
             cnx = mysql.connector.connect(user='bot', password='203v2Xm&zXQK', host='45.31.16.49', database='disrpg')
             cursor = cnx.cursor()
-            query = ("SELECT CharacterName, CharacterClass, CharacterLevel, VigorCurrent, StrCurrent, DexCurrent, IntCurrent, HealthMax, HealthCurrent, ManaMax, ManaCurrent FROM characters WHERE UserID=%s AND CharacterName=%s")
+            query = ("SELECT CharacterName, CharacterClass, CharacterLevel, VigorCurrent, StrCurrent, DexCurrent, IntCurrent, HealthMax, HealthCurrent, ManaMax, ManaCurrent, Xp, Gold, HealthPotions, ManaPotions FROM characters WHERE UserID=%s AND CharacterName=%s")
             cursor.execute(query, (userID, name))
             result = cursor.fetchone()
             if not result:
@@ -146,6 +154,10 @@ class Character:
                 self._mana = result[10]
                 self._maxHealth = result[7]
                 self._maxMana = result[9]
+                self._xp = result[11]
+                self._gold = result[12]
+                self._healthPotions = result[13]
+                self._manaPotions = result[14]
             cursor.close()
             cnx.close()
             return True
@@ -171,7 +183,7 @@ class Character:
         try:
             cnx = mysql.connector.connect(user='bot', password='203v2Xm&zXQK', host='45.31.16.49', database='disrpg')
             cursor = cnx.cursor()
-            query = ("REPLACE INTO characters (UserID, CharacterName, CharacterClass, CharacterLevel, VigorBase, VigorCurrent, StrBase, StrCurrent, DexBase, DexCurrent, IntBase, IntCurrent, HealthBaseMax, HealthMax, HealthCurrent, ManaBaseMax, ManaMax, ManaCurrent) VALUES (%(UserID)s, %(CharacterName)s, %(CharacterClass)s, %(CharacterLevel)s, %(VigorBase)s, %(VigorCurrent)s, %(StrBase)s, %(StrCurrent)s, %(DexBase)s, %(DexCurrent)s, %(IntBase)s, %(IntCurrent)s, %(HealthBaseMax)s, %(HealthMax)s, %(HealthCurrent)s, %(ManaBaseMax)s, %(ManaMax)s, %(ManaCurrent)s)")
+            query = ("REPLACE INTO characters (UserID, CharacterName, CharacterClass, CharacterLevel, VigorBase, VigorCurrent, StrBase, StrCurrent, DexBase, DexCurrent, IntBase, IntCurrent, HealthBaseMax, HealthMax, HealthCurrent, ManaBaseMax, ManaMax, ManaCurrent) VALUES (%(UserID)s, %(CharacterName)s, %(CharacterClass)s, %(CharacterLevel)s, %(VigorBase)s, %(VigorCurrent)s, %(StrBase)s, %(StrCurrent)s, %(DexBase)s, %(DexCurrent)s, %(IntBase)s, %(IntCurrent)s, %(HealthBaseMax)s, %(HealthMax)s, %(HealthCurrent)s, %(ManaBaseMax)s, %(ManaMax)s, %(ManaCurrent)s, %(Xp)s, %(Gold)s, %(HealthPotions)s, %(ManaPotions)s)")
             data = {
                 'UserID': self._userID,
                 'CharacterName': self._name,
@@ -191,6 +203,10 @@ class Character:
                 'ManaBaseMax': self._mana,
                 'ManaMax': self._mana,
                 'ManaCurrent': self._mana,
+                'Xp' : self._xp,
+                'Gold' : self._gold,
+                'HealthPotions' : self._healthPotions,
+                'ManaPotions' : self._manaPotions
             }
             cursor.execute(query, data)
             cnx.commit()

@@ -154,7 +154,7 @@ async def class_list(ctx, member: discord.Member = None):
 async def view_character(ctx, name: str):
     test = character.Character(name, "", ctx.user.id)
     if test.getCharacter(ctx.user.id, name):
-        output = "Name: {} \nClass: {} Level: {}  \nHealth {}/{} Mana {}/{}".format(test._name, test._characterClass, test._level, test._health, test._maxHealth, test._mana, test._maxMana)
+        output = "Name: {} \nClass: {} Level: {}  \nHealth {}/{} Mana {}/{}\nXp: {} Gold: {}\nHealth Potions: {} Mana Potions: {}".format(test._name, test._characterClass, test._level, test._health, test._maxHealth, test._mana, test._maxMana, test._xp, test._gold, test._healthPotions, test._manaPotions)
     else:
         output = "Could not a find character with that name assigned to you"
     await ctx.response.send_message(output)
