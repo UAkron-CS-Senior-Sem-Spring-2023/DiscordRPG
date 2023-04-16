@@ -110,6 +110,7 @@ class Character:
             cnx.commit()
             cursor.close()
             cnx.close()
+            return True
         except mysql.connector.Error as err:
             if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
                 print("Something is wrong with your user name or password")
@@ -117,8 +118,10 @@ class Character:
                 print("Database does not exist")
             else:
                 print(err)
+            return False
         else:
             cnx.close()
+            return False
         
     #gets a character with a certain name and user from the database and puts values into object returns true if character found and false if it isn't
     def getCharacter(self, userID, name):

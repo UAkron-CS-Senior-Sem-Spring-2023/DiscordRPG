@@ -38,27 +38,40 @@ async def create_character(ctx, name: str, character_class: str):
     match character_class.lower():
         case "cleric":
             test1 = character.Character(name, character_class, ctx.user.id)
-            test1.addCharacter()
-            await ctx.response.send_message("Your character has been created")
+            if test1.addCharacter():
+                await ctx.response.send_message("Your character has been created")
+            else:
+                await ctx.response.send_message("Character could not be added, either database error or name already exists")
         case "hunter":
             test1 = character.Character(name, character_class, ctx.user.id)
-            test1.addCharacter()
-            await ctx.response.send_message("Your character has been created")
+            if test1.addCharacter():
+                await ctx.response.send_message("Your character has been created")
+            else:
+                await ctx.response.send_message("Character could not be added, either database error or name already exists")
         case "mage":
             test1 = character.Character(name, character_class, ctx.user.id)
-            test1.addCharacter()
-            await ctx.response.send_message("Your character has been created")
+            if test1.addCharacter():
+                await ctx.response.send_message("Your character has been created")
+            else:
+                await ctx.response.send_message("Character could not be added, either database error or name already exists")
         case "paladin":
             test1 = character.Character(name, character_class, ctx.user.id)
-            await ctx.response.send_message("Your character has been created")
+            if test1.addCharacter():
+                await ctx.response.send_message("Your character has been created")
+            else:
+                await ctx.response.send_message("Character could not be added, either database error or name already exists")
         case "theif":
             test1 = character.Character(name, character_class, ctx.user.id)
-            test1.addCharacter()
-            await ctx.response.send_message("Your character has been created")
+            if test1.addCharacter():
+                await ctx.response.send_message("Your character has been created")
+            else:
+                await ctx.response.send_message("Character could not be added, either database error or name already exists")
         case "warrior":
             test1 = character.Character(name, character_class, ctx.user.id)
-            test1.addCharacter()
-            await ctx.response.send_message("Your character has been created")
+            if test1.addCharacter():
+                await ctx.response.send_message("Your character has been created")
+            else:
+                await ctx.response.send_message("Character could not be added, either database error or name already exists")
         case _:
             await ctx.response.send_message("Invalid class name. Please choose one of the classes")
 
