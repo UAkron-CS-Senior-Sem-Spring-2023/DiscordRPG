@@ -140,8 +140,10 @@ async def class_list(ctx, member: discord.Member = None):
 @tree.command(name='view_character', description="view selected character's stats and equiptment", guild=discord.Object(id=GUILD_ID))
 async def view_character(ctx, name: str):
     test = character.Character(name, "", ctx.user.id)
-    test.getCharacter(ctx.user.id, name)
-    output = "Name: {} \nClass: {} Level: {}  \nHealth {}/{} Mana {}/{}".format(test._name, test._characterClass, test._level, test._health, test._maxHealth, test._mana, test._maxMana)
+    if test.getCharacter(ctx.user.id, name):
+        output = "Name: {} \nClass: {} Level: {}  \nHealth {}/{} Mana {}/{}".format(test._name, test._characterClass, test._level, test._health, test._maxHealth, test._mana, test._maxMana)
+    else:
+        output = "Could not a find character with that name assigned to you"
     await ctx.response.send_message(output)
 
 # view all the monsters based on location
