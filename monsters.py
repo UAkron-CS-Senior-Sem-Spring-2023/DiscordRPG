@@ -28,6 +28,7 @@ class Boar:
         self._dex = 2
         self._int = 1
         self._health = self._vigor * 4 
+        self._maxHealth = self._health
 
     # methods
     def displayStats(self):
@@ -44,6 +45,7 @@ class Wolf:
         self._dex = 2 + self._level
         self._int = 2
         self._health = self._vigor * 4 
+        self._maxHealth = self._health
 
     # methods
     def displayStats(self):
@@ -60,6 +62,7 @@ class Treant:
         self._dex = 4
         self._int = 2
         self._health = self._vigor * 4 
+        self._maxHealth = self._health
 
     #methods
     def displayStats(self):
@@ -76,6 +79,7 @@ class Elf:
         self._dex = 4 + (self._level*2)
         self._int = 2 + (self._level*2)
         self._health = self._vigor * 4 
+        self._maxHealth = self._health
 
     # methods
     def displayStats(self):
@@ -97,6 +101,7 @@ class GiantSpider:
         self._dex = 4 + (self._level*2)
         self._int = 2
         self._health = self._vigor * 4 
+        self._maxHealth = self._health
 
     # methods
     def displayStats(self):
@@ -113,6 +118,7 @@ class Roper:
         self._dex = 3 + self._level
         self._int = 2
         self._health = self._vigor * 4 
+        self._maxHealth = self._health
 
     # methods
     def displayStats(self):
@@ -129,6 +135,7 @@ class Troll:
         self._dex = 3 + self._level
         self._int = 2
         self._health = self._vigor * 4 
+        self._maxHealth = self._health
 
     # methods
     def displayStats(self):
@@ -145,6 +152,7 @@ class Goblin:
         self._dex = 5 + (self._level*2)
         self._int = 3
         self._health = self._vigor * 4 
+        self._maxHealth = self._health
 
     # methods
     def displayStats(self):
