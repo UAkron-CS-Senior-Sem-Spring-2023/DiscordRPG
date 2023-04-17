@@ -260,8 +260,12 @@ async def monster_list(ctx, member: discord.Member = None):
 
     await ctx.response.send_message(embed = embed, view = view)
 
-@tree.command(name='adventure2', description='Start an adventure', guild=discord.Object(id=GUILD_ID))
-async def adventure2(ctx, name: str, member: discord.Member = None):
+# combat against monsters
+# user inputs the name of their character
+# user is prompted to choose a location
+# randomly chooses a monster from location and runs the combat
+@tree.command(name='adventure', description='Start an adventure', guild=discord.Object(id=GUILD_ID))
+async def adventure(ctx, name: str, member: discord.Member = None):
     if member == None:
         member = ctx.user
     
