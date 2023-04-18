@@ -162,7 +162,7 @@ async def view_character(ctx, name: str):
 # view all the monsters based on location
 # returns all monster names in list form
 @tree.command(name='monster_list', description="view a list of all monsters", guild=discord.Object(id=GUILD_ID))
-async def monster_list(ctx, member: discord.Member = None):
+async def monster_list(ctx, level: int = 1, member: discord.Member = None):
     if member == None:
         member = ctx.user
     
@@ -187,56 +187,48 @@ async def monster_list(ctx, member: discord.Member = None):
 
     # button callbacks
     async def boar_callback(interaction):
-        level = 1
         monster = monsters.Boar(level)
         button_embed = discord.Embed(title = "Boar", description = "Stats for a level " + str(level) + " boar", color = discord.Color.from_rgb(51, 25, 0))
         button_embed.add_field(name = monster.displayStats(), value = "")
         await interaction.response.send_message(embed = button_embed)
 
     async def wolf_callback(interaction):
-        level = 1
         monster = monsters.Wolf(level)
         button_embed = discord.Embed(title = "Wolf", description = "Stats for a level " + str(level) + " wolf", color = discord.Color.from_rgb(64, 64, 64))
         button_embed.add_field(name = monster.displayStats(), value = "")
         await interaction.response.send_message(embed = button_embed)
 
     async def elf_callback(interaction):
-        level = 1
         monster = monsters.Elf(level)
         button_embed = discord.Embed(title = "Elf", description = "Stats for a level " + str(level) + " elf", color = discord.Color.from_rgb(0, 102, 0))
         button_embed.add_field(name = monster.displayStats(), value = "")
         await interaction.response.send_message(embed = button_embed)
 
     async def treant_callback(interaction):
-        level = 1
         monster = monsters.Treant(level)
         button_embed = discord.Embed(title = "Treant", description = "Stats for a level " + str(level) + " treant", color = discord.Color.from_rgb(102, 51, 0))
         button_embed.add_field(name = monster.displayStats(), value = "")
         await interaction.response.send_message(embed = button_embed)
 
     async def spider_callback(interaction):
-        level = 1
         monster = monsters.GiantSpider(level)
         button_embed = discord.Embed(title = "Giant Spider", description = "Stats for a level " + str(level) + " giant spider", color = discord.Color.from_rgb(32, 32, 32))
         button_embed.add_field(name = monster.displayStats(), value = "")
         await interaction.response.send_message(embed = button_embed)
 
     async def roper_callback(interaction):
-        level = 1
         monster = monsters.Roper(level)
         button_embed = discord.Embed(title = "Roper", description = "Stats for a level " + str(level) + " roper", color = discord.Color.from_rgb(51, 0, 51))
         button_embed.add_field(name = monster.displayStats(), value = "")
         await interaction.response.send_message(embed = button_embed)
 
     async def goblin_callback(interaction):
-        level = 1
         monster = monsters.Goblin(level)
         button_embed = discord.Embed(title = "Goblin", description = "Stats for a level " + str(level) + " goblin", color = discord.Color.from_rgb(7, 50, 27))
         button_embed.add_field(name = monster.displayStats(), value = "")
         await interaction.response.send_message(embed = button_embed)
 
     async def troll_callback(interaction):
-        level = 1
         monster = monsters.Troll(level)
         button_embed = discord.Embed(title = "Troll", description = "Stats for a level " + str(level) + " troll", color = discord.Color.from_rgb(39, 58, 43))
         button_embed.add_field(name = monster.displayStats(), value = "")
