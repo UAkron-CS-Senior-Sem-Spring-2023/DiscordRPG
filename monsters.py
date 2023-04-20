@@ -17,6 +17,8 @@
 # On Par - Elf
 # Miniboss - Treant
 
+import random
+
 class Boar:
     # constructor
     def __init__(self, level):
@@ -28,10 +30,16 @@ class Boar:
         self._dex = 2
         self._int = 1
         self._health = self._vigor * 4 
+        self._maxHealth = self._health
+        self._xp = 50
 
     # methods
     def displayStats(self):
         return ("Location: " + str(self._location) + "\nHealth: " + str(self._health) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
+
+    def calculateGold(self):
+        return(random.randint(0, 50) + 50)
+
     
 class Wolf:
     # constructor
@@ -44,10 +52,15 @@ class Wolf:
         self._dex = 2 + self._level
         self._int = 2
         self._health = self._vigor * 4 
+        self._maxHealth = self._health
+        self._xp = 50
 
     # methods
     def displayStats(self):
         return ("Location: " + str(self._location) + "\nHealth: " + str(self._health) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
+
+    def calculateGold(self):
+        return(random.randint(0, 50) + 50)
 
 class Treant:
     # constructor
@@ -60,10 +73,15 @@ class Treant:
         self._dex = 4
         self._int = 2
         self._health = self._vigor * 4 
+        self._maxHealth = self._health
+        self._xp = 200
 
     #methods
     def displayStats(self):
         return ("Location: " + str(self._location) + "\nHealth: " + str(self._health) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
+
+    def calculateGold(self):
+        return(random.randint(0, 200) + 125)
 
 class Elf:
     # constructor
@@ -76,10 +94,15 @@ class Elf:
         self._dex = 4 + (self._level*2)
         self._int = 2 + (self._level*2)
         self._health = self._vigor * 4 
+        self._maxHealth = self._health
+        self._xp = 100
 
     # methods
     def displayStats(self):
         return ("Location: " + str(self._location) + "\nHealth: " + str(self._health) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
+
+    def calculateGold(self):
+        return(random.randint(0, 100) + 75)
 
 # Location - Cave
 # Weaker - Giant Spider and Roper
@@ -97,10 +120,15 @@ class GiantSpider:
         self._dex = 4 + (self._level*2)
         self._int = 2
         self._health = self._vigor * 4 
+        self._maxHealth = self._health
+        self._xp = 50
 
     # methods
     def displayStats(self):
         return ("Location: " + str(self._location) + "\nHealth: " + str(self._health) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
+
+    def calculateGold(self):
+        return(random.randint(0, 50) + 50)
 
 class Roper:
     # constructor
@@ -113,10 +141,15 @@ class Roper:
         self._dex = 3 + self._level
         self._int = 2
         self._health = self._vigor * 4 
+        self._maxHealth = self._health
+        self._xp = 50
 
     # methods
     def displayStats(self):
         return ("Location: " + str(self._location) + "\nHealth: " + str(self._health) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
+
+    def calculateGold(self):
+        return(random.randint(0, 50) + 50)
 
 class Troll:
     # constructor
@@ -129,10 +162,15 @@ class Troll:
         self._dex = 3 + self._level
         self._int = 2
         self._health = self._vigor * 4 
+        self._maxHealth = self._health
+        self._xp = 200
 
     # methods
     def displayStats(self):
         return ("Location: " + str(self._location) + "\nHealth: " + str(self._health) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
+
+    def calculateGold(self):
+        return(random.randint(0, 200) + 125)
 
 class Goblin:
     # constructor
@@ -145,7 +183,12 @@ class Goblin:
         self._dex = 5 + (self._level*2)
         self._int = 3
         self._health = self._vigor * 4 
+        self._maxHealth = self._health
+        self._xp = 100
 
     # methods
     def displayStats(self):
         return ("Location: " + str(self._location) + "\nHealth: " + str(self._health) + "\nSTR: " + str(self._str) + "\nDEX: " + str(self._dex) + "\nINT: " + str(self._int))
+
+    def calculateGold(self):
+        return(random.randint(0, 100) + 75)
