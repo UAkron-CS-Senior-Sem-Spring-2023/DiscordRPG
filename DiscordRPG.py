@@ -392,6 +392,9 @@ async def adventure(ctx, name: str):
 
                         if(player._health <= 0):
                             health = player._name + " Health: 0/" + str(player._maxHealth)
+                            gold_lost = round(player._gold * 0.05)
+                            lost = f"You have dropped {gold_lost} gold."
+                            player._gold = player._gold - gold_lost
                             player._health = player._maxHealth
                             player.updateCharacter()
 
@@ -400,13 +403,17 @@ async def adventure(ctx, name: str):
                             loss_embed.set_thumbnail(url = "https://cdn.vectorstock.com/i/1000x1000/62/84/skull-and-crossbones-black-coin-vector-19416284.webp")
                             loss_embed.add_field(name = damage, value = "", inline = False)
                             loss_embed.add_field(name = health, value = "", inline = False)
+                            loss_embed.add_field(name = lost, value = "", inline = False)
                             loss_embed.set_footer(text = f"{member.display_name} created this")
 
                             await interaction.response.edit_message(embed = loss_embed, view = None)
 
                         elif(monster._health <= 0):
-                            drops = f"You have received {monster._xp} xp.\n You have received {monster.calculateGold()} gold."
+                            gold_earned = monster.calculateGold()
+                            drops = f"You have received {monster._xp} xp.\nYou have received {gold_earned} gold."
                             health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
+                            player._xp = player._xp + monster._xp
+                            player._gold = player._gold + gold_earned
                             player.updateCharacter()
 
                             # victory embed
@@ -463,6 +470,9 @@ async def adventure(ctx, name: str):
 
                         if(player._health <= 0):
                             health = player._name + " Health: 0/" + str(player._maxHealth)
+                            gold_lost = round(player._gold * 0.05)
+                            lost = f"You have dropped {gold_lost} gold."
+                            player._gold = player._gold - gold_lost
                             player._health = player._maxHealth
                             player.updateCharacter()
 
@@ -471,13 +481,17 @@ async def adventure(ctx, name: str):
                             loss_embed.set_thumbnail(url = "https://cdn.vectorstock.com/i/1000x1000/62/84/skull-and-crossbones-black-coin-vector-19416284.webp")
                             loss_embed.add_field(name = damage, value = "", inline = False)
                             loss_embed.add_field(name = health, value = "", inline = False)
+                            loss_embed.add_field(name = lost, value = "", inline = False)
                             loss_embed.set_footer(text = f"{member.display_name} created this")
 
                             await interaction.response.edit_message(embed = loss_embed, view = None)
 
                         elif(monster._health <= 0):
-                            drops = f"You have received {monster._xp} xp.\n You have received {monster.calculateGold()} gold."
+                            gold_earned = monster.calculateGold()
+                            drops = f"You have received {monster._xp} xp.\nYou have received {gold_earned} gold."
                             health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
+                            player._xp = player._xp + monster._xp
+                            player._gold = player._gold + gold_earned
                             player.updateCharacter()
 
                             # victory embed
@@ -534,6 +548,9 @@ async def adventure(ctx, name: str):
 
                         if(player._health <= 0):
                             health = player._name + " Health: 0/" + str(player._maxHealth)
+                            gold_lost = round(player._gold * 0.05)
+                            lost = f"You have dropped {gold_lost} gold."
+                            player._gold = player._gold - gold_lost
                             player._health = player._maxHealth
                             player.updateCharacter()
 
@@ -542,13 +559,17 @@ async def adventure(ctx, name: str):
                             loss_embed.set_thumbnail(url = "https://cdn.vectorstock.com/i/1000x1000/62/84/skull-and-crossbones-black-coin-vector-19416284.webp")
                             loss_embed.add_field(name = damage, value = "", inline = False)
                             loss_embed.add_field(name = health, value = "", inline = False)
+                            loss_embed.add_field(name = lost, value = "", inline = False)
                             loss_embed.set_footer(text = f"{member.display_name} created this")
 
                             await interaction.response.edit_message(embed = loss_embed, view = None)
 
                         elif(monster._health <= 0):
-                            drops = f"You have received {monster._xp} xp.\n You have received {monster.calculateGold()} gold."
+                            gold_earned = monster.calculateGold()
+                            drops = f"You have received {monster._xp} xp.\nYou have received {gold_earned} gold."
                             health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
+                            player._xp = player._xp + monster._xp
+                            player._gold = player._gold + gold_earned
                             player.updateCharacter()
 
                             # victory embed
@@ -604,7 +625,10 @@ async def adventure(ctx, name: str):
 
                         if(player._health <= 0):
                             health = player._name + " Health: 0/" + str(player._maxHealth)
+                            gold_lost = round(player._gold * 0.05)
+                            lost = f"You have dropped {gold_lost} gold."
                             player._health = player._maxHealth
+                            player._gold = player._gold - gold_lost
                             player.updateCharacter()
 
                             # loss embed
@@ -612,13 +636,17 @@ async def adventure(ctx, name: str):
                             loss_embed.set_thumbnail(url = "https://cdn.vectorstock.com/i/1000x1000/62/84/skull-and-crossbones-black-coin-vector-19416284.webp")
                             loss_embed.add_field(name = damage, value = "", inline = False)
                             loss_embed.add_field(name = health, value = "", inline = False)
+                            loss_embed.add_field(name = lost, value = "", inline = False)
                             loss_embed.set_footer(text = f"{member.display_name} created this")
 
                             await interaction.response.edit_message(embed = loss_embed, view = None)
 
                         elif(monster._health <= 0):
-                            drops = f"You have received {monster._xp} xp.\n You have received {monster.calculateGold()} gold."
+                            gold_earned = monster.calculateGold()
+                            drops = f"You have received {monster._xp} xp.\nYou have received {gold_earned} gold."
                             health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
+                            player._xp = player._xp + monster._xp
+                            player._gold = player._gold + gold_earned
                             player.updateCharacter()
 
                             # victory embed
@@ -680,6 +708,9 @@ async def adventure(ctx, name: str):
 
                         if(player._health <= 0):
                             health = player._name + " Health: 0/" + str(player._maxHealth)
+                            gold_lost = round(player._gold * 0.05)
+                            lost = f"You have dropped {gold_lost} gold."
+                            player._gold = player._gold - gold_lost
                             player._health = player._maxHealth
                             player.updateCharacter()
 
@@ -688,13 +719,17 @@ async def adventure(ctx, name: str):
                             loss_embed.set_thumbnail(url = "https://cdn.vectorstock.com/i/1000x1000/62/84/skull-and-crossbones-black-coin-vector-19416284.webp")
                             loss_embed.add_field(name = damage, value = "", inline = False)
                             loss_embed.add_field(name = health, value = "", inline = False)
+                            loss_embed.add_field(name = lost, value = "", inline = False)
                             loss_embed.set_footer(text = f"{member.display_name} created this")
 
                             await interaction.response.edit_message(embed = loss_embed, view = None)
 
                         elif(monster._health <= 0):
-                            drops = f"You have received {monster._xp} xp.\n You have received {monster.calculateGold()} gold."
+                            gold_earned = monster.calculateGold()
+                            drops = f"You have received {monster._xp} xp.\nYou have received {gold_earned} gold."
                             health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
+                            player._xp = player._xp + monster._xp
+                            player._gold = player._gold + gold_earned
                             player.updateCharacter()
 
                             # victory embed
@@ -750,6 +785,9 @@ async def adventure(ctx, name: str):
 
                         if(player._health <= 0):
                             health = player._name + " Health: 0/" + str(player._maxHealth)
+                            gold_lost = round(player._gold * 0.05)
+                            lost = f"You have dropped {gold_lost} gold."
+                            player._gold = player._gold - gold_lost
                             player._health = player._maxHealth
                             player.updateCharacter()
 
@@ -758,13 +796,17 @@ async def adventure(ctx, name: str):
                             loss_embed.set_thumbnail(url = "https://cdn.vectorstock.com/i/1000x1000/62/84/skull-and-crossbones-black-coin-vector-19416284.webp")
                             loss_embed.add_field(name = damage, value = "", inline = False)
                             loss_embed.add_field(name = health, value = "", inline = False)
+                            loss_embed.add_field(name = lost, value = "", inline = False)
                             loss_embed.set_footer(text = f"{member.display_name} created this")
 
                             await interaction.response.edit_message(embed = loss_embed, view = None)
 
                         elif(monster._health <= 0):
-                            drops = f"You have received {monster._xp} xp.\n You have received {monster.calculateGold()} gold."
+                            gold_earned = monster.calculateGold()
+                            drops = f"You have received {monster._xp} xp.\nYou have received {gold_earned} gold."
                             health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
+                            player._xp = player._xp + monster._xp
+                            player._gold = player._gold + gold_earned
                             player.updateCharacter()
 
                             # victory embed
@@ -821,6 +863,9 @@ async def adventure(ctx, name: str):
 
                         if(player._health <= 0):
                             health = player._name + " Health: 0/" + str(player._maxHealth)
+                            gold_lost = round(player._gold * 0.05)
+                            lost = f"You have dropped {gold_lost} gold."
+                            player._gold = player._gold - gold_lost
                             player._health = player._maxHealth
                             player.updateCharacter()
 
@@ -829,13 +874,17 @@ async def adventure(ctx, name: str):
                             loss_embed.set_thumbnail(url = "https://cdn.vectorstock.com/i/1000x1000/62/84/skull-and-crossbones-black-coin-vector-19416284.webp")
                             loss_embed.add_field(name = damage, value = "", inline = False)
                             loss_embed.add_field(name = health, value = "", inline = False)
+                            loss_embed.add_field(name = lost, value = "", inline = False)
                             loss_embed.set_footer(text = f"{member.display_name} created this")
 
                             await interaction.response.edit_message(embed = loss_embed, view = None)
 
                         elif(monster._health <= 0):
-                            drops = f"You have received {monster._xp} xp.\n You have received {monster.calculateGold()} gold."
+                            gold_earned = monster.calculateGold()
+                            drops = f"You have received {monster._xp} xp.\nYou have received {gold_earned} gold."
                             health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
+                            player._xp = player._xp + monster._xp
+                            player._gold = player._gold + gold_earned
                             player.updateCharacter()
 
                             # victory embed
@@ -890,6 +939,9 @@ async def adventure(ctx, name: str):
 
                         if(player._health <= 0):
                             health = player._name + " Health: 0/" + str(player._maxHealth)
+                            gold_lost = round(player._gold * 0.05)
+                            lost = f"You have dropped {gold_lost} gold."
+                            player._gold = player._gold - gold_lost
                             player._health = player._maxHealth
                             player.updateCharacter()
 
@@ -898,13 +950,17 @@ async def adventure(ctx, name: str):
                             loss_embed.set_thumbnail(url = "https://cdn.vectorstock.com/i/1000x1000/62/84/skull-and-crossbones-black-coin-vector-19416284.webp")
                             loss_embed.add_field(name = damage, value = "", inline = False)
                             loss_embed.add_field(name = health, value = "", inline = False)
+                            loss_embed.add_field(name = lost, value = "", inline = False)
                             loss_embed.set_footer(text = f"{member.display_name} created this")
 
                             await interaction.response.edit_message(embed = loss_embed, view = None)
 
                         elif(monster._health <= 0):
-                            drops = f"You have received {monster._xp} xp.\n You have received {monster.calculateGold()} gold."
+                            gold_earned = monster.calculateGold()
+                            drops = f"You have received {monster._xp} xp.\nYou have received {gold_earned} gold."
                             health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
+                            player._xp = player._xp + monster._xp
+                            player._gold = player._gold + gold_earned
                             player.updateCharacter()
 
                             # victory embed
