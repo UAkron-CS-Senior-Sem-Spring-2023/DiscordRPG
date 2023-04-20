@@ -190,10 +190,23 @@ async def class_list(ctx):
 async def view_character(ctx, name: str):
     test = character.Character(name, "", ctx.user.id)
     if test.getCharacter(ctx.user.id, name):
-        output = "Name: {} \nClass: {} Level: {}  \nHealth {}/{} Mana {}/{}".format(test._name, test._characterClass, test._level, test._health, test._maxHealth, test._mana, test._maxMana)
+        name = f"{test._name}\n"
+        stats = f"""Level {test._level} {test._characterClass}\n Health {test._health}/{test._maxHealth} Mana {test._mana}/{test._maxMana} \nVIG: {test._vigor} STR: {test._str}
+                 \nDEX: {test._dex} INT: {test._int}\n"""
+        drops = f"Gold: {test._gold} XP: {test._xp}\n"
+        poitions = f"Health Potions: {test._healthPotions} \nMana Potions: {test._manaPotions}"
+
+        # embed for view_character
+        embed = discord.Embed(title = "Character View", description = "", color = discord.Color.from_rgb(0, 0, 0))
+        embed.add_field(name = name, value = "", inline = False)
+        embed.add_field(name = stats, value = "", inline = False)
+        embed.add_field(name = drops, value = "", inline = False)
+        embed.add_field(name = potions, value = "", inline = False)
+        embed.set_footer(text = f"{member.display_name} created this list")
+
+        await ctx.response.send_message(embed = embed)
     else:
-        output = "Could not a find character with that name assigned to you"
-    await ctx.response.send_message(output)
+        await ctx.response.send_message(content = "Could not a find character with that name assigned to you", ephemeral = True)
 
 # view all the monsters based on location
 # returns all monster names in list form
