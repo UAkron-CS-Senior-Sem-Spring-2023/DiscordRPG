@@ -747,7 +747,7 @@ async def adventure(ctx, name: str, member: discord.Member = None):
 
     # embed for adventure
     embed = discord.Embed(title = "Adventure", description = "Select the location you would like to adventure to\n", color = discord.Color.from_rgb(204, 102, 0))
-    embed.set_footer(text = f"{member.display_name} created this list")
+    embed.set_footer(text = f"{member.display_name} created this")
 
     await ctx.response.send_message(embed = embed, view = view)
 
