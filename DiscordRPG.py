@@ -188,20 +188,22 @@ async def class_list(ctx):
 # returns the name, class, level, health, and mana of that character stored in the database
 @tree.command(name='view_character', description="view selected character's stats and equiptment", guild=discord.Object(id=GUILD_ID))
 async def view_character(ctx, name: str):
+    member = ctx.user
     test = character.Character(name, "", ctx.user.id)
+
     if test.getCharacter(ctx.user.id, name):
-        name = f"{test._name}\n"
-        stats = f"""Level {test._level} {test._characterClass}\n Health {test._health}/{test._maxHealth} Mana {test._mana}/{test._maxMana} \nVIG: {test._vigor} STR: {test._str}
-                 \nDEX: {test._dex} INT: {test._int}\n"""
-        drops = f"Gold: {test._gold} XP: {test._xp}\n"
-        poitions = f"Health Potions: {test._healthPotions} \nMana Potions: {test._manaPotions}"
+        output = f"""{test._name}
+Level {test._level} {test._characterClass}
+Health {test._health}/{test._maxHealth} Mana {test._mana}/{test._maxMana}\n
+VIG: {test._vigor} STR: {test._str}
+DEX: {test._dex} INT: {test._int}
+Gold: {test._gold} XP: {test._xp}\n
+Health Potions: {test._healthPotions}
+Mana Potions: {test._manaPotions}"""
 
         # embed for view_character
         embed = discord.Embed(title = "Character View", description = "", color = discord.Color.from_rgb(0, 0, 0))
-        embed.add_field(name = name, value = "", inline = False)
-        embed.add_field(name = stats, value = "", inline = False)
-        embed.add_field(name = drops, value = "", inline = False)
-        embed.add_field(name = potions, value = "", inline = False)
+        embed.add_field(name = output, value = "")
         embed.set_footer(text = f"{member.display_name} created this list")
 
         await ctx.response.send_message(embed = embed)
