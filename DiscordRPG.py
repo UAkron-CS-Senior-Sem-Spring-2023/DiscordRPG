@@ -162,9 +162,8 @@ async def view_character(ctx, name: str):
 # view all the monsters based on location
 # returns all monster names in list form
 @tree.command(name='monster_list', description="view a list of all monsters", guild=discord.Object(id=GUILD_ID))
-async def monster_list(ctx, level: int = 1, member: discord.Member = None):
-    if member == None:
-        member = ctx.user
+async def monster_list(ctx, level: int = 1,):
+    member = ctx.user
     
     # view for monster_list
     boar_button = discord.ui.Button(label = "Boar", custom_id = 'boar', style = discord.ButtonStyle.green, row = 0)
@@ -185,54 +184,98 @@ async def monster_list(ctx, level: int = 1, member: discord.Member = None):
     view.add_item(goblin_button)
     view.add_item(troll_button)
 
+    # return view
+    return_button = discord.ui.Button(label = "Return", custom_id = 'return', style = discord.ButtonStyle.red)
+    return_view = discord.ui.View()
+    return_view.add_item(return_button)
+
     # button callbacks
     async def boar_callback(interaction):
-        monster = monsters.Boar(level)
-        button_embed = discord.Embed(title = "Boar", description = "Stats for a level " + str(level) + " boar", color = discord.Color.from_rgb(51, 25, 0))
-        button_embed.add_field(name = monster.displayStats(), value = "")
-        await interaction.response.send_message(embed = button_embed)
+        if(interaction.user == member):
+            monster = monsters.Boar(level)
+            button_embed = discord.Embed(title = "Boar", description = "Stats for a level " + str(level) + " boar", color = discord.Color.from_rgb(51, 25, 0))
+            button_embed.add_field(name = monster.displayStats(), value = "")
+            await interaction.response.edit_message(embed = button_embed, view = return_view)
+        else:
+            # Not the same user
+            await interaction.response.send_message(content = "This is not your list", ephemeral = True)
 
     async def wolf_callback(interaction):
-        monster = monsters.Wolf(level)
-        button_embed = discord.Embed(title = "Wolf", description = "Stats for a level " + str(level) + " wolf", color = discord.Color.from_rgb(64, 64, 64))
-        button_embed.add_field(name = monster.displayStats(), value = "")
-        await interaction.response.send_message(embed = button_embed)
+        if(interaction.user == member):
+            monster = monsters.Wolf(level)
+            button_embed = discord.Embed(title = "Wolf", description = "Stats for a level " + str(level) + " wolf", color = discord.Color.from_rgb(64, 64, 64))
+            button_embed.add_field(name = monster.displayStats(), value = "")
+            await interaction.response.edit_message(embed = button_embed, view = return_view)
+        else:
+            # Not the same user
+            await interaction.response.send_message(content = "This is not your list", ephemeral = True)
 
     async def elf_callback(interaction):
-        monster = monsters.Elf(level)
-        button_embed = discord.Embed(title = "Elf", description = "Stats for a level " + str(level) + " elf", color = discord.Color.from_rgb(0, 102, 0))
-        button_embed.add_field(name = monster.displayStats(), value = "")
-        await interaction.response.send_message(embed = button_embed)
+        if(interaction.user == member):
+            monster = monsters.Elf(level)
+            button_embed = discord.Embed(title = "Elf", description = "Stats for a level " + str(level) + " elf", color = discord.Color.from_rgb(0, 102, 0))
+            button_embed.add_field(name = monster.displayStats(), value = "")
+            await interaction.response.edit_message(embed = button_embed, view = return_view)
+        else:
+            # Not the same user
+            await interaction.response.send_message(content = "This is not your list", ephemeral = True)
 
     async def treant_callback(interaction):
-        monster = monsters.Treant(level)
-        button_embed = discord.Embed(title = "Treant", description = "Stats for a level " + str(level) + " treant", color = discord.Color.from_rgb(102, 51, 0))
-        button_embed.add_field(name = monster.displayStats(), value = "")
-        await interaction.response.send_message(embed = button_embed)
+        if(interaction.user == member):
+            monster = monsters.Treant(level)
+            button_embed = discord.Embed(title = "Treant", description = "Stats for a level " + str(level) + " treant", color = discord.Color.from_rgb(102, 51, 0))
+            button_embed.add_field(name = monster.displayStats(), value = "")
+            await interaction.response.edit_message(embed = button_embed, view = return_view)
+        else:
+            # Not the same user
+            await interaction.response.send_message(content = "This is not your list", ephemeral = True)
 
     async def spider_callback(interaction):
-        monster = monsters.GiantSpider(level)
-        button_embed = discord.Embed(title = "Giant Spider", description = "Stats for a level " + str(level) + " giant spider", color = discord.Color.from_rgb(32, 32, 32))
-        button_embed.add_field(name = monster.displayStats(), value = "")
-        await interaction.response.send_message(embed = button_embed)
+        if(interaction.user == member):
+            monster = monsters.GiantSpider(level)
+            button_embed = discord.Embed(title = "Giant Spider", description = "Stats for a level " + str(level) + " giant spider", color = discord.Color.from_rgb(32, 32, 32))
+            button_embed.add_field(name = monster.displayStats(), value = "")
+            await interaction.response.edit_message(embed = button_embed, view = return_view)
+        else:
+            # Not the same user
+            await interaction.response.send_message(content = "This is not your list", ephemeral = True)
 
     async def roper_callback(interaction):
-        monster = monsters.Roper(level)
-        button_embed = discord.Embed(title = "Roper", description = "Stats for a level " + str(level) + " roper", color = discord.Color.from_rgb(51, 0, 51))
-        button_embed.add_field(name = monster.displayStats(), value = "")
-        await interaction.response.send_message(embed = button_embed)
+        if(interaction.user == member):
+            monster = monsters.Roper(level)
+            button_embed = discord.Embed(title = "Roper", description = "Stats for a level " + str(level) + " roper", color = discord.Color.from_rgb(51, 0, 51))
+            button_embed.add_field(name = monster.displayStats(), value = "")
+            await interaction.response.edit_message(embed = button_embed, view = return_view)
+        else:
+            # Not the same user
+            await interaction.response.send_message(content = "This is not your list", ephemeral = True)
 
     async def goblin_callback(interaction):
-        monster = monsters.Goblin(level)
-        button_embed = discord.Embed(title = "Goblin", description = "Stats for a level " + str(level) + " goblin", color = discord.Color.from_rgb(7, 50, 27))
-        button_embed.add_field(name = monster.displayStats(), value = "")
-        await interaction.response.send_message(embed = button_embed)
+        if(interaction.user == member):
+            monster = monsters.Goblin(level)
+            button_embed = discord.Embed(title = "Goblin", description = "Stats for a level " + str(level) + " goblin", color = discord.Color.from_rgb(7, 50, 27))
+            button_embed.add_field(name = monster.displayStats(), value = "")
+            await interaction.response.edit_message(embed = button_embed, view = return_view)
+        else:
+            # Not the same user
+            await interaction.response.send_message(content = "This is not your list", ephemeral = True)
 
     async def troll_callback(interaction):
-        monster = monsters.Troll(level)
-        button_embed = discord.Embed(title = "Troll", description = "Stats for a level " + str(level) + " troll", color = discord.Color.from_rgb(39, 58, 43))
-        button_embed.add_field(name = monster.displayStats(), value = "")
-        await interaction.response.send_message(embed = button_embed)
+        if(interaction.user == member):
+            monster = monsters.Troll(level)
+            button_embed = discord.Embed(title = "Troll", description = "Stats for a level " + str(level) + " troll", color = discord.Color.from_rgb(39, 58, 43))
+            button_embed.add_field(name = monster.displayStats(), value = "")
+            await interaction.response.edit_message(embed = button_embed, view = return_view)
+        else:
+            # Not the same user
+            await interaction.response.send_message(content = "This is not your list", ephemeral = True)
+
+    async def return_callback(interaction):
+        if(interaction.user == member):
+            await interaction.response.edit_message(embed = embed, view = view)
+        else:
+            # Not the same user
+            await interaction.response.send_message(content = "This is not your list", ephemeral = True)
 
     boar_button.callback = boar_callback
     wolf_button.callback = wolf_callback
@@ -242,6 +285,7 @@ async def monster_list(ctx, level: int = 1, member: discord.Member = None):
     roper_button.callback = roper_callback
     goblin_button.callback = goblin_callback
     troll_button.callback = troll_callback
+    return_button.callback = return_callback
 
     # embed for monster_list
     embed = discord.Embed(title = "Monster List", description = "List of all current monsters\nSelect a button to view starting stats for the monster", color = discord.Color.from_rgb(51, 0, 102))
