@@ -78,9 +78,8 @@ async def create_character(ctx, name: str, character_class: str):
 # see the list of all starting classes
 # returns a response with all classes as a list
 @tree.command(name='class_list', description='view the list of starting classes', guild=discord.Object(id=GUILD_ID))
-async def class_list(ctx, member: discord.Member = None):
-    if member == None:
-        member = ctx.user
+async def class_list(ctx):
+    member = ctx.user
 
     # view for class_list
     cleric_button = discord.ui.Button(label = "Cleric", custom_id = 'cleric', style = discord.ButtonStyle.gray, row = 0)
@@ -97,42 +96,78 @@ async def class_list(ctx, member: discord.Member = None):
     view.add_item(thief_button)
     view.add_item(warrior_button)
     
+    # return view
+    return_button = discord.ui.Button(label = "Return", custom_id = 'return', style = discord.ButtonStyle.red)
+    return_view = discord.ui.View()
+    return_view.add_item(return_button)
+
     # button callbacks
     async def cleric_callback(interaction):
-        charClass = classes.Cleric()
-        button_embed = discord.Embed(title = "Cleric", description = "Starting stats for a cleric", color = discord.Color.from_rgb(255, 255, 255))
-        button_embed.add_field(name = charClass.displayStats(), value = "")
-        await interaction.response.send_message(embed = button_embed)
+        if(interaction.user == member):
+            charClass = classes.Cleric()
+            button_embed = discord.Embed(title = "Cleric", description = "Starting stats for a cleric", color = discord.Color.from_rgb(255, 255, 255))
+            button_embed.add_field(name = charClass.displayStats(), value = "")
+            await interaction.response.edit_message(embed = button_embed, view = return_view)
+        else:
+            # Not the same user
+            await interaction.response.send_message(content = "This is not your list", ephemeral = True)
 
     async def hunter_callback(interaction):
-        charClass = classes.Hunter()
-        button_embed = discord.Embed(title = "Hunter", description = "Starting stats for a hunter", color = discord.Color.from_rgb(0, 51, 0))
-        button_embed.add_field(name = charClass.displayStats(), value = "")
-        await interaction.response.send_message(embed = button_embed)
+        if(interaction.user == member):
+            charClass = classes.Hunter()
+            button_embed = discord.Embed(title = "Hunter", description = "Starting stats for a hunter", color = discord.Color.from_rgb(0, 51, 0))
+            button_embed.add_field(name = charClass.displayStats(), value = "")
+            await interaction.response.edit_message(embed = button_embed, view = return_view)
+        else:
+            # Not the same user
+            await interaction.response.send_message(content = "This is not your list", ephemeral = True)
     
     async def mage_callback(interaction):
-        charClass = classes.Mage()
-        button_embed = discord.Embed(title = "Mage", description = "Starting stats for a mage", color = discord.Color.from_rgb(0, 0, 153))
-        button_embed.add_field(name = charClass.displayStats(), value = "")
-        await interaction.response.send_message(embed = button_embed)
+        if(interaction.user == member):
+            charClass = classes.Mage()
+            button_embed = discord.Embed(title = "Mage", description = "Starting stats for a mage", color = discord.Color.from_rgb(0, 0, 153))
+            button_embed.add_field(name = charClass.displayStats(), value = "")
+            await interaction.response.edit_message(embed = button_embed, view = return_view)
+        else:
+            # Not the same user
+            await interaction.response.send_message(content = "This is not your list", ephemeral = True)
 
     async def paladin_callback(interaction):
-        charClass = classes.Paladin()
-        button_embed = discord.Embed(title = "Paladin", description = "Starting stats for a paladin", color = discord.Color.from_rgb(153, 0, 0))
-        button_embed.add_field(name = charClass.displayStats(), value = "")
-        await interaction.response.send_message(embed = button_embed)
+        if(interaction.user == member):
+            charClass = classes.Paladin()
+            button_embed = discord.Embed(title = "Paladin", description = "Starting stats for a paladin", color = discord.Color.from_rgb(153, 0, 0))
+            button_embed.add_field(name = charClass.displayStats(), value = "")
+            await interaction.response.edit_message(embed = button_embed, view = return_view)
+        else:
+            # Not the same user
+            await interaction.response.send_message(content = "This is not your list", ephemeral = True)
 
     async def thief_callback(interaction):
-        charClass = classes.Thief()
-        button_embed = discord.Embed(title = "Thief", description = "Starting stats for a thief", color = discord.Color.from_rgb(0, 0, 0))
-        button_embed.add_field(name = charClass.displayStats(), value = "")
-        await interaction.response.send_message(embed = button_embed)
+        if(interaction.user == member):
+            charClass = classes.Thief()
+            button_embed = discord.Embed(title = "Thief", description = "Starting stats for a thief", color = discord.Color.from_rgb(0, 0, 0))
+            button_embed.add_field(name = charClass.displayStats(), value = "")
+            await interaction.response.edit_message(embed = button_embed, view = return_view)
+        else:
+            # Not the same user
+            await interaction.response.send_message(content = "This is not your list", ephemeral = True)
 
     async def warrior_callback(interaction):
-        charClass = classes.Warrior()
-        button_embed = discord.Embed(title = "Warrior", description = "Starting stats for a warrior", color = discord.Color.from_rgb(64, 64, 64))
-        button_embed.add_field(name = charClass.displayStats(), value = "")
-        await interaction.response.send_message(embed = button_embed)
+        if(interaction.user == member):
+            charClass = classes.Warrior()
+            button_embed = discord.Embed(title = "Warrior", description = "Starting stats for a warrior", color = discord.Color.from_rgb(64, 64, 64))
+            button_embed.add_field(name = charClass.displayStats(), value = "")
+            await interaction.response.edit_message(embed = button_embed, view = return_view)
+        else:
+            # Not the same user
+            await interaction.response.send_message(content = "This is not your list", ephemeral = True)
+
+    async def return_callback(interaction):
+        if(interaction.user == member):
+            await interaction.response.edit_message(embed = embed, view = view)
+        else:
+            # Not the same user
+            await interaction.response.send_message(content = "This is not your list", ephemeral = True)
 
     cleric_button.callback = cleric_callback
     hunter_button.callback = hunter_callback
@@ -140,6 +175,7 @@ async def class_list(ctx, member: discord.Member = None):
     paladin_button.callback = paladin_callback
     thief_button.callback = thief_callback
     warrior_button.callback = warrior_callback
+    return_button.callback = return_callback
 
     # embed for class_list
     embed = discord.Embed(title = "Class List", description = "List of starting classes\nPress a button to view starting stats", color = discord.Color.from_rgb(255, 255, 0))
