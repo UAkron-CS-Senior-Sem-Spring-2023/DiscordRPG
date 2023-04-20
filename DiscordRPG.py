@@ -392,6 +392,8 @@ async def adventure(ctx, name: str):
 
                         if(player._health <= 0):
                             health = player._name + " Health: 0/" + str(player._maxHealth)
+                            player._health = player._maxHealth
+                            player.updateCharacter()
 
                             # loss embed
                             loss_embed = discord.Embed(title = "Defeat", description = f"You have lost the battle against the {monster._name}.", color = discord.Color.from_rgb(255, 0, 0))
@@ -405,6 +407,7 @@ async def adventure(ctx, name: str):
                         elif(monster._health <= 0):
                             drops = f"You have received {monster._xp} xp.\n You have received {monster.calculateGold()} gold."
                             health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
+                            player.updateCharacter()
 
                             # victory embed
                             victory_embed = discord.Embed(title = "Victory", description = f"You have defeated the {monster._name}.", color = discord.Color.from_rgb(0, 255, 0))
@@ -460,6 +463,8 @@ async def adventure(ctx, name: str):
 
                         if(player._health <= 0):
                             health = player._name + " Health: 0/" + str(player._maxHealth)
+                            player._health = player._maxHealth
+                            player.updateCharacter()
 
                             # loss embed
                             loss_embed = discord.Embed(title = "Defeat", description = f"You have lost the battle against the {monster._name}.", color = discord.Color.from_rgb(255, 0, 0))
@@ -473,6 +478,7 @@ async def adventure(ctx, name: str):
                         elif(monster._health <= 0):
                             drops = f"You have received {monster._xp} xp.\n You have received {monster.calculateGold()} gold."
                             health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
+                            player.updateCharacter()
 
                             # victory embed
                             victory_embed = discord.Embed(title = "Victory", description = f"You have defeated the {monster._name}.", color = discord.Color.from_rgb(0, 255, 0))
@@ -528,6 +534,8 @@ async def adventure(ctx, name: str):
 
                         if(player._health <= 0):
                             health = player._name + " Health: 0/" + str(player._maxHealth)
+                            player._health = player._maxHealth
+                            player.updateCharacter()
 
                             # loss embed
                             loss_embed = discord.Embed(title = "Defeat", description = f"You have lost the battle against the {monster._name}.", color = discord.Color.from_rgb(255, 0, 0))
@@ -541,6 +549,7 @@ async def adventure(ctx, name: str):
                         elif(monster._health <= 0):
                             drops = f"You have received {monster._xp} xp.\n You have received {monster.calculateGold()} gold."
                             health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
+                            player.updateCharacter()
 
                             # victory embed
                             victory_embed = discord.Embed(title = "Victory", description = f"You have defeated the {monster._name}.", color = discord.Color.from_rgb(0, 255, 0))
@@ -595,6 +604,8 @@ async def adventure(ctx, name: str):
 
                         if(player._health <= 0):
                             health = player._name + " Health: 0/" + str(player._maxHealth)
+                            player._health = player._maxHealth
+                            player.updateCharacter()
 
                             # loss embed
                             loss_embed = discord.Embed(title = "Defeat", description = f"You have lost the battle against the {monster._name}.", color = discord.Color.from_rgb(255, 0, 0))
@@ -608,6 +619,7 @@ async def adventure(ctx, name: str):
                         elif(monster._health <= 0):
                             drops = f"You have received {monster._xp} xp.\n You have received {monster.calculateGold()} gold."
                             health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
+                            player.updateCharacter()
 
                             # victory embed
                             victory_embed = discord.Embed(title = "Victory", description = f"You have defeated the {monster._name}.", color = discord.Color.from_rgb(0, 255, 0))
@@ -668,6 +680,8 @@ async def adventure(ctx, name: str):
 
                         if(player._health <= 0):
                             health = player._name + " Health: 0/" + str(player._maxHealth)
+                            player._health = player._maxHealth
+                            player.updateCharacter()
 
                             # loss embed
                             loss_embed = discord.Embed(title = "Defeat", description = f"You have lost the battle against the {monster._name}.", color = discord.Color.from_rgb(255, 0, 0))
@@ -681,6 +695,7 @@ async def adventure(ctx, name: str):
                         elif(monster._health <= 0):
                             drops = f"You have received {monster._xp} xp.\n You have received {monster.calculateGold()} gold."
                             health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
+                            player.updateCharacter()
 
                             # victory embed
                             victory_embed = discord.Embed(title = "Victory", description = f"You have defeated the {monster._name}.", color = discord.Color.from_rgb(0, 255, 0))
@@ -735,6 +750,8 @@ async def adventure(ctx, name: str):
 
                         if(player._health <= 0):
                             health = player._name + " Health: 0/" + str(player._maxHealth)
+                            player._health = player._maxHealth
+                            player.updateCharacter()
 
                             # loss embed
                             loss_embed = discord.Embed(title = "Defeat", description = f"You have lost the battle against the {monster._name}.", color = discord.Color.from_rgb(255, 0, 0))
@@ -748,6 +765,7 @@ async def adventure(ctx, name: str):
                         elif(monster._health <= 0):
                             drops = f"You have received {monster._xp} xp.\n You have received {monster.calculateGold()} gold."
                             health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
+                            player.updateCharacter()
 
                             # victory embed
                             victory_embed = discord.Embed(title = "Victory", description = f"You have defeated the {monster._name}.", color = discord.Color.from_rgb(0, 255, 0))
@@ -803,6 +821,8 @@ async def adventure(ctx, name: str):
 
                         if(player._health <= 0):
                             health = player._name + " Health: 0/" + str(player._maxHealth)
+                            player._health = player._maxHealth
+                            player.updateCharacter()
 
                             # loss embed
                             loss_embed = discord.Embed(title = "Defeat", description = f"You have lost the battle against the {monster._name}.", color = discord.Color.from_rgb(255, 0, 0))
@@ -816,6 +836,7 @@ async def adventure(ctx, name: str):
                         elif(monster._health <= 0):
                             drops = f"You have received {monster._xp} xp.\n You have received {monster.calculateGold()} gold."
                             health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
+                            player.updateCharacter()
 
                             # victory embed
                             victory_embed = discord.Embed(title = "Victory", description = f"You have defeated the {monster._name}.", color = discord.Color.from_rgb(0, 255, 0))
@@ -869,6 +890,8 @@ async def adventure(ctx, name: str):
 
                         if(player._health <= 0):
                             health = player._name + " Health: 0/" + str(player._maxHealth)
+                            player._health = player._maxHealth
+                            player.updateCharacter()
 
                             # loss embed
                             loss_embed = discord.Embed(title = "Defeat", description = f"You have lost the battle against the {monster._name}.", color = discord.Color.from_rgb(255, 0, 0))
@@ -882,6 +905,7 @@ async def adventure(ctx, name: str):
                         elif(monster._health <= 0):
                             drops = f"You have received {monster._xp} xp.\n You have received {monster.calculateGold()} gold."
                             health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
+                            player.updateCharacter()
 
                             # victory embed
                             victory_embed = discord.Embed(title = "Victory", description = f"You have defeated the {monster._name}.", color = discord.Color.from_rgb(0, 255, 0))
