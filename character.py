@@ -183,7 +183,7 @@ class Character:
         try:
             cnx = mysql.connector.connect(user='bot', password='203v2Xm&zXQK', host='45.31.16.49', database='disrpg')
             cursor = cnx.cursor()
-            query = ("REPLACE INTO characters (UserID, CharacterName, CharacterClass, CharacterLevel, VigorBase, VigorCurrent, StrBase, StrCurrent, DexBase, DexCurrent, IntBase, IntCurrent, HealthBaseMax, HealthMax, HealthCurrent, ManaBaseMax, ManaMax, ManaCurrent) VALUES (%(UserID)s, %(CharacterName)s, %(CharacterClass)s, %(CharacterLevel)s, %(VigorBase)s, %(VigorCurrent)s, %(StrBase)s, %(StrCurrent)s, %(DexBase)s, %(DexCurrent)s, %(IntBase)s, %(IntCurrent)s, %(HealthBaseMax)s, %(HealthMax)s, %(HealthCurrent)s, %(ManaBaseMax)s, %(ManaMax)s, %(ManaCurrent)s, %(Xp)s, %(Gold)s, %(HealthPotions)s, %(ManaPotions)s)")
+            query = ("REPLACE INTO characters (UserID, CharacterName, CharacterClass, CharacterLevel, VigorBase, VigorCurrent, StrBase, StrCurrent, DexBase, DexCurrent, IntBase, IntCurrent, HealthBaseMax, HealthMax, HealthCurrent, ManaBaseMax, ManaMax, ManaCurrent, Xp, Gold, HealthPotions, ManaPotions) VALUES (%(UserID)s, %(CharacterName)s, %(CharacterClass)s, %(CharacterLevel)s, %(VigorBase)s, %(VigorCurrent)s, %(StrBase)s, %(StrCurrent)s, %(DexBase)s, %(DexCurrent)s, %(IntBase)s, %(IntCurrent)s, %(HealthBaseMax)s, %(HealthMax)s, %(HealthCurrent)s, %(ManaBaseMax)s, %(ManaMax)s, %(ManaCurrent)s, %(Xp)s, %(Gold)s, %(HealthPotions)s, %(ManaPotions)s)")
             data = {
                 'UserID': self._userID,
                 'CharacterName': self._name,
@@ -198,10 +198,10 @@ class Character:
                 'IntBase': self._int,
                 'IntCurrent': self._int,
                 'HealthBaseMax': self._health,
-                'HealthMax': self._health,
+                'HealthMax': self._maxHealth,
                 'HealthCurrent': self._health,
                 'ManaBaseMax': self._mana,
-                'ManaMax': self._mana,
+                'ManaMax': self._maxMana,
                 'ManaCurrent': self._mana,
                 'Xp' : self._xp,
                 'Gold' : self._gold,
