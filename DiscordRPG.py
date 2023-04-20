@@ -39,41 +39,41 @@ async def create_character(ctx, name: str, character_class: str):
         case "cleric":
             test1 = character.Character(name, character_class, ctx.user.id)
             if test1.addCharacter():
-                await ctx.response.send_message("Your character has been created")
+                await ctx.response.send_message("Your character has been created", ephemeral = True)
             else:
-                await ctx.response.send_message("Character could not be added, either database error or name already exists")
+                await ctx.response.send_message("Character could not be added, either database error or name already exists", ephemeral = True)
         case "hunter":
             test1 = character.Character(name, character_class, ctx.user.id)
             if test1.addCharacter():
-                await ctx.response.send_message("Your character has been created")
+                await ctx.response.send_message("Your character has been created", ephemeral = True)
             else:
-                await ctx.response.send_message("Character could not be added, either database error or name already exists")
+                await ctx.response.send_message("Character could not be added, either database error or name already exists", ephemeral = True)
         case "mage":
             test1 = character.Character(name, character_class, ctx.user.id)
             if test1.addCharacter():
-                await ctx.response.send_message("Your character has been created")
+                await ctx.response.send_message("Your character has been created", ephemeral = True)
             else:
-                await ctx.response.send_message("Character could not be added, either database error or name already exists")
+                await ctx.response.send_message("Character could not be added, either database error or name already exists", ephemeral = True)
         case "paladin":
             test1 = character.Character(name, character_class, ctx.user.id)
             if test1.addCharacter():
-                await ctx.response.send_message("Your character has been created")
+                await ctx.response.send_message("Your character has been created", ephemeral = True)
             else:
-                await ctx.response.send_message("Character could not be added, either database error or name already exists")
+                await ctx.response.send_message("Character could not be added, either database error or name already exists", ephemeral = True)
         case "theif":
             test1 = character.Character(name, character_class, ctx.user.id)
             if test1.addCharacter():
-                await ctx.response.send_message("Your character has been created")
+                await ctx.response.send_message("Your character has been created", ephemeral = True)
             else:
-                await ctx.response.send_message("Character could not be added, either database error or name already exists")
+                await ctx.response.send_message("Character could not be added, either database error or name already exists", ephemeral = True)
         case "warrior":
             test1 = character.Character(name, character_class, ctx.user.id)
             if test1.addCharacter():
-                await ctx.response.send_message("Your character has been created")
+                await ctx.response.send_message("Your character has been created", ephemeral = True)
             else:
-                await ctx.response.send_message("Character could not be added, either database error or name already exists")
+                await ctx.response.send_message("Character could not be added, either database error or name already exists", ephemeral = True)
         case _:
-            await ctx.response.send_message("Invalid class name. Please choose one of the classes")
+            await ctx.response.send_message("Invalid class name. Please choose one of the classes", ephemeral = True)
 
 # see the list of all starting classes
 # returns a response with all classes as a list
