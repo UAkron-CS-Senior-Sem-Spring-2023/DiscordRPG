@@ -75,6 +75,15 @@ async def create_character(ctx, name: str, character_class: str):
         case _:
             await ctx.response.send_message("Invalid class name. Please choose one of the classes", ephemeral = True)
 
+# delete a character
+# takes a name
+# removes character with that name from the database if they exist
+@tree.command(name='delete_character', description='delete your charater', guild=discord.Object(id=GUILD_ID))
+async def delete_character(ctx, name: str):
+    player = character.Character(name, "mage", ctx.user.id)
+    player.deleteCharacter()
+    await ctx.response.send_message(content = "Your character has been deleted.", ephemeral = True)
+
 # see the list of all starting classes
 # returns a response with all classes as a list
 @tree.command(name='class_list', description='view the list of starting classes', guild=discord.Object(id=GUILD_ID))
