@@ -457,6 +457,185 @@ async def shop(ctx, name:str):
 
     await ctx.response.send_message(embed = embed, view = view)
 
+# level up
+# takes the character's name
+# lets the user increase their character's stats
+@tree.command(name='level_up', description='Level up your character', guild=discord.Object(id=GUILD_ID))
+async def level_up(ctx, name: str):
+    member = ctx.user
+
+    player = character.Character(name, "", ctx.user.id)
+    player.getCharacter(ctx.user.id, name)
+
+    xp = f"{player._name} is Level {player._level} and has {player._xp} xp"
+    xp_required = pow(2, (player._level - 1)) * 250
+    required = f"You require {xp_required} xp to level up"
+
+    # view for level up
+    level_button = discord.ui.Button(label = "Level Up", custom_id = 'level', style = discord.ButtonStyle.green)
+    view = discord.ui.View()
+    view.add_item(level_button)
+
+    # button callbacks
+    async def level_callback(interaction):
+        if(interaction.user == member):
+            if(player._xp >= xp_required):
+                # view for stats
+                vig_button = discord.ui.Button(label = "Vigor", custom_id = 'vigor', style = discord.ButtonStyle.grey, row = 0)
+                str_button = discord.ui.Button(label = "Strength", custom_id = 'strength', style = discord.ButtonStyle.grey, row = 0)
+                dex_button = discord.ui.Button(label = "Dexterity", custom_id = 'dexterity', style = discord.ButtonStyle.grey, row = 0)
+                int_button = discord.ui.Button(label = "Intelligence", custom_id = 'intelligence', style = discord.ButtonStyle.grey, row = 0)
+                stats_view = discord.ui.View()
+                stats_view.add_item(vig_button)
+                stats_view.add_item(str_button)
+                stats_view.add_item(dex_button)
+                stats_view.add_item(int_button)
+
+                # button callbacks
+                async def vig_callback(interaction):
+                    if(interaction.user == member):
+                        player._index = player._index + 1
+                        player._vigor = player._vigor + 1
+
+                        if(player._index < 3):
+                            # embed for stats
+                            stats_embed = discord.Embed(title = "Increase Stats", description = f"Select the stat you want to upgrade.", color = discord.Color.from_rgb(0, 255, 0))
+                            stats_embed.add_field(name = f"You have {3 - player._index} choice(s) left.", value = "", inline = False)
+                            stats_embed.set_footer(text = f"{member.display_name} created this")
+                            
+                            await interaction.response.edit_message(embed = stats_embed, view = stats_view)
+                        else:
+                            player._level = player._level + 1
+                            player._xp = player._xp - xp_required
+                            player.updateCharacter()
+
+                            # embed for finished
+                            finished_embed = discord.Embed(title = "Level Up Complete", description = f"Your character has successfully leveled up.", color = discord.Color.from_rgb(0, 255, 0))
+                            finished_embed.add_field(name = f"{player._name} has increased to Level {player._level}.", value = "", inline = False)
+                            finished_embed.add_field(name = f"{player._name} now has {player._xp} xp.", value = "", inline = False)
+                            finished_embed.set_footer(text = f"{member.display_name} created this")
+
+                            await interaction.response.edit_message(embed = finished_embed, view = None)
+
+                    else:
+                        await interaction.response.send_message(content = "This is not your character", ephemeral = True)
+
+                async def str_callback(interaction):
+                    if(interaction.user == member):
+                        player._index = player._index + 1
+                        player._str = player._str + 1
+
+                        if(player._index < 3):
+                            # embed for stats
+                            stats_embed = discord.Embed(title = "Increase Stats", description = f"Select the stat you want to upgrade.", color = discord.Color.from_rgb(0, 255, 0))
+                            stats_embed.add_field(name = f"You have {3 - player._index} choice(s) left.", value = "", inline = False)
+                            stats_embed.set_footer(text = f"{member.display_name} created this")
+                            
+                            await interaction.response.edit_message(embed = stats_embed, view = stats_view)
+                        else:
+                            player._level = player._level + 1
+                            player._xp = player._xp - xp_required
+                            player.updateCharacter()
+
+                            # embed for finished
+                            finished_embed = discord.Embed(title = "Level Up Complete", description = f"Your character has successfully leveled up.", color = discord.Color.from_rgb(0, 255, 0))
+                            finished_embed.add_field(name = f"{player._name} has increased to Level {player._level}.", value = "", inline = False)
+                            finished_embed.add_field(name = f"{player._name} now has {player._xp} xp.", value = "", inline = False)
+                            finished_embed.set_footer(text = f"{member.display_name} created this")
+
+                            await interaction.response.edit_message(embed = finished_embed, view = None)
+
+                    else:
+                        await interaction.response.send_message(content = "This is not your character", ephemeral = True)
+
+                async def dex_callback(interaction):
+                    if(interaction.user == member):
+                        player._index = player._index + 1
+                        player._dex = player._dex + 1
+
+                        if(player._index < 3):
+                            # embed for stats
+                            stats_embed = discord.Embed(title = "Increase Stats", description = f"Select the stat you want to upgrade.", color = discord.Color.from_rgb(0, 255, 0))
+                            stats_embed.add_field(name = f"You have {3 - player._index} choice(s) left.", value = "", inline = False)
+                            stats_embed.set_footer(text = f"{member.display_name} created this")
+                            
+                            await interaction.response.edit_message(embed = stats_embed, view = stats_view)
+                        else:
+                            player._level = player._level + 1
+                            player._xp = player._xp - xp_required
+                            player.updateCharacter()
+
+                            # embed for finished
+                            finished_embed = discord.Embed(title = "Level Up Complete", description = f"Your character has successfully leveled up.", color = discord.Color.from_rgb(0, 255, 0))
+                            finished_embed.add_field(name = f"{player._name} has increased to Level {player._level}.", value = "", inline = False)
+                            finished_embed.add_field(name = f"{player._name} now has {player._xp} xp.", value = "", inline = False)
+                            finished_embed.set_footer(text = f"{member.display_name} created this")
+
+                            await interaction.response.edit_message(embed = finished_embed, view = None)
+
+                    else:
+                        await interaction.response.send_message(content = "This is not your character", ephemeral = True)
+
+                async def int_callback(interaction):
+                    if(interaction.user == member):
+                        player._index = player._index + 1
+                        player._int = player._int + 1
+
+                        if(player._index < 3):
+                            # embed for stats
+                            stats_embed = discord.Embed(title = "Increase Stats", description = f"Select the stat you want to upgrade.", color = discord.Color.from_rgb(0, 255, 0))
+                            stats_embed.add_field(name = f"You have {3 - player._index} choice(s) left.", value = "", inline = False)
+                            stats_embed.set_footer(text = f"{member.display_name} created this")
+
+                            await interaction.response.edit_message(embed = stats_embed, view = stats_view)
+                        else:
+                            player._level = player._level + 1
+                            player._xp = player._xp - xp_required
+                            player.updateCharacter()
+
+                            # embed for finished
+                            finished_embed = discord.Embed(title = "Level Up Complete", description = f"Your character has successfully leveled up.", color = discord.Color.from_rgb(0, 255, 0))
+                            finished_embed.add_field(name = f"{player._name} has increased to Level {player._level}.", value = "", inline = False)
+                            finished_embed.add_field(name = f"{player._name} now has {player._xp} xp.", value = "", inline = False)
+                            finished_embed.set_footer(text = f"{member.display_name} created this")
+
+                            await interaction.response.edit_message(embed = finished_embed, view = None)
+
+                    else:
+                        await interaction.response.send_message(content = "This is not your character", ephemeral = True)
+
+                vig_button.callback = vig_callback
+                str_button.callback = str_callback
+                dex_button.callback = dex_callback
+                int_button.callback = int_callback
+
+                # embed for stats
+                stats_embed = discord.Embed(title = "Increase Stats", description = f"Select the stat you want to upgrade.", color = discord.Color.from_rgb(0, 255, 0))
+                stats_embed.add_field(name = f"You have {3 - player._index} choice(s) left.", value = "", inline = False)
+                stats_embed.set_footer(text = f"{member.display_name} created this")
+
+                await interaction.response.edit_message(embed = stats_embed, view = stats_view)
+
+            else:
+                # embed for failed
+                failed_embed = discord.Embed(title = "Level Up Failed", description = f"{player._name} does not have enough xp to level up.", color = discord.Color.from_rgb(255, 0, 0))
+                failed_embed.set_footer(text = f"{member.display_name} created this")
+
+                await interaction.response.edit_message(embed = failed_embed, view = None)
+
+        else:
+            await interaction.response.send_message(content = "This is not your character", ephemeral = True)
+
+    level_button.callback = level_callback
+
+    # embed for level up
+    embed = discord.Embed(title = "Level Up", description = f"Use xp to increase your characters stats. \nOne level allows you to increase three stats.", color = discord.Color.from_rgb(0, 0, 255))
+    embed.add_field(name = required, value = "", inline = False)
+    embed.add_field(name = xp, value = "", inline = False)
+    embed.set_footer(text = f"{member.display_name} created this")
+
+    await ctx.response.send_message(embed = embed, view = view)
+
 # combat against monsters
 # user inputs the name of their character
 # user is prompted to choose a location

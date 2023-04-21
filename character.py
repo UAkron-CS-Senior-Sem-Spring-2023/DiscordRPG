@@ -143,6 +143,7 @@ class Character:
                 return False
             else:
                 self._name = result[0]
+                self._index = 0
                 self._characterClass = result[1]
                 self._userID = userID
                 self._level = result[2]
@@ -174,9 +175,6 @@ class Character:
         else:
             cnx.close()
             return False
-            
-    def levelUp(self):
-        self._level = self._level + 1
         
     #updates a character in the database from object
     def updateCharacter(self):
@@ -188,7 +186,7 @@ class Character:
                 'UserID': self._userID,
                 'CharacterName': self._name,
                 'CharacterClass': self._characterClass,
-                'CharacterLevel': 1,
+                'CharacterLevel': self._level,
                 'VigorBase': self._vigor,
                 'VigorCurrent': self._vigor,
                 'StrBase': self._str,
@@ -198,10 +196,10 @@ class Character:
                 'IntBase': self._int,
                 'IntCurrent': self._int,
                 'HealthBaseMax': self._health,
-                'HealthMax': self._maxHealth,
+                'HealthMax': (self._vigor * 4),
                 'HealthCurrent': self._health,
                 'ManaBaseMax': self._mana,
-                'ManaMax': self._maxMana,
+                'ManaMax': (self._int * 5),
                 'ManaCurrent': self._mana,
                 'Xp' : self._xp,
                 'Gold' : self._gold,
