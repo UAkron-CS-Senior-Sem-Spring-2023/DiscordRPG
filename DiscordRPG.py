@@ -380,18 +380,69 @@ async def shop(ctx, name:str):
         if(interaction.user == member):
             if(player._gold < 50):
                 poor = "You can not afford a health potion."
-                # poor embed
-                embed.add_field(name = poor, value = "", inline = False)
+                pockets = f"You have {player._gold} gold on your person."
 
-                await interaction.response.edit_message(embed = embed)
+                # poor embed
+                poor_embed = discord.Embed(title = "Shop", description = f"Purchase an item by clicking on it's button", color = discord.Color.from_rgb(255, 255, 255))
+                poor_embed.add_field(name = poor, value = "", inline = False)
+                poor_embed.add_field(name = pockets, value = "", inline = False)
+                poor_embed.add_field(name = inventory, value = "", inline = False)
+                poor_embed.set_footer(text = f"{member.display_name} created this")
+
+                await interaction.response.edit_message(embed = poor_embed)
 
             else:
+                # update character
+                player._gold = player._gold - 50
+                player._healthPotions = player._healthPotions + 1
+                player.updateCharacter()
+
+                purchase = "You have purchased a health potion."
+                pockets = f"You have {player._gold} gold on your person."
+
+                # purchase embed
+                purchase_embed = discord.Embed(title = "Shop", description = f"Purchase an item by clicking on it's button", color = discord.Color.from_rgb(255, 255, 255))
+                purchase_embed.add_field(name = purchase, value = "", inline = False)
+                purchase_embed.add_field(name = pockets, value = "", inline = False)
+                purchase_embed.add_field(name = inventory, value = "", inline = False)
+                purchase_embed.set_footer(text = f"{member.display_name} created this")
+
+                await interaction.response.edit_message(embed = purchase_embed)
         else:
             await interaction.response.send_message(content = "This merchant is busy.", ephemeral = True)
 
     async def manapot_callback(interaction):
         if(interaction.user == member):
-            await interaction.response.edit_message()
+            if(player._gold < 50):
+                poor = "You can not afford a mana potion."
+                pockets = f"You have {player._gold} gold on your person."
+
+                # poor embed
+                poor_embed = discord.Embed(title = "Shop", description = f"Purchase an item by clicking on it's button", color = discord.Color.from_rgb(255, 255, 255))
+                poor_embed.add_field(name = poor, value = "", inline = False)
+                poor_embed.add_field(name = pockets, value = "", inline = False)
+                poor_embed.add_field(name = inventory, value = "", inline = False)
+                poor_embed.set_footer(text = f"{member.display_name} created this")
+
+                await interaction.response.edit_message(embed = poor_embed)
+
+            else:
+                # update character
+                player._gold = player._gold - 50
+                player._manaPotions = player._manaPotions + 1
+                player.updateCharacter()
+
+                purchase = "You have purchased a mana potion."
+                pockets = f"You have {player._gold} gold on your person."
+
+                # purchase embed
+                purchase_embed = discord.Embed(title = "Shop", description = f"Purchase an item by clicking on it's button", color = discord.Color.from_rgb(255, 255, 255))
+                purchase_embed.add_field(name = purchase, value = "", inline = False)
+                purchase_embed.add_field(name = pockets, value = "", inline = False)
+                purchase_embed.add_field(name = inventory, value = "", inline = False)
+                purchase_embed.set_footer(text = f"{member.display_name} created this")
+
+                await interaction.response.edit_message(embed = purchase_embed)
         else:
             await interaction.response.send_message(content = "This merchant is busy.", ephemeral = True)
 
