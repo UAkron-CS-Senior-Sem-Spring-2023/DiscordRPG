@@ -378,7 +378,14 @@ async def shop(ctx, name:str):
     # button callbacks
     async def healthpot_callback(interaction):
         if(interaction.user == member):
-            await interaction.response.edit_message()
+            if(player._gold < 50):
+                poor = "You can not afford a health potion."
+                # poor embed
+                embed.add_field(name = poor, value = "", inline = False)
+
+                await interaction.response.edit_message(embed = embed)
+
+            else:
         else:
             await interaction.response.send_message(content = "This merchant is busy.", ephemeral = True)
 
