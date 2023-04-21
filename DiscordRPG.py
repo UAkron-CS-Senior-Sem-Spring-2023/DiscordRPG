@@ -80,7 +80,7 @@ async def create_character(ctx, name: str, character_class: str):
 # removes character with that name from the database if they exist
 @tree.command(name='delete_character', description='delete your charater', guild=discord.Object(id=GUILD_ID))
 async def delete_character(ctx, name: str):
-    player = character.Character(name, "mage", ctx.user.id)
+    player = character.Character(name, "", ctx.user.id)
     player.deleteCharacter()
     await ctx.response.send_message(content = "Your character has been deleted.", ephemeral = True)
 
@@ -353,6 +353,49 @@ async def monster_list(ctx, level: int = 1,):
     embed.add_field(name = "Forest", value = "", inline = False)
     embed.add_field(name = "Cave", value = "", inline = False)
     embed.set_footer(text = f"{member.display_name} created this list")
+
+    await ctx.response.send_message(embed = embed, view = view)
+
+# a shop to purchase items
+# takes the character's name
+# opens a shop for the user to buy items using the gold the character has earned
+@tree.command(name='shop', description="Open the item shop", guild=discord.Object(id=GUILD_ID))
+async def shop(ctx, name:str):
+    member = ctx.user
+
+    player = character.Character(name, "", ctx.user.id)
+    player.getCharacter(ctx.user.id, name)
+    pockets = f"You have {player._gold} gold on your person."
+    inventory = "Health Potion - 50 gold \nMana Potion - 50 gold"
+
+    # view for shop
+    healthpot_button = discord.ui.Button(label = "Health Potion", custom_id = 'healthpot', style = discord.ButtonStyle.red, row = 0)
+    manapot_button = discord.ui.Button(label = "Mana Potion", custom_id = 'manapot', style = discord.ButtonStyle.blurple, row = 0)
+    view = discord.ui.View()
+    view.add_item(healthpot_button)
+    view.add_item(manapot_button)
+
+    # button callbacks
+    async def healthpot_callback(interaction):
+        if(interaction.user == member):
+            await interaction.response.edit_message()
+        else:
+            await interaction.response.send_message(content = "This merchant is busy.", ephemeral = True)
+
+    async def manapot_callback(interaction):
+        if(interaction.user == member):
+            await interaction.response.edit_message()
+        else:
+            await interaction.response.send_message(content = "This merchant is busy.", ephemeral = True)
+
+    healthpot_button.callback = healthpot_callback
+    manapot_button.callback = manapot_callback
+
+    # embed for shop
+    embed = discord.Embed(title = "Shop", description = f"Purchase an item by clicking on it's button", color = discord.Color.from_rgb(255, 255, 255))
+    embed.add_field(name = pockets, value = "", inline = False)
+    embed.add_field(name = inventory, value = "", inline = False)
+    embed.set_footer(text = f"{member.display_name} created this")
 
     await ctx.response.send_message(embed = embed, view = view)
 
