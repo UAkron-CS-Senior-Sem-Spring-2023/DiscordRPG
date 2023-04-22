@@ -82,7 +82,14 @@ class Character:
 
     # methods
     def viewCharacter(self):
-        return (self._name + "\n" + self._characterClass + " Level " + str(self._level))
+        return (f"""{self._name}
+Level {self._level} {self._characterClass}
+Health {self._health}/{self._maxHealth} Mana {self._mana}/{self._maxMana}\n
+VIG: {self._vigor} STR: {self._str}
+DEX: {self._dex} INT: {self._int}
+Gold: {self._gold} XP: {self._xp}\n
+Health Potions: {self._healthPotions}
+Mana Potions: {self._manaPotions}""")
     
     # Adds or updates the character from object to the database
     def addCharacter(self):
