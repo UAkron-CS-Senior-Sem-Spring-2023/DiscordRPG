@@ -218,6 +218,72 @@ Mana Potions: {test._manaPotions}"""
         await ctx.response.send_message(embed = embed)
     else:
         await ctx.response.send_message(content = "Could not a find character with that name assigned to you", ephemeral = True)
+        
+#needed to create a button class for view characters function
+class CharacterButton(discord.ui.Button):
+    def __init__(self, label, row, user):
+        super().__init__(label=label, row=row, style = discord.ButtonStyle.gray)
+        self.member = user
+    
+    async def callback(self, interaction):
+        if(self.member != interaction.user):
+            await interaction.response.send_message(content = "This is not your list", ephemeral = True)
+            return
+        test = character.Character(self.label, "", self.member.id)
+        if test.getCharacter(self.member.id, self.label):
+            output = f"""{test._name}
+Level {test._level} {test._characterClass}
+Health {test._health}/{test._maxHealth} Mana {test._mana}/{test._maxMana}\n
+VIG: {test._vigor} STR: {test._str}
+DEX: {test._dex} INT: {test._int}
+Gold: {test._gold} XP: {test._xp}\n
+Health Potions: {test._healthPotions}
+Mana Potions: {test._manaPotions}""" 
+            button_embed = discord.Embed(title = "Character View", description = "", color = discord.Color.from_rgb(0, 0, 0))
+            button_embed.add_field(name = output, value = "")
+            button_embed.set_footer(text = f"{self.member.display_name} created this list")
+            return_button = discord.ui.Button(label = "Return", custom_id = 'return', style = discord.ButtonStyle.red)
+            return_view = discord.ui.View()
+            return_view.add_item(return_button)
+            await interaction.response.edit_message(embed = button_embed)
+
+@tree.command(name='view_my_characters', description="view all characters that you own", guild=discord.Object(id=GUILD_ID))
+async def view_my_characters(ctx):
+    member = ctx.user
+      
+    try:
+        cnx = mysql.connector.connect(user='bot', password='203v2Xm&zXQK', host='45.31.16.49', database='disrpg')
+        cursor = cnx.cursor()
+        query = (f"SELECT CharacterName FROM characters WHERE UserID={member.id}")
+        cursor.execute(query)
+        characterList = []
+        output = ""
+        for (CharacterName) in cursor:
+            characterList.append(CharacterName[0])
+        view = discord.ui.View()
+        
+        #creates buttons for characters
+        for index, name in enumerate(characterList):
+            character_button = CharacterButton(name, int(index/3), member)
+            view.add_item(character_button)
+            
+        #creates embed
+        embed = discord.Embed(title = "Character View", description = "", color = discord.Color.from_rgb(0, 0, 0))
+        embed.set_footer(text = f"{member.display_name} created this list")
+        await ctx.response.send_message(embed = embed, view = view)
+        
+        cursor.close()
+        cnx.close()
+    except mysql.connector.Error as err:
+        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            print("Something is wrong with your user name or password")
+        elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            print("Database does not exist")
+        else:
+            print(err)
+    else:
+        cnx.close()    
+    
 
 # view all the monsters based on location
 # returns all monster names in list form
