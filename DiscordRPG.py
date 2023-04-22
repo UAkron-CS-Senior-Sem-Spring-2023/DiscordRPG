@@ -201,14 +201,7 @@ async def view_character(ctx, name: str):
     test = character.Character(name, "", ctx.user.id)
 
     if test.getCharacter(ctx.user.id, name):
-        output = f"""{test._name}
-Level {test._level} {test._characterClass}
-Health {test._health}/{test._maxHealth} Mana {test._mana}/{test._maxMana}\n
-VIG: {test._vigor} STR: {test._str}
-DEX: {test._dex} INT: {test._int}
-Gold: {test._gold} XP: {test._xp}\n
-Health Potions: {test._healthPotions}
-Mana Potions: {test._manaPotions}"""
+        output = test.viewCharacter() 
 
         # embed for view_character
         embed = discord.Embed(title = "Character View", description = "", color = discord.Color.from_rgb(0, 0, 0))
@@ -231,14 +224,7 @@ class CharacterButton(discord.ui.Button):
             return
         test = character.Character(self.label, "", self.member.id)
         if test.getCharacter(self.member.id, self.label):
-            output = f"""{test._name}
-Level {test._level} {test._characterClass}
-Health {test._health}/{test._maxHealth} Mana {test._mana}/{test._maxMana}\n
-VIG: {test._vigor} STR: {test._str}
-DEX: {test._dex} INT: {test._int}
-Gold: {test._gold} XP: {test._xp}\n
-Health Potions: {test._healthPotions}
-Mana Potions: {test._manaPotions}""" 
+            output = test.viewCharacter() 
             button_embed = discord.Embed(title = "Character View", description = "", color = discord.Color.from_rgb(0, 0, 0))
             button_embed.add_field(name = output, value = "")
             button_embed.set_footer(text = f"{self.member.display_name} created this list")
