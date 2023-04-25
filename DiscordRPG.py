@@ -709,629 +709,2249 @@ async def adventure(ctx, name: str):
     # button callbacks
     async def forest_callback(interaction):
         if(interaction.user == member):
-            chance = random.randint(1, 100)
-            if(chance < 36):
-                monster = monsters.Boar(player._level)
-                player._health = player._maxHealth
-                monster_health = monster._maxHealth
-                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+            if(player._characterClass == "warrior"):
+                chance = random.randint(1, 100)
+                if(chance < 36):
+                    monster = monsters.Boar(player._level)
+                    player._health = player._maxHealth
+                    player._mana = player._maxMana
+                    monster_health = monster._maxHealth
+                    health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
 
-                # combat view
-                basic_attack_button = discord.ui.Button(label = "Basic Attack", custom_id = 'basic_attack', style = discord.ButtonStyle.red, row = 0)
-                combat_view = discord.ui.View()
-                combat_view.add_item(basic_attack_button)
+                    # combat view
+                    basic_attack_button = discord.ui.Button(label = "Basic Attack", custom_id = 'basic_attack', style = discord.ButtonStyle.red, row = 0)
+                    health_potion_button = discord.ui.Button(label = "Health Potion", custom_id = 'health_potion', style = discord.ButtonStyle.green, row = 0)
+                    mana_potion_button = discord.ui.Button(label = "Mana Potion", custom_id = 'mana_potion', style = discord.ButtonStyle.blurple, row = 0)
+                    combat_view = discord.ui.View()
+                    combat_view.add_item(basic_attack_button)
+                    combat_view.add_item(health_potion_button)
+                    combat_view.add_item(mana_potion_button)
 
-                # button callbacks
-                async def basic_attack_callback(interaction):
-                    if(interaction.user == member):
-                        player_damage = random.randint(1, player._str)
-                        monster_damage = random.randint(1, monster._str)
-                        player._health = player._health - monster_damage
-                        monster._health = monster._health - player_damage
-                        health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
-                        damage = "You did " + str(player_damage) + " damage using a basic attack.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+                    # button callbacks
+                    async def basic_attack_callback(interaction):
+                        if(interaction.user == member):
+                            player_damage = random.randint(1, player._str)
+                            monster_damage = random.randint(1, monster._str)
+                            player._health = player._health - monster_damage
+                            monster._health = monster._health - player_damage
+                            health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                            damage = "You did " + str(player_damage) + " damage using a basic attack.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
 
-                        if(player._health <= 0):
-                            health = player._name + " Health: 0/" + str(player._maxHealth)
-                            gold_lost = round(player._gold * 0.05)
-                            lost = f"You have dropped {gold_lost} gold."
-                            player._gold = player._gold - gold_lost
-                            player._health = player._maxHealth
-                            player.updateCharacter()
+                            if(player._health <= 0):
+                                health = player._name + " Health: 0/" + str(player._maxHealth)
+                                gold_lost = round(player._gold * 0.05)
+                                lost = f"You have dropped {gold_lost} gold."
+                                player._gold = player._gold - gold_lost
+                                player._health = player._maxHealth
+                                player.updateCharacter()
 
-                            # loss embed
-                            loss_embed = discord.Embed(title = "Defeat", description = f"You have lost the battle against the {monster._name}.", color = discord.Color.from_rgb(255, 0, 0))
-                            loss_embed.set_thumbnail(url = "https://cdn.vectorstock.com/i/1000x1000/62/84/skull-and-crossbones-black-coin-vector-19416284.webp")
-                            loss_embed.add_field(name = damage, value = "", inline = False)
-                            loss_embed.add_field(name = health, value = "", inline = False)
-                            loss_embed.add_field(name = lost, value = "", inline = False)
-                            loss_embed.set_footer(text = f"{member.display_name} created this")
+                                # loss embed
+                                loss_embed = discord.Embed(title = "Defeat", description = f"You have lost the battle against the {monster._name}.", color = discord.Color.from_rgb(255, 0, 0))
+                                loss_embed.set_thumbnail(url = "https://cdn.vectorstock.com/i/1000x1000/62/84/skull-and-crossbones-black-coin-vector-19416284.webp")
+                                loss_embed.add_field(name = damage, value = "", inline = False)
+                                loss_embed.add_field(name = health, value = "", inline = False)
+                                loss_embed.add_field(name = lost, value = "", inline = False)
+                                loss_embed.set_footer(text = f"{member.display_name} created this")
 
-                            await interaction.response.edit_message(embed = loss_embed, view = None)
+                                await interaction.response.edit_message(embed = loss_embed, view = None)
 
-                        elif(monster._health <= 0):
-                            gold_earned = monster.calculateGold()
-                            drops = f"You have received {monster._xp} xp.\nYou have received {gold_earned} gold."
-                            health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
-                            player._xp = player._xp + monster._xp
-                            player._gold = player._gold + gold_earned
-                            player.updateCharacter()
+                            elif(monster._health <= 0):
+                                gold_earned = monster.calculateGold()
+                                drops = f"You have received {monster._xp} xp.\nYou have received {gold_earned} gold."
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
+                                player._xp = player._xp + monster._xp
+                                player._gold = player._gold + gold_earned
+                                player.updateCharacter()
 
-                            # victory embed
-                            victory_embed = discord.Embed(title = "Victory", description = f"You have defeated the {monster._name}.", color = discord.Color.from_rgb(0, 255, 0))
-                            victory_embed.add_field(name = health, value = "", inline = False)
-                            victory_embed.add_field(name = drops, value = "", inline = False)
-                            victory_embed.set_footer(text = f"{member.display_name} created this")
+                                # victory embed
+                                victory_embed = discord.Embed(title = "Victory", description = f"You have defeated the {monster._name}.", color = discord.Color.from_rgb(0, 255, 0))
+                                victory_embed.add_field(name = health, value = "", inline = False)
+                                victory_embed.add_field(name = drops, value = "", inline = False)
+                                victory_embed.set_footer(text = f"{member.display_name} created this")
 
-                            await interaction.response.edit_message(embed = victory_embed, view = None)
-                
-                        else:
-                            # next turn
-                            turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 25, 0))
-                            turn_embed.set_thumbnail(url = "https://i.pinimg.com/originals/bb/49/24/bb4924f49fe7df5cf4c9d9123b4b9b86.png")
-                            turn_embed.add_field(name = damage, value = "", inline = False)
-                            turn_embed.add_field(name = health, value = "", inline = False)
-                            turn_embed.set_footer(text = f"{member.display_name} created this")
-
-                            await interaction.response.edit_message(embed = turn_embed, view = combat_view)
-                    else:
-                        # Not the same user
-                        await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
-
-                basic_attack_button.callback = basic_attack_callback
-
-                # combat embed
-                combat_embed = discord.Embed(title = "Combat", description = f"You have encountered a {monster._name}.\nSelect attack option", color = discord.Color.from_rgb(51, 25, 0))
-                combat_embed.set_thumbnail(url = "https://i.pinimg.com/originals/bb/49/24/bb4924f49fe7df5cf4c9d9123b4b9b86.png")
-                combat_embed.add_field(name = health, value = "")
-                combat_embed.set_footer(text = f"{member.display_name} created this")
-
-                await interaction.response.edit_message(embed = combat_embed, view = combat_view)
-
-            elif(chance < 71):
-                monster = monsters.Wolf(player._level)
-                player._health = player._maxHealth
-                monster_health = monster._maxHealth
-                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
-
-                # combat view
-                basic_attack_button = discord.ui.Button(label = "Basic Attack", custom_id = 'basic_attack', style = discord.ButtonStyle.red, row = 0)
-                combat_view = discord.ui.View()
-                combat_view.add_item(basic_attack_button)
-
-                # button callbacks
-                async def basic_attack_callback(interaction):
-                    if(interaction.user == member):
-                        player_damage = random.randint(1, player._str)
-                        monster_damage = random.randint(1, monster._str)
-                        player._health = player._health - monster_damage
-                        monster._health = monster._health - player_damage
-                        health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
-                        damage = "You did " + str(player_damage) + " damage using a basic attack.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
-
-                        if(player._health <= 0):
-                            health = player._name + " Health: 0/" + str(player._maxHealth)
-                            gold_lost = round(player._gold * 0.05)
-                            lost = f"You have dropped {gold_lost} gold."
-                            player._gold = player._gold - gold_lost
-                            player._health = player._maxHealth
-                            player.updateCharacter()
-
-                            # loss embed
-                            loss_embed = discord.Embed(title = "Defeat", description = f"You have lost the battle against the {monster._name}.", color = discord.Color.from_rgb(255, 0, 0))
-                            loss_embed.set_thumbnail(url = "https://cdn.vectorstock.com/i/1000x1000/62/84/skull-and-crossbones-black-coin-vector-19416284.webp")
-                            loss_embed.add_field(name = damage, value = "", inline = False)
-                            loss_embed.add_field(name = health, value = "", inline = False)
-                            loss_embed.add_field(name = lost, value = "", inline = False)
-                            loss_embed.set_footer(text = f"{member.display_name} created this")
-
-                            await interaction.response.edit_message(embed = loss_embed, view = None)
-
-                        elif(monster._health <= 0):
-                            gold_earned = monster.calculateGold()
-                            drops = f"You have received {monster._xp} xp.\nYou have received {gold_earned} gold."
-                            health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
-                            player._xp = player._xp + monster._xp
-                            player._gold = player._gold + gold_earned
-                            player.updateCharacter()
-
-                            # victory embed
-                            victory_embed = discord.Embed(title = "Victory", description = f"You have defeated the {monster._name}.", color = discord.Color.from_rgb(0, 255, 0))
-                            victory_embed.add_field(name = health, value = "", inline = False)
-                            victory_embed.add_field(name = drops, value = "", inline = False)
-                            victory_embed.set_footer(text = f"{member.display_name} created this")
-
-                            await interaction.response.edit_message(embed = victory_embed, view = None)
-
-                        else:
-                            # next turn
-                            turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(64, 64, 64))
-                            turn_embed.set_thumbnail(url = "https://static.wikia.nocookie.net/creaturequest/images/2/24/148_DireWolf.png/revision/latest/scale-to-width-down/378?cb=20170315223053")
-                            turn_embed.add_field(name = damage, value = "", inline = False)
-                            turn_embed.add_field(name = health, value = "", inline = False)
-                            turn_embed.set_footer(text = f"{member.display_name} created this")
-
-                            await interaction.response.edit_message(embed = turn_embed, view = combat_view)
-                    else:
-                        await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
-
-                basic_attack_button.callback = basic_attack_callback
-
-                # combat embed
-                combat_embed = discord.Embed(title = "Combat", description = f"You have encountered a {monster._name}.\nSelect attack option", color = discord.Color.from_rgb(64, 64, 64))
-                combat_embed.set_thumbnail(url = "https://static.wikia.nocookie.net/creaturequest/images/2/24/148_DireWolf.png/revision/latest/scale-to-width-down/378?cb=20170315223053")
-                combat_embed.add_field(name = health, value = "")
-                combat_embed.set_footer(text = f"{member.display_name} created this")
-
-                await interaction.response.edit_message(embed = combat_embed, view = combat_view)
-
-
-            elif(chance < 91):
-                monster = monsters.Elf(player._level)
-                player._health = player._maxHealth
-                monster_health = monster._maxHealth
-                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
-
-                # combat view
-                basic_attack_button = discord.ui.Button(label = "Basic Attack", custom_id = 'basic_attack', style = discord.ButtonStyle.red, row = 0)
-                combat_view = discord.ui.View()
-                combat_view.add_item(basic_attack_button)
-
-                # button callbacks
-                async def basic_attack_callback(interaction):
-                    if(interaction.user == member):
-                        player_damage = random.randint(1, player._str)
-                        monster_damage = random.randint(1, monster._str)
-                        player._health = player._health - monster_damage
-                        monster._health = monster._health - player_damage
-                        health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
-                        damage = "You did " + str(player_damage) + " damage using a basic attack.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
-
-                        if(player._health <= 0):
-                            health = player._name + " Health: 0/" + str(player._maxHealth)
-                            gold_lost = round(player._gold * 0.05)
-                            lost = f"You have dropped {gold_lost} gold."
-                            player._gold = player._gold - gold_lost
-                            player._health = player._maxHealth
-                            player.updateCharacter()
-
-                            # loss embed
-                            loss_embed = discord.Embed(title = "Defeat", description = f"You have lost the battle against the {monster._name}.", color = discord.Color.from_rgb(255, 0, 0))
-                            loss_embed.set_thumbnail(url = "https://cdn.vectorstock.com/i/1000x1000/62/84/skull-and-crossbones-black-coin-vector-19416284.webp")
-                            loss_embed.add_field(name = damage, value = "", inline = False)
-                            loss_embed.add_field(name = health, value = "", inline = False)
-                            loss_embed.add_field(name = lost, value = "", inline = False)
-                            loss_embed.set_footer(text = f"{member.display_name} created this")
-
-                            await interaction.response.edit_message(embed = loss_embed, view = None)
-
-                        elif(monster._health <= 0):
-                            gold_earned = monster.calculateGold()
-                            drops = f"You have received {monster._xp} xp.\nYou have received {gold_earned} gold."
-                            health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
-                            player._xp = player._xp + monster._xp
-                            player._gold = player._gold + gold_earned
-                            player.updateCharacter()
-
-                            # victory embed
-                            victory_embed = discord.Embed(title = "Victory", description = f"You have defeated the {monster._name}.", color = discord.Color.from_rgb(0, 255, 0))
-                            victory_embed.add_field(name = health, value = "", inline = False)
-                            victory_embed.add_field(name = drops, value = "", inline = False)
-                            victory_embed.set_footer(text = f"{member.display_name} created this")
-
-                            await interaction.response.edit_message(embed = victory_embed, view = None)
+                                await interaction.response.edit_message(embed = victory_embed, view = None)
                     
+                            else:
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 25, 0))
+                                turn_embed.set_thumbnail(url = "https://i.pinimg.com/originals/bb/49/24/bb4924f49fe7df5cf4c9d9123b4b9b86.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
                         else:
-                            # next turn
-                            turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(0, 102, 0))
-                            turn_embed.set_thumbnail(url = "https://i.pinimg.com/originals/4e/2f/12/4e2f12b4ad01eeaae5b0a3b2f8f7647b.png")
-                            turn_embed.add_field(name = damage, value = "", inline = False)
-                            turn_embed.add_field(name = health, value = "", inline = False)
-                            turn_embed.set_footer(text = f"{member.display_name} created this")
+                            # Not the same user
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+                    
+                    async def health_potion_callback(interaction):
+                        if(interaction.user == member):
+                            if(player._healthPotions > 0):
+                                monster_damage = random.randint(1, monster._str)
+                                player._health = player._health + 20
+                                player._healthPotions = player._healthPotions - 1
+                                if(player._health > player._maxHealth):
+                                    player._health = player._maxHealth
+                                player._health = player._health - monster_damage
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                                damage = "You recovered health using a potion.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
 
-                            await interaction.response.edit_message(embed = turn_embed, view = combat_view)
-                    else:
-                        await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 25, 0))
+                                turn_embed.set_thumbnail(url = "https://i.pinimg.com/originals/bb/49/24/bb4924f49fe7df5cf4c9d9123b4b9b86.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
 
-                basic_attack_button.callback = basic_attack_callback
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
 
-                # combat embed
-                combat_embed = discord.Embed(title = "Combat", description = f"You have encountered a {monster._name}.\nSelect attack option", color = discord.Color.from_rgb(0, 102, 0))
-                combat_embed.set_thumbnail(url = "https://i.pinimg.com/originals/4e/2f/12/4e2f12b4ad01eeaae5b0a3b2f8f7647b.png")
-                combat_embed.add_field(name = health, value = "")
-                combat_embed.set_footer(text = f"{member.display_name} created this")
+                            else:
+                                await interaction.response.send_message(content = "You do not have any health potions.", ephemeral = True)
+                        else:
+                            # Not the same user
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
 
-                await interaction.response.edit_message(embed = combat_embed, view = combat_view)
+                    async def mana_potion_callback(interaction):
+                        if(interaction.user == member):
+                            if(player._manaPotions > 0):
+                                monster_damage = random.randint(1, monster._str)
+                                player._mana = player._mana + 10
+                                player._manaPotions = player._manaPotions - 1
+                                if(player._mana > player._maxMana):
+                                    player._mana = player._maxMana
+                                player._health = player._health - monster_damage
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                                mana = player._name + " Mana: " + str(player._mana) + "/" + str(player._maxMana)
+                                damage = "You recovered mana using a potion.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 25, 0))
+                                turn_embed.set_thumbnail(url = "https://i.pinimg.com/originals/bb/49/24/bb4924f49fe7df5cf4c9d9123b4b9b86.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.add_field(name = mana, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+
+                            else:
+                                await interaction.response.send_message(content = "You do not have any mana potions.", ephemeral = True)
+                        else:
+                            # Not the same user
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    basic_attack_button.callback = basic_attack_callback
+                    health_potion_button.callback = health_potion_callback
+                    mana_potion_button.callback = mana_potion_callback
+
+                    # combat embed
+                    combat_embed = discord.Embed(title = "Combat", description = f"You have encountered a {monster._name}.\nSelect attack option", color = discord.Color.from_rgb(51, 25, 0))
+                    combat_embed.set_thumbnail(url = "https://i.pinimg.com/originals/bb/49/24/bb4924f49fe7df5cf4c9d9123b4b9b86.png")
+                    combat_embed.add_field(name = health, value = "")
+                    combat_embed.set_footer(text = f"{member.display_name} created this")
+
+                    await interaction.response.edit_message(embed = combat_embed, view = combat_view)
+
+                elif(chance < 71):
+                    monster = monsters.Wolf(player._level)
+                    player._health = player._maxHealth
+                    monster_health = monster._maxHealth
+                    health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+
+                    # combat view
+                    basic_attack_button = discord.ui.Button(label = "Basic Attack", custom_id = 'basic_attack', style = discord.ButtonStyle.red, row = 0)
+                    health_potion_button = discord.ui.Button(label = "Health Potion", custom_id = 'health_potion', style = discord.ButtonStyle.green, row = 0)
+                    mana_potion_button = discord.ui.Button(label = "Mana Potion", custom_id = 'mana_potion', style = discord.ButtonStyle.blurple, row = 0)
+                    combat_view = discord.ui.View()
+                    combat_view.add_item(basic_attack_button)
+                    combat_view.add_item(health_potion_button)
+                    combat_view.add_item(mana_potion_button)
+
+                    # button callbacks
+                    async def basic_attack_callback(interaction):
+                        if(interaction.user == member):
+                            player_damage = random.randint(1, player._str)
+                            monster_damage = random.randint(1, monster._str)
+                            player._health = player._health - monster_damage
+                            monster._health = monster._health - player_damage
+                            health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                            damage = "You did " + str(player_damage) + " damage using a basic attack.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                            if(player._health <= 0):
+                                health = player._name + " Health: 0/" + str(player._maxHealth)
+                                gold_lost = round(player._gold * 0.05)
+                                lost = f"You have dropped {gold_lost} gold."
+                                player._gold = player._gold - gold_lost
+                                player._health = player._maxHealth
+                                player.updateCharacter()
+
+                                # loss embed
+                                loss_embed = discord.Embed(title = "Defeat", description = f"You have lost the battle against the {monster._name}.", color = discord.Color.from_rgb(255, 0, 0))
+                                loss_embed.set_thumbnail(url = "https://cdn.vectorstock.com/i/1000x1000/62/84/skull-and-crossbones-black-coin-vector-19416284.webp")
+                                loss_embed.add_field(name = damage, value = "", inline = False)
+                                loss_embed.add_field(name = health, value = "", inline = False)
+                                loss_embed.add_field(name = lost, value = "", inline = False)
+                                loss_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = loss_embed, view = None)
+
+                            elif(monster._health <= 0):
+                                gold_earned = monster.calculateGold()
+                                drops = f"You have received {monster._xp} xp.\nYou have received {gold_earned} gold."
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
+                                player._xp = player._xp + monster._xp
+                                player._gold = player._gold + gold_earned
+                                player.updateCharacter()
+
+                                # victory embed
+                                victory_embed = discord.Embed(title = "Victory", description = f"You have defeated the {monster._name}.", color = discord.Color.from_rgb(0, 255, 0))
+                                victory_embed.add_field(name = health, value = "", inline = False)
+                                victory_embed.add_field(name = drops, value = "", inline = False)
+                                victory_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = victory_embed, view = None)
+
+                            else:
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(64, 64, 64))
+                                turn_embed.set_thumbnail(url = "https://static.wikia.nocookie.net/creaturequest/images/2/24/148_DireWolf.png/revision/latest/scale-to-width-down/378?cb=20170315223053")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+                        else:
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+                    
+                    async def health_potion_callback(interaction):
+                        if(interaction.user == member):
+                            if(player._healthPotions > 0):
+                                monster_damage = random.randint(1, monster._str)
+                                player._health = player._health + 20
+                                player._healthPotions = player._healthPotions - 1
+                                if(player._health > player._maxHealth):
+                                    player._health = player._maxHealth
+                                player._health = player._health - monster_damage
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                                damage = "You recovered health using a potion.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 25, 0))
+                                turn_embed.set_thumbnail(url = "https://static.wikia.nocookie.net/creaturequest/images/2/24/148_DireWolf.png/revision/latest/scale-to-width-down/378?cb=20170315223053")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+
+                            else:
+                                await interaction.response.send_message(content = "You do not have any health potions.", ephemeral = True)
+                        else:
+                            # Not the same user
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    async def mana_potion_callback(interaction):
+                        if(interaction.user == member):
+                            if(player._manaPotions > 0):
+                                monster_damage = random.randint(1, monster._str)
+                                player._mana = player._mana + 10
+                                player._manaPotions = player._manaPotions - 1
+                                if(player._mana > player._maxMana):
+                                    player._mana = player._maxMana
+                                player._health = player._health - monster_damage
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                                mana = player._name + " Mana: " + str(player._mana) + "/" + str(player._maxMana)
+                                damage = "You recovered mana using a potion.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 25, 0))
+                                turn_embed.set_thumbnail(url = "https://static.wikia.nocookie.net/creaturequest/images/2/24/148_DireWolf.png/revision/latest/scale-to-width-down/378?cb=20170315223053")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.add_field(name = mana, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+
+                            else:
+                                await interaction.response.send_message(content = "You do not have any mana potions.", ephemeral = True)
+                        else:
+                            # Not the same user
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    basic_attack_button.callback = basic_attack_callback
+                    health_potion_button.callback = health_potion_callback
+                    mana_potion_button.callback = mana_potion_callback
+
+                    # combat embed
+                    combat_embed = discord.Embed(title = "Combat", description = f"You have encountered a {monster._name}.\nSelect attack option", color = discord.Color.from_rgb(64, 64, 64))
+                    combat_embed.set_thumbnail(url = "https://static.wikia.nocookie.net/creaturequest/images/2/24/148_DireWolf.png/revision/latest/scale-to-width-down/378?cb=20170315223053")
+                    combat_embed.add_field(name = health, value = "")
+                    combat_embed.set_footer(text = f"{member.display_name} created this")
+
+                    await interaction.response.edit_message(embed = combat_embed, view = combat_view)
+
+
+                elif(chance < 91):
+                    monster = monsters.Elf(player._level)
+                    player._health = player._maxHealth
+                    monster_health = monster._maxHealth
+                    health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+
+                    # combat view
+                    basic_attack_button = discord.ui.Button(label = "Basic Attack", custom_id = 'basic_attack', style = discord.ButtonStyle.red, row = 0)
+                    health_potion_button = discord.ui.Button(label = "Health Potion", custom_id = 'health_potion', style = discord.ButtonStyle.green, row = 0)
+                    mana_potion_button = discord.ui.Button(label = "Mana Potion", custom_id = 'mana_potion', style = discord.ButtonStyle.blurple, row = 0)
+                    combat_view = discord.ui.View()
+                    combat_view.add_item(basic_attack_button)
+                    combat_view.add_item(health_potion_button)
+                    combat_view.add_item(mana_potion_button)
+
+                    # button callbacks
+                    async def basic_attack_callback(interaction):
+                        if(interaction.user == member):
+                            player_damage = random.randint(1, player._str)
+                            monster_damage = random.randint(1, monster._str)
+                            player._health = player._health - monster_damage
+                            monster._health = monster._health - player_damage
+                            health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                            damage = "You did " + str(player_damage) + " damage using a basic attack.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                            if(player._health <= 0):
+                                health = player._name + " Health: 0/" + str(player._maxHealth)
+                                gold_lost = round(player._gold * 0.05)
+                                lost = f"You have dropped {gold_lost} gold."
+                                player._gold = player._gold - gold_lost
+                                player._health = player._maxHealth
+                                player.updateCharacter()
+
+                                # loss embed
+                                loss_embed = discord.Embed(title = "Defeat", description = f"You have lost the battle against the {monster._name}.", color = discord.Color.from_rgb(255, 0, 0))
+                                loss_embed.set_thumbnail(url = "https://cdn.vectorstock.com/i/1000x1000/62/84/skull-and-crossbones-black-coin-vector-19416284.webp")
+                                loss_embed.add_field(name = damage, value = "", inline = False)
+                                loss_embed.add_field(name = health, value = "", inline = False)
+                                loss_embed.add_field(name = lost, value = "", inline = False)
+                                loss_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = loss_embed, view = None)
+
+                            elif(monster._health <= 0):
+                                gold_earned = monster.calculateGold()
+                                drops = f"You have received {monster._xp} xp.\nYou have received {gold_earned} gold."
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
+                                player._xp = player._xp + monster._xp
+                                player._gold = player._gold + gold_earned
+                                player.updateCharacter()
+
+                                # victory embed
+                                victory_embed = discord.Embed(title = "Victory", description = f"You have defeated the {monster._name}.", color = discord.Color.from_rgb(0, 255, 0))
+                                victory_embed.add_field(name = health, value = "", inline = False)
+                                victory_embed.add_field(name = drops, value = "", inline = False)
+                                victory_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = victory_embed, view = None)
+                        
+                            else:
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(0, 102, 0))
+                                turn_embed.set_thumbnail(url = "https://i.pinimg.com/originals/4e/2f/12/4e2f12b4ad01eeaae5b0a3b2f8f7647b.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+                        else:
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    async def health_potion_callback(interaction):
+                        if(interaction.user == member):
+                            if(player._healthPotions > 0):
+                                monster_damage = random.randint(1, monster._str)
+                                player._health = player._health + 20
+                                player._healthPotions = player._healthPotions - 1
+                                if(player._health > player._maxHealth):
+                                    player._health = player._maxHealth
+                                player._health = player._health - monster_damage
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                                damage = "You recovered health using a potion.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 25, 0))
+                                turn_embed.set_thumbnail(url = "https://i.pinimg.com/originals/4e/2f/12/4e2f12b4ad01eeaae5b0a3b2f8f7647b.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+
+                            else:
+                                await interaction.response.send_message(content = "You do not have any health potions.", ephemeral = True)
+                        else:
+                            # Not the same user
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    async def mana_potion_callback(interaction):
+                        if(interaction.user == member):
+                            if(player._manaPotions > 0):
+                                monster_damage = random.randint(1, monster._str)
+                                player._mana = player._mana + 10
+                                player._manaPotions = player._manaPotions - 1
+                                if(player._mana > player._maxMana):
+                                    player._mana = player._maxMana
+                                player._health = player._health - monster_damage
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                                mana = player._name + " Mana: " + str(player._mana) + "/" + str(player._maxMana)
+                                damage = "You recovered mana using a potion.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 25, 0))
+                                turn_embed.set_thumbnail(url = "https://i.pinimg.com/originals/4e/2f/12/4e2f12b4ad01eeaae5b0a3b2f8f7647b.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.add_field(name = mana, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+
+                            else:
+                                await interaction.response.send_message(content = "You do not have any mana potions.", ephemeral = True)
+                        else:
+                            # Not the same user
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    basic_attack_button.callback = basic_attack_callback
+                    health_potion_button.callback = health_potion_callback
+                    mana_potion_button.callback = mana_potion_callback
+
+                    # combat embed
+                    combat_embed = discord.Embed(title = "Combat", description = f"You have encountered a {monster._name}.\nSelect attack option", color = discord.Color.from_rgb(0, 102, 0))
+                    combat_embed.set_thumbnail(url = "https://i.pinimg.com/originals/4e/2f/12/4e2f12b4ad01eeaae5b0a3b2f8f7647b.png")
+                    combat_embed.add_field(name = health, value = "")
+                    combat_embed.set_footer(text = f"{member.display_name} created this")
+
+                    await interaction.response.edit_message(embed = combat_embed, view = combat_view)
+
+                else:
+                    monster = monsters.Treant(player._level)
+                    player._health = player._maxHealth
+                    monster_health = monster._maxHealth
+                    health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+
+                    # combat view
+                    basic_attack_button = discord.ui.Button(label = "Basic Attack", custom_id = 'basic_attack', style = discord.ButtonStyle.red, row = 0)
+                    health_potion_button = discord.ui.Button(label = "Health Potion", custom_id = 'health_potion', style = discord.ButtonStyle.green, row = 0)
+                    mana_potion_button = discord.ui.Button(label = "Mana Potion", custom_id = 'mana_potion', style = discord.ButtonStyle.blurple, row = 0)
+                    combat_view = discord.ui.View()
+                    combat_view.add_item(basic_attack_button)
+                    combat_view.add_item(health_potion_button)
+                    combat_view.add_item(mana_potion_button)
+
+                    # button callbacks
+                    async def basic_attack_callback(interaction):
+                        if(interaction.user == member):
+                            player_damage = random.randint(1, player._str)
+                            monster_damage = random.randint(1, monster._str)
+                            player._health = player._health - monster_damage
+                            monster._health = monster._health - player_damage
+                            health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                            damage = "You did " + str(player_damage) + " damage using a basic attack.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                            if(player._health <= 0):
+                                health = player._name + " Health: 0/" + str(player._maxHealth)
+                                gold_lost = round(player._gold * 0.05)
+                                lost = f"You have dropped {gold_lost} gold."
+                                player._health = player._maxHealth
+                                player._gold = player._gold - gold_lost
+                                player.updateCharacter()
+
+                                # loss embed
+                                loss_embed = discord.Embed(title = "Defeat", description = f"You have lost the battle against the {monster._name}.", color = discord.Color.from_rgb(255, 0, 0))
+                                loss_embed.set_thumbnail(url = "https://cdn.vectorstock.com/i/1000x1000/62/84/skull-and-crossbones-black-coin-vector-19416284.webp")
+                                loss_embed.add_field(name = damage, value = "", inline = False)
+                                loss_embed.add_field(name = health, value = "", inline = False)
+                                loss_embed.add_field(name = lost, value = "", inline = False)
+                                loss_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = loss_embed, view = None)
+
+                            elif(monster._health <= 0):
+                                gold_earned = monster.calculateGold()
+                                drops = f"You have received {monster._xp} xp.\nYou have received {gold_earned} gold."
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
+                                player._xp = player._xp + monster._xp
+                                player._gold = player._gold + gold_earned
+                                player.updateCharacter()
+
+                                # victory embed
+                                victory_embed = discord.Embed(title = "Victory", description = f"You have defeated the {monster._name}.", color = discord.Color.from_rgb(0, 255, 0))
+                                victory_embed.add_field(name = health, value = "", inline = False)
+                                victory_embed.add_field(name = drops, value = "", inline = False)
+                                victory_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = victory_embed, view = None)
+                        
+                            else:
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(102, 51, 0))
+                                turn_embed.set_thumbnail(url = "https://www.dndbeyond.com/avatars/thumbnails/30836/130/1000/1000/638063929302059775.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+                        else:
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+                    
+                    async def health_potion_callback(interaction):
+                        if(interaction.user == member):
+                            if(player._healthPotions > 0):
+                                monster_damage = random.randint(1, monster._str)
+                                player._health = player._health + 20
+                                player._healthPotions = player._healthPotions - 1
+                                if(player._health > player._maxHealth):
+                                    player._health = player._maxHealth
+                                player._health = player._health - monster_damage
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                                damage = "You recovered health using a potion.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 25, 0))
+                                turn_embed.set_thumbnail(url = "https://www.dndbeyond.com/avatars/thumbnails/30836/130/1000/1000/638063929302059775.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+
+                            else:
+                                await interaction.response.send_message(content = "You do not have any health potions.", ephemeral = True)
+                        else:
+                            # Not the same user
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    async def mana_potion_callback(interaction):
+                        if(interaction.user == member):
+                            if(player._manaPotions > 0):
+                                monster_damage = random.randint(1, monster._str)
+                                player._mana = player._mana + 10
+                                player._manaPotions = player._manaPotions - 1
+                                if(player._mana > player._maxMana):
+                                    player._mana = player._maxMana
+                                player._health = player._health - monster_damage
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                                mana = player._name + " Mana: " + str(player._mana) + "/" + str(player._maxMana)
+                                damage = "You recovered mana using a potion.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 25, 0))
+                                turn_embed.set_thumbnail(url = "https://www.dndbeyond.com/avatars/thumbnails/30836/130/1000/1000/638063929302059775.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.add_field(name = mana, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+
+                            else:
+                                await interaction.response.send_message(content = "You do not have any mana potions.", ephemeral = True)
+                        else:
+                            # Not the same user
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    basic_attack_button.callback = basic_attack_callback
+                    health_potion_button.callback = health_potion_callback
+                    mana_potion_button.callback = mana_potion_callback
+
+                    # combat embed
+                    combat_embed = discord.Embed(title = "Combat", description = f"You have encountered a {monster._name}.\nSelect attack option", color = discord.Color.from_rgb(102, 51, 0))
+                    combat_embed.set_thumbnail(url = "https://www.dndbeyond.com/avatars/thumbnails/30836/130/1000/1000/638063929302059775.png")
+                    combat_embed.add_field(name = health, value = "")
+                    combat_embed.set_footer(text = f"{member.display_name} created this")
+
+                    await interaction.response.edit_message(embed = combat_embed, view = combat_view)
 
             else:
-                monster = monsters.Treant(player._level)
-                player._health = player._maxHealth
-                monster_health = monster._maxHealth
-                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                chance = random.randint(1, 100)
+                if(chance < 36):
+                    monster = monsters.Boar(player._level)
+                    player._health = player._maxHealth
+                    player._mana = player._maxMana
+                    monster_health = monster._maxHealth
+                    health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
 
-                # combat view
-                basic_attack_button = discord.ui.Button(label = "Basic Attack", custom_id = 'basic_attack', style = discord.ButtonStyle.red, row = 0)
-                combat_view = discord.ui.View()
-                combat_view.add_item(basic_attack_button)
+                    # combat view
+                    basic_attack_button = discord.ui.Button(label = "Basic Attack", custom_id = 'basic_attack', style = discord.ButtonStyle.red, row = 0)
+                    health_potion_button = discord.ui.Button(label = "Health Potion", custom_id = 'health_potion', style = discord.ButtonStyle.green, row = 0)
+                    mana_potion_button = discord.ui.Button(label = "Mana Potion", custom_id = 'mana_potion', style = discord.ButtonStyle.blurple, row = 0)
+                    combat_view = discord.ui.View()
+                    combat_view.add_item(basic_attack_button)
+                    combat_view.add_item(health_potion_button)
+                    combat_view.add_item(mana_potion_button)
 
-                # button callbacks
-                async def basic_attack_callback(interaction):
-                    if(interaction.user == member):
-                        player_damage = random.randint(1, player._str)
-                        monster_damage = random.randint(1, monster._str)
-                        player._health = player._health - monster_damage
-                        monster._health = monster._health - player_damage
-                        health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
-                        damage = "You did " + str(player_damage) + " damage using a basic attack.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+                    # button callbacks
+                    async def basic_attack_callback(interaction):
+                        if(interaction.user == member):
+                            player_damage = random.randint(1, player._str)
+                            monster_damage = random.randint(1, monster._str)
+                            player._health = player._health - monster_damage
+                            monster._health = monster._health - player_damage
+                            health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                            damage = "You did " + str(player_damage) + " damage using a basic attack.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
 
-                        if(player._health <= 0):
-                            health = player._name + " Health: 0/" + str(player._maxHealth)
-                            gold_lost = round(player._gold * 0.05)
-                            lost = f"You have dropped {gold_lost} gold."
-                            player._health = player._maxHealth
-                            player._gold = player._gold - gold_lost
-                            player.updateCharacter()
+                            if(player._health <= 0):
+                                health = player._name + " Health: 0/" + str(player._maxHealth)
+                                gold_lost = round(player._gold * 0.05)
+                                lost = f"You have dropped {gold_lost} gold."
+                                player._gold = player._gold - gold_lost
+                                player._health = player._maxHealth
+                                player.updateCharacter()
 
-                            # loss embed
-                            loss_embed = discord.Embed(title = "Defeat", description = f"You have lost the battle against the {monster._name}.", color = discord.Color.from_rgb(255, 0, 0))
-                            loss_embed.set_thumbnail(url = "https://cdn.vectorstock.com/i/1000x1000/62/84/skull-and-crossbones-black-coin-vector-19416284.webp")
-                            loss_embed.add_field(name = damage, value = "", inline = False)
-                            loss_embed.add_field(name = health, value = "", inline = False)
-                            loss_embed.add_field(name = lost, value = "", inline = False)
-                            loss_embed.set_footer(text = f"{member.display_name} created this")
+                                # loss embed
+                                loss_embed = discord.Embed(title = "Defeat", description = f"You have lost the battle against the {monster._name}.", color = discord.Color.from_rgb(255, 0, 0))
+                                loss_embed.set_thumbnail(url = "https://cdn.vectorstock.com/i/1000x1000/62/84/skull-and-crossbones-black-coin-vector-19416284.webp")
+                                loss_embed.add_field(name = damage, value = "", inline = False)
+                                loss_embed.add_field(name = health, value = "", inline = False)
+                                loss_embed.add_field(name = lost, value = "", inline = False)
+                                loss_embed.set_footer(text = f"{member.display_name} created this")
 
-                            await interaction.response.edit_message(embed = loss_embed, view = None)
+                                await interaction.response.edit_message(embed = loss_embed, view = None)
 
-                        elif(monster._health <= 0):
-                            gold_earned = monster.calculateGold()
-                            drops = f"You have received {monster._xp} xp.\nYou have received {gold_earned} gold."
-                            health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
-                            player._xp = player._xp + monster._xp
-                            player._gold = player._gold + gold_earned
-                            player.updateCharacter()
+                            elif(monster._health <= 0):
+                                gold_earned = monster.calculateGold()
+                                drops = f"You have received {monster._xp} xp.\nYou have received {gold_earned} gold."
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
+                                player._xp = player._xp + monster._xp
+                                player._gold = player._gold + gold_earned
+                                player.updateCharacter()
 
-                            # victory embed
-                            victory_embed = discord.Embed(title = "Victory", description = f"You have defeated the {monster._name}.", color = discord.Color.from_rgb(0, 255, 0))
-                            victory_embed.add_field(name = health, value = "", inline = False)
-                            victory_embed.add_field(name = drops, value = "", inline = False)
-                            victory_embed.set_footer(text = f"{member.display_name} created this")
+                                # victory embed
+                                victory_embed = discord.Embed(title = "Victory", description = f"You have defeated the {monster._name}.", color = discord.Color.from_rgb(0, 255, 0))
+                                victory_embed.add_field(name = health, value = "", inline = False)
+                                victory_embed.add_field(name = drops, value = "", inline = False)
+                                victory_embed.set_footer(text = f"{member.display_name} created this")
 
-                            await interaction.response.edit_message(embed = victory_embed, view = None)
+                                await interaction.response.edit_message(embed = victory_embed, view = None)
                     
+                            else:
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 25, 0))
+                                turn_embed.set_thumbnail(url = "https://i.pinimg.com/originals/bb/49/24/bb4924f49fe7df5cf4c9d9123b4b9b86.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
                         else:
-                            # next turn
-                            turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(102, 51, 0))
-                            turn_embed.set_thumbnail(url = "https://www.dndbeyond.com/avatars/thumbnails/30836/130/1000/1000/638063929302059775.png")
-                            turn_embed.add_field(name = damage, value = "", inline = False)
-                            turn_embed.add_field(name = health, value = "", inline = False)
-                            turn_embed.set_footer(text = f"{member.display_name} created this")
+                            # Not the same user
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
 
-                            await interaction.response.edit_message(embed = turn_embed, view = combat_view)
-                    else:
-                        await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+                    async def health_potion_callback(interaction):
+                        if(interaction.user == member):
+                            if(player._healthPotions > 0):
+                                monster_damage = random.randint(1, monster._str)
+                                player._health = player._health + 20
+                                player._healthPotions = player._healthPotions - 1
+                                if(player._health > player._maxHealth):
+                                    player._health = player._maxHealth
+                                player._health = player._health - monster_damage
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                                damage = "You recovered health using a potion.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
 
-                basic_attack_button.callback = basic_attack_callback
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 25, 0))
+                                turn_embed.set_thumbnail(url = "https://i.pinimg.com/originals/bb/49/24/bb4924f49fe7df5cf4c9d9123b4b9b86.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
 
-                # combat embed
-                combat_embed = discord.Embed(title = "Combat", description = f"You have encountered a {monster._name}.\nSelect attack option", color = discord.Color.from_rgb(102, 51, 0))
-                combat_embed.set_thumbnail(url = "https://www.dndbeyond.com/avatars/thumbnails/30836/130/1000/1000/638063929302059775.png")
-                combat_embed.add_field(name = health, value = "")
-                combat_embed.set_footer(text = f"{member.display_name} created this")
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
 
-                await interaction.response.edit_message(embed = combat_embed, view = combat_view)
+                            else:
+                                await interaction.response.send_message(content = "You do not have any health potions.", ephemeral = True)
+                        else:
+                            # Not the same user
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    async def mana_potion_callback(interaction):
+                        if(interaction.user == member):
+                            if(player._manaPotions > 0):
+                                monster_damage = random.randint(1, monster._str)
+                                player._mana = player._mana + 10
+                                player._manaPotions = player._manaPotions - 1
+                                if(player._mana > player._maxMana):
+                                    player._mana = player._maxMana
+                                player._health = player._health - monster_damage
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                                mana = player._name + " Mana: " + str(player._mana) + "/" + str(player._maxMana)
+                                damage = "You recovered mana using a potion.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 25, 0))
+                                turn_embed.set_thumbnail(url = "https://i.pinimg.com/originals/bb/49/24/bb4924f49fe7df5cf4c9d9123b4b9b86.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.add_field(name = mana, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+
+                            else:
+                                await interaction.response.send_message(content = "You do not have any mana potions.", ephemeral = True)
+                        else:
+                            # Not the same user
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    basic_attack_button.callback = basic_attack_callback
+                    health_potion_button.callback = health_potion_callback
+                    mana_potion_button.callback = mana_potion_callback
+
+                    # combat embed
+                    combat_embed = discord.Embed(title = "Combat", description = f"You have encountered a {monster._name}.\nSelect attack option", color = discord.Color.from_rgb(51, 25, 0))
+                    combat_embed.set_thumbnail(url = "https://i.pinimg.com/originals/bb/49/24/bb4924f49fe7df5cf4c9d9123b4b9b86.png")
+                    combat_embed.add_field(name = health, value = "")
+                    combat_embed.set_footer(text = f"{member.display_name} created this")
+
+                    await interaction.response.edit_message(embed = combat_embed, view = combat_view)
+
+                elif(chance < 71):
+                    monster = monsters.Wolf(player._level)
+                    player._health = player._maxHealth
+                    monster_health = monster._maxHealth
+                    health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+
+                    # combat view
+                    basic_attack_button = discord.ui.Button(label = "Basic Attack", custom_id = 'basic_attack', style = discord.ButtonStyle.red, row = 0)
+                    health_potion_button = discord.ui.Button(label = "Health Potion", custom_id = 'health_potion', style = discord.ButtonStyle.green, row = 0)
+                    mana_potion_button = discord.ui.Button(label = "Mana Potion", custom_id = 'mana_potion', style = discord.ButtonStyle.blurple, row = 0)
+                    combat_view = discord.ui.View()
+                    combat_view.add_item(basic_attack_button)
+                    combat_view.add_item(health_potion_button)
+                    combat_view.add_item(mana_potion_button)
+
+                    # button callbacks
+                    async def basic_attack_callback(interaction):
+                        if(interaction.user == member):
+                            player_damage = random.randint(1, player._str)
+                            monster_damage = random.randint(1, monster._str)
+                            player._health = player._health - monster_damage
+                            monster._health = monster._health - player_damage
+                            health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                            damage = "You did " + str(player_damage) + " damage using a basic attack.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                            if(player._health <= 0):
+                                health = player._name + " Health: 0/" + str(player._maxHealth)
+                                gold_lost = round(player._gold * 0.05)
+                                lost = f"You have dropped {gold_lost} gold."
+                                player._gold = player._gold - gold_lost
+                                player._health = player._maxHealth
+                                player.updateCharacter()
+
+                                # loss embed
+                                loss_embed = discord.Embed(title = "Defeat", description = f"You have lost the battle against the {monster._name}.", color = discord.Color.from_rgb(255, 0, 0))
+                                loss_embed.set_thumbnail(url = "https://cdn.vectorstock.com/i/1000x1000/62/84/skull-and-crossbones-black-coin-vector-19416284.webp")
+                                loss_embed.add_field(name = damage, value = "", inline = False)
+                                loss_embed.add_field(name = health, value = "", inline = False)
+                                loss_embed.add_field(name = lost, value = "", inline = False)
+                                loss_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = loss_embed, view = None)
+
+                            elif(monster._health <= 0):
+                                gold_earned = monster.calculateGold()
+                                drops = f"You have received {monster._xp} xp.\nYou have received {gold_earned} gold."
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
+                                player._xp = player._xp + monster._xp
+                                player._gold = player._gold + gold_earned
+                                player.updateCharacter()
+
+                                # victory embed
+                                victory_embed = discord.Embed(title = "Victory", description = f"You have defeated the {monster._name}.", color = discord.Color.from_rgb(0, 255, 0))
+                                victory_embed.add_field(name = health, value = "", inline = False)
+                                victory_embed.add_field(name = drops, value = "", inline = False)
+                                victory_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = victory_embed, view = None)
+
+                            else:
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(64, 64, 64))
+                                turn_embed.set_thumbnail(url = "https://static.wikia.nocookie.net/creaturequest/images/2/24/148_DireWolf.png/revision/latest/scale-to-width-down/378?cb=20170315223053")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+                        else:
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    async def health_potion_callback(interaction):
+                        if(interaction.user == member):
+                            if(player._healthPotions > 0):
+                                monster_damage = random.randint(1, monster._str)
+                                player._health = player._health + 20
+                                player._healthPotions = player._healthPotions - 1
+                                if(player._health > player._maxHealth):
+                                    player._health = player._maxHealth
+                                player._health = player._health - monster_damage
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                                damage = "You recovered health using a potion.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 25, 0))
+                                turn_embed.set_thumbnail(url = "https://static.wikia.nocookie.net/creaturequest/images/2/24/148_DireWolf.png/revision/latest/scale-to-width-down/378?cb=20170315223053")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+
+                            else:
+                                await interaction.response.send_message(content = "You do not have any health potions.", ephemeral = True)
+                        else:
+                            # Not the same user
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    async def mana_potion_callback(interaction):
+                        if(interaction.user == member):
+                            if(player._manaPotions > 0):
+                                monster_damage = random.randint(1, monster._str)
+                                player._mana = player._mana + 10
+                                player._manaPotions = player._manaPotions - 1
+                                if(player._mana > player._maxMana):
+                                    player._mana = player._maxMana
+                                player._health = player._health - monster_damage
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                                mana = player._name + " Mana: " + str(player._mana) + "/" + str(player._maxMana)
+                                damage = "You recovered mana using a potion.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 25, 0))
+                                turn_embed.set_thumbnail(url = "https://static.wikia.nocookie.net/creaturequest/images/2/24/148_DireWolf.png/revision/latest/scale-to-width-down/378?cb=20170315223053")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.add_field(name = mana, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+
+                            else:
+                                await interaction.response.send_message(content = "You do not have any mana potions.", ephemeral = True)
+                        else:
+                            # Not the same user
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    basic_attack_button.callback = basic_attack_callback
+                    health_potion_button.callback = health_potion_callback
+                    mana_potion_button.callback = mana_potion_callback
+
+                    # combat embed
+                    combat_embed = discord.Embed(title = "Combat", description = f"You have encountered a {monster._name}.\nSelect attack option", color = discord.Color.from_rgb(64, 64, 64))
+                    combat_embed.set_thumbnail(url = "https://static.wikia.nocookie.net/creaturequest/images/2/24/148_DireWolf.png/revision/latest/scale-to-width-down/378?cb=20170315223053")
+                    combat_embed.add_field(name = health, value = "")
+                    combat_embed.set_footer(text = f"{member.display_name} created this")
+
+                    await interaction.response.edit_message(embed = combat_embed, view = combat_view)
+
+
+                elif(chance < 91):
+                    monster = monsters.Elf(player._level)
+                    player._health = player._maxHealth
+                    monster_health = monster._maxHealth
+                    health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+
+                    # combat view
+                    basic_attack_button = discord.ui.Button(label = "Basic Attack", custom_id = 'basic_attack', style = discord.ButtonStyle.red, row = 0)
+                    health_potion_button = discord.ui.Button(label = "Health Potion", custom_id = 'health_potion', style = discord.ButtonStyle.green, row = 0)
+                    mana_potion_button = discord.ui.Button(label = "Mana Potion", custom_id = 'mana_potion', style = discord.ButtonStyle.blurple, row = 0)
+                    combat_view = discord.ui.View()
+                    combat_view.add_item(basic_attack_button)
+                    combat_view.add_item(health_potion_button)
+                    combat_view.add_item(mana_potion_button)
+
+                    # button callbacks
+                    async def basic_attack_callback(interaction):
+                        if(interaction.user == member):
+                            player_damage = random.randint(1, player._str)
+                            monster_damage = random.randint(1, monster._str)
+                            player._health = player._health - monster_damage
+                            monster._health = monster._health - player_damage
+                            health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                            damage = "You did " + str(player_damage) + " damage using a basic attack.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                            if(player._health <= 0):
+                                health = player._name + " Health: 0/" + str(player._maxHealth)
+                                gold_lost = round(player._gold * 0.05)
+                                lost = f"You have dropped {gold_lost} gold."
+                                player._gold = player._gold - gold_lost
+                                player._health = player._maxHealth
+                                player.updateCharacter()
+
+                                # loss embed
+                                loss_embed = discord.Embed(title = "Defeat", description = f"You have lost the battle against the {monster._name}.", color = discord.Color.from_rgb(255, 0, 0))
+                                loss_embed.set_thumbnail(url = "https://cdn.vectorstock.com/i/1000x1000/62/84/skull-and-crossbones-black-coin-vector-19416284.webp")
+                                loss_embed.add_field(name = damage, value = "", inline = False)
+                                loss_embed.add_field(name = health, value = "", inline = False)
+                                loss_embed.add_field(name = lost, value = "", inline = False)
+                                loss_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = loss_embed, view = None)
+
+                            elif(monster._health <= 0):
+                                gold_earned = monster.calculateGold()
+                                drops = f"You have received {monster._xp} xp.\nYou have received {gold_earned} gold."
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
+                                player._xp = player._xp + monster._xp
+                                player._gold = player._gold + gold_earned
+                                player.updateCharacter()
+
+                                # victory embed
+                                victory_embed = discord.Embed(title = "Victory", description = f"You have defeated the {monster._name}.", color = discord.Color.from_rgb(0, 255, 0))
+                                victory_embed.add_field(name = health, value = "", inline = False)
+                                victory_embed.add_field(name = drops, value = "", inline = False)
+                                victory_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = victory_embed, view = None)
+                        
+                            else:
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(0, 102, 0))
+                                turn_embed.set_thumbnail(url = "https://i.pinimg.com/originals/4e/2f/12/4e2f12b4ad01eeaae5b0a3b2f8f7647b.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+                        else:
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    async def health_potion_callback(interaction):
+                        if(interaction.user == member):
+                            if(player._healthPotions > 0):
+                                monster_damage = random.randint(1, monster._str)
+                                player._health = player._health + 20
+                                player._healthPotions = player._healthPotions - 1
+                                if(player._health > player._maxHealth):
+                                    player._health = player._maxHealth
+                                player._health = player._health - monster_damage
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                                damage = "You recovered health using a potion.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 25, 0))
+                                turn_embed.set_thumbnail(url = "https://i.pinimg.com/originals/4e/2f/12/4e2f12b4ad01eeaae5b0a3b2f8f7647b.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+
+                            else:
+                                await interaction.response.send_message(content = "You do not have any health potions.", ephemeral = True)
+                        else:
+                            # Not the same user
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    async def mana_potion_callback(interaction):
+                        if(interaction.user == member):
+                            if(player._manaPotions > 0):
+                                monster_damage = random.randint(1, monster._str)
+                                player._mana = player._mana + 10
+                                player._manaPotions = player._manaPotions - 1
+                                if(player._mana > player._maxMana):
+                                    player._mana = player._maxMana
+                                player._health = player._health - monster_damage
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                                mana = player._name + " Mana: " + str(player._mana) + "/" + str(player._maxMana)
+                                damage = "You recovered mana using a potion.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 25, 0))
+                                turn_embed.set_thumbnail(url = "https://i.pinimg.com/originals/4e/2f/12/4e2f12b4ad01eeaae5b0a3b2f8f7647b.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.add_field(name = mana, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+
+                            else:
+                                await interaction.response.send_message(content = "You do not have any mana potions.", ephemeral = True)
+                        else:
+                            # Not the same user
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    basic_attack_button.callback = basic_attack_callback
+                    health_potion_button.callback = health_potion_callback
+                    mana_potion_button.callback = mana_potion_callback
+
+                    # combat embed
+                    combat_embed = discord.Embed(title = "Combat", description = f"You have encountered a {monster._name}.\nSelect attack option", color = discord.Color.from_rgb(0, 102, 0))
+                    combat_embed.set_thumbnail(url = "https://i.pinimg.com/originals/4e/2f/12/4e2f12b4ad01eeaae5b0a3b2f8f7647b.png")
+                    combat_embed.add_field(name = health, value = "")
+                    combat_embed.set_footer(text = f"{member.display_name} created this")
+
+                    await interaction.response.edit_message(embed = combat_embed, view = combat_view)
+
+                else:
+                    monster = monsters.Treant(player._level)
+                    player._health = player._maxHealth
+                    monster_health = monster._maxHealth
+                    health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+
+                    # combat view
+                    basic_attack_button = discord.ui.Button(label = "Basic Attack", custom_id = 'basic_attack', style = discord.ButtonStyle.red, row = 0)
+                    health_potion_button = discord.ui.Button(label = "Health Potion", custom_id = 'health_potion', style = discord.ButtonStyle.green, row = 0)
+                    mana_potion_button = discord.ui.Button(label = "Mana Potion", custom_id = 'mana_potion', style = discord.ButtonStyle.blurple, row = 0)
+                    combat_view = discord.ui.View()
+                    combat_view.add_item(basic_attack_button)
+                    combat_view.add_item(health_potion_button)
+                    combat_view.add_item(mana_potion_button)
+
+                    # button callbacks
+                    async def basic_attack_callback(interaction):
+                        if(interaction.user == member):
+                            player_damage = random.randint(1, player._str)
+                            monster_damage = random.randint(1, monster._str)
+                            player._health = player._health - monster_damage
+                            monster._health = monster._health - player_damage
+                            health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                            damage = "You did " + str(player_damage) + " damage using a basic attack.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                            if(player._health <= 0):
+                                health = player._name + " Health: 0/" + str(player._maxHealth)
+                                gold_lost = round(player._gold * 0.05)
+                                lost = f"You have dropped {gold_lost} gold."
+                                player._health = player._maxHealth
+                                player._gold = player._gold - gold_lost
+                                player.updateCharacter()
+
+                                # loss embed
+                                loss_embed = discord.Embed(title = "Defeat", description = f"You have lost the battle against the {monster._name}.", color = discord.Color.from_rgb(255, 0, 0))
+                                loss_embed.set_thumbnail(url = "https://cdn.vectorstock.com/i/1000x1000/62/84/skull-and-crossbones-black-coin-vector-19416284.webp")
+                                loss_embed.add_field(name = damage, value = "", inline = False)
+                                loss_embed.add_field(name = health, value = "", inline = False)
+                                loss_embed.add_field(name = lost, value = "", inline = False)
+                                loss_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = loss_embed, view = None)
+
+                            elif(monster._health <= 0):
+                                gold_earned = monster.calculateGold()
+                                drops = f"You have received {monster._xp} xp.\nYou have received {gold_earned} gold."
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
+                                player._xp = player._xp + monster._xp
+                                player._gold = player._gold + gold_earned
+                                player.updateCharacter()
+
+                                # victory embed
+                                victory_embed = discord.Embed(title = "Victory", description = f"You have defeated the {monster._name}.", color = discord.Color.from_rgb(0, 255, 0))
+                                victory_embed.add_field(name = health, value = "", inline = False)
+                                victory_embed.add_field(name = drops, value = "", inline = False)
+                                victory_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = victory_embed, view = None)
+                        
+                            else:
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(102, 51, 0))
+                                turn_embed.set_thumbnail(url = "https://www.dndbeyond.com/avatars/thumbnails/30836/130/1000/1000/638063929302059775.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+                        else:
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    async def health_potion_callback(interaction):
+                        if(interaction.user == member):
+                            if(player._healthPotions > 0):
+                                monster_damage = random.randint(1, monster._str)
+                                player._health = player._health + 20
+                                player._healthPotions = player._healthPotions - 1
+                                if(player._health > player._maxHealth):
+                                    player._health = player._maxHealth
+                                player._health = player._health - monster_damage
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                                damage = "You recovered health using a potion.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 25, 0))
+                                turn_embed.set_thumbnail(url = "https://www.dndbeyond.com/avatars/thumbnails/30836/130/1000/1000/638063929302059775.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+
+                            else:
+                                await interaction.response.send_message(content = "You do not have any health potions.", ephemeral = True)
+                        else:
+                            # Not the same user
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    async def mana_potion_callback(interaction):
+                        if(interaction.user == member):
+                            if(player._manaPotions > 0):
+                                monster_damage = random.randint(1, monster._str)
+                                player._mana = player._mana + 10
+                                player._manaPotions = player._manaPotions - 1
+                                if(player._mana > player._maxMana):
+                                    player._mana = player._maxMana
+                                player._health = player._health - monster_damage
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                                mana = player._name + " Mana: " + str(player._mana) + "/" + str(player._maxMana)
+                                damage = "You recovered mana using a potion.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 25, 0))
+                                turn_embed.set_thumbnail(url = "https://www.dndbeyond.com/avatars/thumbnails/30836/130/1000/1000/638063929302059775.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.add_field(name = mana, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+
+                            else:
+                                await interaction.response.send_message(content = "You do not have any mana potions.", ephemeral = True)
+                        else:
+                            # Not the same user
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    basic_attack_button.callback = basic_attack_callback
+                    health_potion_button.callback = health_potion_callback
+                    mana_potion_button.callback = mana_potion_callback
+
+                    # combat embed
+                    combat_embed = discord.Embed(title = "Combat", description = f"You have encountered a {monster._name}.\nSelect attack option", color = discord.Color.from_rgb(102, 51, 0))
+                    combat_embed.set_thumbnail(url = "https://www.dndbeyond.com/avatars/thumbnails/30836/130/1000/1000/638063929302059775.png")
+                    combat_embed.add_field(name = health, value = "")
+                    combat_embed.set_footer(text = f"{member.display_name} created this")
+
+                    await interaction.response.edit_message(embed = combat_embed, view = combat_view)
+
         else:
             # Not the same user
             await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
 
     async def cave_callback(interaction):
         if(interaction.user == member):
-            chance = random.randint(1, 100)
-            if(chance < 36):
-                monster = monsters.GiantSpider(player._level)
-                player._health = player._maxHealth
-                monster_health = monster._maxHealth
-                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+            if(player._characterClass == "warrior"):
+                chance = random.randint(1, 100)
+                if(chance < 36):
+                    monster = monsters.GiantSpider(player._level)
+                    player._health = player._maxHealth
+                    player._mana = player._maxMana
+                    monster_health = monster._maxHealth
+                    health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
 
-                # combat view
-                basic_attack_button = discord.ui.Button(label = "Basic Attack", custom_id = 'basic_attack', style = discord.ButtonStyle.red, row = 0)
-                combat_view = discord.ui.View()
-                combat_view.add_item(basic_attack_button)
+                    # combat view
+                    basic_attack_button = discord.ui.Button(label = "Basic Attack", custom_id = 'basic_attack', style = discord.ButtonStyle.red, row = 0)
+                    health_potion_button = discord.ui.Button(label = "Health Potion", custom_id = 'health_potion', style = discord.ButtonStyle.green, row = 0)
+                    mana_potion_button = discord.ui.Button(label = "Mana Potion", custom_id = 'mana_potion', style = discord.ButtonStyle.blurple, row = 0)
+                    combat_view = discord.ui.View()
+                    combat_view.add_item(basic_attack_button)
+                    combat_view.add_item(health_potion_button)
+                    combat_view.add_item(mana_potion_button)
 
-                # button callbacks
-                async def basic_attack_callback(interaction):
-                    if(interaction.user == member):
-                        player_damage = random.randint(1, player._str)
-                        monster_damage = random.randint(1, monster._str)
-                        player._health = player._health - monster_damage
-                        monster._health = monster._health - player_damage
-                        health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
-                        damage = "You did " + str(player_damage) + " damage using a basic attack.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+                    # button callbacks
+                    async def basic_attack_callback(interaction):
+                        if(interaction.user == member):
+                            player_damage = random.randint(1, player._str)
+                            monster_damage = random.randint(1, monster._str)
+                            player._health = player._health - monster_damage
+                            monster._health = monster._health - player_damage
+                            health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                            damage = "You did " + str(player_damage) + " damage using a basic attack.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
 
-                        if(player._health <= 0):
-                            health = player._name + " Health: 0/" + str(player._maxHealth)
-                            gold_lost = round(player._gold * 0.05)
-                            lost = f"You have dropped {gold_lost} gold."
-                            player._gold = player._gold - gold_lost
-                            player._health = player._maxHealth
-                            player.updateCharacter()
+                            if(player._health <= 0):
+                                health = player._name + " Health: 0/" + str(player._maxHealth)
+                                gold_lost = round(player._gold * 0.05)
+                                lost = f"You have dropped {gold_lost} gold."
+                                player._gold = player._gold - gold_lost
+                                player._health = player._maxHealth
+                                player.updateCharacter()
 
-                            # loss embed
-                            loss_embed = discord.Embed(title = "Defeat", description = f"You have lost the battle against the {monster._name}.", color = discord.Color.from_rgb(255, 0, 0))
-                            loss_embed.set_thumbnail(url = "https://cdn.vectorstock.com/i/1000x1000/62/84/skull-and-crossbones-black-coin-vector-19416284.webp")
-                            loss_embed.add_field(name = damage, value = "", inline = False)
-                            loss_embed.add_field(name = health, value = "", inline = False)
-                            loss_embed.add_field(name = lost, value = "", inline = False)
-                            loss_embed.set_footer(text = f"{member.display_name} created this")
+                                # loss embed
+                                loss_embed = discord.Embed(title = "Defeat", description = f"You have lost the battle against the {monster._name}.", color = discord.Color.from_rgb(255, 0, 0))
+                                loss_embed.set_thumbnail(url = "https://cdn.vectorstock.com/i/1000x1000/62/84/skull-and-crossbones-black-coin-vector-19416284.webp")
+                                loss_embed.add_field(name = damage, value = "", inline = False)
+                                loss_embed.add_field(name = health, value = "", inline = False)
+                                loss_embed.add_field(name = lost, value = "", inline = False)
+                                loss_embed.set_footer(text = f"{member.display_name} created this")
 
-                            await interaction.response.edit_message(embed = loss_embed, view = None)
+                                await interaction.response.edit_message(embed = loss_embed, view = None)
 
-                        elif(monster._health <= 0):
-                            gold_earned = monster.calculateGold()
-                            drops = f"You have received {monster._xp} xp.\nYou have received {gold_earned} gold."
-                            health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
-                            player._xp = player._xp + monster._xp
-                            player._gold = player._gold + gold_earned
-                            player.updateCharacter()
+                            elif(monster._health <= 0):
+                                gold_earned = monster.calculateGold()
+                                drops = f"You have received {monster._xp} xp.\nYou have received {gold_earned} gold."
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
+                                player._xp = player._xp + monster._xp
+                                player._gold = player._gold + gold_earned
+                                player.updateCharacter()
 
-                            # victory embed
-                            victory_embed = discord.Embed(title = "Victory", description = f"You have defeated the {monster._name}.", color = discord.Color.from_rgb(0, 255, 0))
-                            victory_embed.add_field(name = health, value = "", inline = False)
-                            victory_embed.add_field(name = drops, value = "", inline = False)
-                            victory_embed.set_footer(text = f"{member.display_name} created this")
+                                # victory embed
+                                victory_embed = discord.Embed(title = "Victory", description = f"You have defeated the {monster._name}.", color = discord.Color.from_rgb(0, 255, 0))
+                                victory_embed.add_field(name = health, value = "", inline = False)
+                                victory_embed.add_field(name = drops, value = "", inline = False)
+                                victory_embed.set_footer(text = f"{member.display_name} created this")
 
-                            await interaction.response.edit_message(embed = victory_embed, view = None)
-                    
+                                await interaction.response.edit_message(embed = victory_embed, view = None)
+                        
+                            else:
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(32, 32, 32))
+                                turn_embed.set_thumbnail(url = "https://freepngimg.com/thumb/spider/35341-9-black-widow-spider-transparent.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
                         else:
-                            # next turn
-                            turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(32, 32, 32))
-                            turn_embed.set_thumbnail(url = "https://freepngimg.com/thumb/spider/35341-9-black-widow-spider-transparent.png")
-                            turn_embed.add_field(name = damage, value = "", inline = False)
-                            turn_embed.add_field(name = health, value = "", inline = False)
-                            turn_embed.set_footer(text = f"{member.display_name} created this")
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
 
-                            await interaction.response.edit_message(embed = turn_embed, view = combat_view)
-                    else:
-                        await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+                    async def health_potion_callback(interaction):
+                        if(interaction.user == member):
+                            if(player._healthPotions > 0):
+                                monster_damage = random.randint(1, monster._str)
+                                player._health = player._health + 20
+                                player._healthPotions = player._healthPotions - 1
+                                if(player._health > player._maxHealth):
+                                    player._health = player._maxHealth
+                                player._health = player._health - monster_damage
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                                damage = "You recovered health using a potion.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
 
-                basic_attack_button.callback = basic_attack_callback
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 25, 0))
+                                turn_embed.set_thumbnail(url = "https://freepngimg.com/thumb/spider/35341-9-black-widow-spider-transparent.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
 
-                # combat embed
-                combat_embed = discord.Embed(title = "Combat", description = f"You have encountered a {monster._name}.\nSelect attack option", color = discord.Color.from_rgb(32, 32, 32))
-                combat_embed.set_thumbnail(url = "https://freepngimg.com/thumb/spider/35341-9-black-widow-spider-transparent.png")
-                combat_embed.add_field(name = health, value = "")
-                combat_embed.set_footer(text = f"{member.display_name} created this")
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
 
-                await interaction.response.edit_message(embed = combat_embed, view = combat_view)
-
-            elif(chance < 71):
-                monster = monsters.Roper(player._level)
-                player._health = player._maxHealth
-                monster_health = monster._maxHealth
-                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
-
-                # combat view
-                basic_attack_button = discord.ui.Button(label = "Basic Attack", custom_id = 'basic_attack', style = discord.ButtonStyle.red, row = 0)
-                combat_view = discord.ui.View()
-                combat_view.add_item(basic_attack_button)
-
-                # button callbacks
-                async def basic_attack_callback(interaction):
-                    if(interaction.user == member):
-                        player_damage = random.randint(1, player._str)
-                        monster_damage = random.randint(1, monster._str)
-                        player._health = player._health - monster_damage
-                        monster._health = monster._health - player_damage
-                        health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
-                        damage = "You did " + str(player_damage) + " damage using a basic attack.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
-
-                        if(player._health <= 0):
-                            health = player._name + " Health: 0/" + str(player._maxHealth)
-                            gold_lost = round(player._gold * 0.05)
-                            lost = f"You have dropped {gold_lost} gold."
-                            player._gold = player._gold - gold_lost
-                            player._health = player._maxHealth
-                            player.updateCharacter()
-
-                            # loss embed
-                            loss_embed = discord.Embed(title = "Defeat", description = f"You have lost the battle against the {monster._name}.", color = discord.Color.from_rgb(255, 0, 0))
-                            loss_embed.set_thumbnail(url = "https://cdn.vectorstock.com/i/1000x1000/62/84/skull-and-crossbones-black-coin-vector-19416284.webp")
-                            loss_embed.add_field(name = damage, value = "", inline = False)
-                            loss_embed.add_field(name = health, value = "", inline = False)
-                            loss_embed.add_field(name = lost, value = "", inline = False)
-                            loss_embed.set_footer(text = f"{member.display_name} created this")
-
-                            await interaction.response.edit_message(embed = loss_embed, view = None)
-
-                        elif(monster._health <= 0):
-                            gold_earned = monster.calculateGold()
-                            drops = f"You have received {monster._xp} xp.\nYou have received {gold_earned} gold."
-                            health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
-                            player._xp = player._xp + monster._xp
-                            player._gold = player._gold + gold_earned
-                            player.updateCharacter()
-
-                            # victory embed
-                            victory_embed = discord.Embed(title = "Victory", description = f"You have defeated the {monster._name}.", color = discord.Color.from_rgb(0, 255, 0))
-                            victory_embed.add_field(name = health, value = "", inline = False)
-                            victory_embed.add_field(name = drops, value = "", inline = False)
-                            victory_embed.set_footer(text = f"{member.display_name} created this")
-
-                            await interaction.response.edit_message(embed = victory_embed, view = None)
-                    
+                            else:
+                                await interaction.response.send_message(content = "You do not have any health potions.", ephemeral = True)
                         else:
-                            # next turn
-                            turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 0, 51))
-                            turn_embed.set_thumbnail(url = "https://www.dndbeyond.com/avatars/thumbnails/30834/993/1000/1000/638063901980029135.png")
-                            turn_embed.add_field(name = damage, value = "", inline = False)
-                            turn_embed.add_field(name = health, value = "", inline = False)
-                            turn_embed.set_footer(text = f"{member.display_name} created this")
+                            # Not the same user
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
 
-                            await interaction.response.edit_message(embed = turn_embed, view = combat_view)
-                    else:
-                        await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+                    async def mana_potion_callback(interaction):
+                        if(interaction.user == member):
+                            if(player._manaPotions > 0):
+                                monster_damage = random.randint(1, monster._str)
+                                player._mana = player._mana + 10
+                                player._manaPotions = player._manaPotions - 1
+                                if(player._mana > player._maxMana):
+                                    player._mana = player._maxMana
+                                player._health = player._health - monster_damage
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                                mana = player._name + " Mana: " + str(player._mana) + "/" + str(player._maxMana)
+                                damage = "You recovered mana using a potion.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
 
-                basic_attack_button.callback = basic_attack_callback
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 25, 0))
+                                turn_embed.set_thumbnail(url = "https://freepngimg.com/thumb/spider/35341-9-black-widow-spider-transparent.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.add_field(name = mana, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
 
-                # combat embed
-                combat_embed = discord.Embed(title = "Combat", description = f"You have encountered a {monster._name}.\nSelect attack option", color = discord.Color.from_rgb(51, 0, 51))
-                combat_embed.set_thumbnail(url = "https://www.dndbeyond.com/avatars/thumbnails/30834/993/1000/1000/638063901980029135.png")
-                combat_embed.add_field(name = health, value = "")
-                combat_embed.set_footer(text = f"{member.display_name} created this")
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
 
-                await interaction.response.edit_message(embed = combat_embed, view = combat_view)
-
-
-            elif(chance < 91):
-                monster = monsters.Goblin(player._level)
-                player._health = player._maxHealth
-                monster_health = monster._maxHealth
-                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
-
-                # combat view
-                basic_attack_button = discord.ui.Button(label = "Basic Attack", custom_id = 'basic_attack', style = discord.ButtonStyle.red, row = 0)
-                combat_view = discord.ui.View()
-                combat_view.add_item(basic_attack_button)
-
-                # button callbacks
-                async def basic_attack_callback(interaction):
-                    if(interaction.user == member):
-                        player_damage = random.randint(1, player._str)
-                        monster_damage = random.randint(1, monster._str)
-                        player._health = player._health - monster_damage
-                        monster._health = monster._health - player_damage
-                        health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
-                        damage = "You did " + str(player_damage) + " damage using a basic attack.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
-
-                        if(player._health <= 0):
-                            health = player._name + " Health: 0/" + str(player._maxHealth)
-                            gold_lost = round(player._gold * 0.05)
-                            lost = f"You have dropped {gold_lost} gold."
-                            player._gold = player._gold - gold_lost
-                            player._health = player._maxHealth
-                            player.updateCharacter()
-
-                            # loss embed
-                            loss_embed = discord.Embed(title = "Defeat", description = f"You have lost the battle against the {monster._name}.", color = discord.Color.from_rgb(255, 0, 0))
-                            loss_embed.set_thumbnail(url = "https://cdn.vectorstock.com/i/1000x1000/62/84/skull-and-crossbones-black-coin-vector-19416284.webp")
-                            loss_embed.add_field(name = damage, value = "", inline = False)
-                            loss_embed.add_field(name = health, value = "", inline = False)
-                            loss_embed.add_field(name = lost, value = "", inline = False)
-                            loss_embed.set_footer(text = f"{member.display_name} created this")
-
-                            await interaction.response.edit_message(embed = loss_embed, view = None)
-
-                        elif(monster._health <= 0):
-                            gold_earned = monster.calculateGold()
-                            drops = f"You have received {monster._xp} xp.\nYou have received {gold_earned} gold."
-                            health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
-                            player._xp = player._xp + monster._xp
-                            player._gold = player._gold + gold_earned
-                            player.updateCharacter()
-
-                            # victory embed
-                            victory_embed = discord.Embed(title = "Victory", description = f"You have defeated the {monster._name}.", color = discord.Color.from_rgb(0, 255, 0))
-                            victory_embed.add_field(name = health, value = "", inline = False)
-                            victory_embed.add_field(name = drops, value = "", inline = False)
-                            victory_embed.set_footer(text = f"{member.display_name} created this")
-
-                            await interaction.response.edit_message(embed = victory_embed, view = None)
-                    
+                            else:
+                                await interaction.response.send_message(content = "You do not have any mana potions.", ephemeral = True)
                         else:
-                            # next turn
-                            turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(7, 50, 27))
-                            turn_embed.set_thumbnail(url = "https://i.pinimg.com/originals/5b/9a/86/5b9a862f2e584eae40d8851e025847b8.png")
-                            turn_embed.add_field(name = damage, value = "", inline = False)
-                            turn_embed.add_field(name = health, value = "", inline = False)
-                            turn_embed.set_footer(text = f"{member.display_name} created this")
-                            await interaction.response.edit_message(embed = turn_embed, view = combat_view)
-                    else:
-                        await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+                            # Not the same user
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
 
-                basic_attack_button.callback = basic_attack_callback
+                    basic_attack_button.callback = basic_attack_callback
+                    health_potion_button.callback = health_potion_callback
+                    mana_potion_button.callback = mana_potion_callback
 
-                # combat embed
-                combat_embed = discord.Embed(title = "Combat", description = f"You have encountered a {monster._name}.\nSelect attack option", color = discord.Color.from_rgb(7, 50, 27))
-                combat_embed.set_thumbnail(url = "https://i.pinimg.com/originals/5b/9a/86/5b9a862f2e584eae40d8851e025847b8.png")
-                combat_embed.add_field(name = health, value = "")
-                combat_embed.set_footer(text = f"{member.display_name} created this")
+                    # combat embed
+                    combat_embed = discord.Embed(title = "Combat", description = f"You have encountered a {monster._name}.\nSelect attack option", color = discord.Color.from_rgb(32, 32, 32))
+                    combat_embed.set_thumbnail(url = "https://freepngimg.com/thumb/spider/35341-9-black-widow-spider-transparent.png")
+                    combat_embed.add_field(name = health, value = "")
+                    combat_embed.set_footer(text = f"{member.display_name} created this")
 
-                await interaction.response.edit_message(embed = combat_embed, view = combat_view)
+                    await interaction.response.edit_message(embed = combat_embed, view = combat_view)
+
+                elif(chance < 71):
+                    monster = monsters.Roper(player._level)
+                    player._health = player._maxHealth
+                    monster_health = monster._maxHealth
+                    health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+
+                    # combat view
+                    basic_attack_button = discord.ui.Button(label = "Basic Attack", custom_id = 'basic_attack', style = discord.ButtonStyle.red, row = 0)
+                    health_potion_button = discord.ui.Button(label = "Health Potion", custom_id = 'health_potion', style = discord.ButtonStyle.green, row = 0)
+                    mana_potion_button = discord.ui.Button(label = "Mana Potion", custom_id = 'mana_potion', style = discord.ButtonStyle.blurple, row = 0)
+                    combat_view = discord.ui.View()
+                    combat_view.add_item(basic_attack_button)
+                    combat_view.add_item(health_potion_button)
+                    combat_view.add_item(mana_potion_button)
+
+                    # button callbacks
+                    async def basic_attack_callback(interaction):
+                        if(interaction.user == member):
+                            player_damage = random.randint(1, player._str)
+                            monster_damage = random.randint(1, monster._str)
+                            player._health = player._health - monster_damage
+                            monster._health = monster._health - player_damage
+                            health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                            damage = "You did " + str(player_damage) + " damage using a basic attack.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                            if(player._health <= 0):
+                                health = player._name + " Health: 0/" + str(player._maxHealth)
+                                gold_lost = round(player._gold * 0.05)
+                                lost = f"You have dropped {gold_lost} gold."
+                                player._gold = player._gold - gold_lost
+                                player._health = player._maxHealth
+                                player.updateCharacter()
+
+                                # loss embed
+                                loss_embed = discord.Embed(title = "Defeat", description = f"You have lost the battle against the {monster._name}.", color = discord.Color.from_rgb(255, 0, 0))
+                                loss_embed.set_thumbnail(url = "https://cdn.vectorstock.com/i/1000x1000/62/84/skull-and-crossbones-black-coin-vector-19416284.webp")
+                                loss_embed.add_field(name = damage, value = "", inline = False)
+                                loss_embed.add_field(name = health, value = "", inline = False)
+                                loss_embed.add_field(name = lost, value = "", inline = False)
+                                loss_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = loss_embed, view = None)
+
+                            elif(monster._health <= 0):
+                                gold_earned = monster.calculateGold()
+                                drops = f"You have received {monster._xp} xp.\nYou have received {gold_earned} gold."
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
+                                player._xp = player._xp + monster._xp
+                                player._gold = player._gold + gold_earned
+                                player.updateCharacter()
+
+                                # victory embed
+                                victory_embed = discord.Embed(title = "Victory", description = f"You have defeated the {monster._name}.", color = discord.Color.from_rgb(0, 255, 0))
+                                victory_embed.add_field(name = health, value = "", inline = False)
+                                victory_embed.add_field(name = drops, value = "", inline = False)
+                                victory_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = victory_embed, view = None)
+                        
+                            else:
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 0, 51))
+                                turn_embed.set_thumbnail(url = "https://www.dndbeyond.com/avatars/thumbnails/30834/993/1000/1000/638063901980029135.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+                        else:
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    async def health_potion_callback(interaction):
+                        if(interaction.user == member):
+                            if(player._healthPotions > 0):
+                                monster_damage = random.randint(1, monster._str)
+                                player._health = player._health + 20
+                                player._healthPotions = player._healthPotions - 1
+                                if(player._health > player._maxHealth):
+                                    player._health = player._maxHealth
+                                player._health = player._health - monster_damage
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                                damage = "You recovered health using a potion.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 25, 0))
+                                turn_embed.set_thumbnail(url = "https://www.dndbeyond.com/avatars/thumbnails/30834/993/1000/1000/638063901980029135.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+
+                            else:
+                                await interaction.response.send_message(content = "You do not have any health potions.", ephemeral = True)
+                        else:
+                            # Not the same user
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    async def mana_potion_callback(interaction):
+                        if(interaction.user == member):
+                            if(player._manaPotions > 0):
+                                monster_damage = random.randint(1, monster._str)
+                                player._mana = player._mana + 10
+                                player._manaPotions = player._manaPotions - 1
+                                if(player._mana > player._maxMana):
+                                    player._mana = player._maxMana
+                                player._health = player._health - monster_damage
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                                mana = player._name + " Mana: " + str(player._mana) + "/" + str(player._maxMana)
+                                damage = "You recovered mana using a potion.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 25, 0))
+                                turn_embed.set_thumbnail(url = "https://www.dndbeyond.com/avatars/thumbnails/30834/993/1000/1000/638063901980029135.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.add_field(name = mana, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+
+                            else:
+                                await interaction.response.send_message(content = "You do not have any mana potions.", ephemeral = True)
+                        else:
+                            # Not the same user
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    basic_attack_button.callback = basic_attack_callback
+                    health_potion_button.callback = health_potion_callback
+                    mana_potion_button.callback = mana_potion_callback
+
+                    # combat embed
+                    combat_embed = discord.Embed(title = "Combat", description = f"You have encountered a {monster._name}.\nSelect attack option", color = discord.Color.from_rgb(51, 0, 51))
+                    combat_embed.set_thumbnail(url = "https://www.dndbeyond.com/avatars/thumbnails/30834/993/1000/1000/638063901980029135.png")
+                    combat_embed.add_field(name = health, value = "")
+                    combat_embed.set_footer(text = f"{member.display_name} created this")
+
+                    await interaction.response.edit_message(embed = combat_embed, view = combat_view)
+
+
+                elif(chance < 91):
+                    monster = monsters.Goblin(player._level)
+                    player._health = player._maxHealth
+                    monster_health = monster._maxHealth
+                    health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+
+                    # combat view
+                    basic_attack_button = discord.ui.Button(label = "Basic Attack", custom_id = 'basic_attack', style = discord.ButtonStyle.red, row = 0)
+                    health_potion_button = discord.ui.Button(label = "Health Potion", custom_id = 'health_potion', style = discord.ButtonStyle.green, row = 0)
+                    mana_potion_button = discord.ui.Button(label = "Mana Potion", custom_id = 'mana_potion', style = discord.ButtonStyle.blurple, row = 0)
+                    combat_view = discord.ui.View()
+                    combat_view.add_item(basic_attack_button)
+                    combat_view.add_item(health_potion_button)
+                    combat_view.add_item(mana_potion_button)
+
+                    # button callbacks
+                    async def basic_attack_callback(interaction):
+                        if(interaction.user == member):
+                            player_damage = random.randint(1, player._str)
+                            monster_damage = random.randint(1, monster._str)
+                            player._health = player._health - monster_damage
+                            monster._health = monster._health - player_damage
+                            health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                            damage = "You did " + str(player_damage) + " damage using a basic attack.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                            if(player._health <= 0):
+                                health = player._name + " Health: 0/" + str(player._maxHealth)
+                                gold_lost = round(player._gold * 0.05)
+                                lost = f"You have dropped {gold_lost} gold."
+                                player._gold = player._gold - gold_lost
+                                player._health = player._maxHealth
+                                player.updateCharacter()
+
+                                # loss embed
+                                loss_embed = discord.Embed(title = "Defeat", description = f"You have lost the battle against the {monster._name}.", color = discord.Color.from_rgb(255, 0, 0))
+                                loss_embed.set_thumbnail(url = "https://cdn.vectorstock.com/i/1000x1000/62/84/skull-and-crossbones-black-coin-vector-19416284.webp")
+                                loss_embed.add_field(name = damage, value = "", inline = False)
+                                loss_embed.add_field(name = health, value = "", inline = False)
+                                loss_embed.add_field(name = lost, value = "", inline = False)
+                                loss_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = loss_embed, view = None)
+
+                            elif(monster._health <= 0):
+                                gold_earned = monster.calculateGold()
+                                drops = f"You have received {monster._xp} xp.\nYou have received {gold_earned} gold."
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
+                                player._xp = player._xp + monster._xp
+                                player._gold = player._gold + gold_earned
+                                player.updateCharacter()
+
+                                # victory embed
+                                victory_embed = discord.Embed(title = "Victory", description = f"You have defeated the {monster._name}.", color = discord.Color.from_rgb(0, 255, 0))
+                                victory_embed.add_field(name = health, value = "", inline = False)
+                                victory_embed.add_field(name = drops, value = "", inline = False)
+                                victory_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = victory_embed, view = None)
+                        
+                            else:
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(7, 50, 27))
+                                turn_embed.set_thumbnail(url = "https://i.pinimg.com/originals/5b/9a/86/5b9a862f2e584eae40d8851e025847b8.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+                        else:
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    async def health_potion_callback(interaction):
+                        if(interaction.user == member):
+                            if(player._healthPotions > 0):
+                                monster_damage = random.randint(1, monster._str)
+                                player._health = player._health + 20
+                                player._healthPotions = player._healthPotions - 1
+                                if(player._health > player._maxHealth):
+                                    player._health = player._maxHealth
+                                player._health = player._health - monster_damage
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                                damage = "You recovered health using a potion.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 25, 0))
+                                turn_embed.set_thumbnail(url = "https://i.pinimg.com/originals/5b/9a/86/5b9a862f2e584eae40d8851e025847b8.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+
+                            else:
+                                await interaction.response.send_message(content = "You do not have any health potions.", ephemeral = True)
+                        else:
+                            # Not the same user
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    async def mana_potion_callback(interaction):
+                        if(interaction.user == member):
+                            if(player._manaPotions > 0):
+                                monster_damage = random.randint(1, monster._str)
+                                player._mana = player._mana + 10
+                                player._manaPotions = player._manaPotions - 1
+                                if(player._mana > player._maxMana):
+                                    player._mana = player._maxMana
+                                player._health = player._health - monster_damage
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                                mana = player._name + " Mana: " + str(player._mana) + "/" + str(player._maxMana)
+                                damage = "You recovered mana using a potion.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 25, 0))
+                                turn_embed.set_thumbnail(url = "https://i.pinimg.com/originals/5b/9a/86/5b9a862f2e584eae40d8851e025847b8.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.add_field(name = mana, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+
+                            else:
+                                await interaction.response.send_message(content = "You do not have any mana potions.", ephemeral = True)
+                        else:
+                            # Not the same user
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    basic_attack_button.callback = basic_attack_callback
+                    health_potion_button.callback = health_potion_callback
+                    mana_potion_button.callback = mana_potion_callback
+
+                    # combat embed
+                    combat_embed = discord.Embed(title = "Combat", description = f"You have encountered a {monster._name}.\nSelect attack option", color = discord.Color.from_rgb(7, 50, 27))
+                    combat_embed.set_thumbnail(url = "https://i.pinimg.com/originals/5b/9a/86/5b9a862f2e584eae40d8851e025847b8.png")
+                    combat_embed.add_field(name = health, value = "")
+                    combat_embed.set_footer(text = f"{member.display_name} created this")
+
+                    await interaction.response.edit_message(embed = combat_embed, view = combat_view)
+
+                else:
+                    monster = monsters.Troll(player._level)
+                    player._health = player._maxHealth
+                    monster_health = monster._maxHealth
+                    health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+
+                    # combat view
+                    basic_attack_button = discord.ui.Button(label = "Basic Attack", custom_id = 'basic_attack', style = discord.ButtonStyle.red, row = 0)
+                    health_potion_button = discord.ui.Button(label = "Health Potion", custom_id = 'health_potion', style = discord.ButtonStyle.green, row = 0)
+                    mana_potion_button = discord.ui.Button(label = "Mana Potion", custom_id = 'mana_potion', style = discord.ButtonStyle.blurple, row = 0)
+                    combat_view = discord.ui.View()
+                    combat_view.add_item(basic_attack_button)
+                    combat_view.add_item(health_potion_button)
+                    combat_view.add_item(mana_potion_button)
+
+                    # button callbacks
+                    async def basic_attack_callback(interaction):
+                        if(interaction.user == member):
+                            player_damage = random.randint(1, player._str)
+                            monster_damage = random.randint(1, monster._str)
+                            player._health = player._health - monster_damage
+                            monster._health = monster._health - player_damage
+                            health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                            damage = "You did " + str(player_damage) + " damage using a basic attack.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                            if(player._health <= 0):
+                                health = player._name + " Health: 0/" + str(player._maxHealth)
+                                gold_lost = round(player._gold * 0.05)
+                                lost = f"You have dropped {gold_lost} gold."
+                                player._gold = player._gold - gold_lost
+                                player._health = player._maxHealth
+                                player.updateCharacter()
+
+                                # loss embed
+                                loss_embed = discord.Embed(title = "Defeat", description = f"You have lost the battle against the {monster._name}.", color = discord.Color.from_rgb(255, 0, 0))
+                                loss_embed.set_thumbnail(url = "https://cdn.vectorstock.com/i/1000x1000/62/84/skull-and-crossbones-black-coin-vector-19416284.webp")
+                                loss_embed.add_field(name = damage, value = "", inline = False)
+                                loss_embed.add_field(name = health, value = "", inline = False)
+                                loss_embed.add_field(name = lost, value = "", inline = False)
+                                loss_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = loss_embed, view = None)
+
+                            elif(monster._health <= 0):
+                                gold_earned = monster.calculateGold()
+                                drops = f"You have received {monster._xp} xp.\nYou have received {gold_earned} gold."
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
+                                player._xp = player._xp + monster._xp
+                                player._gold = player._gold + gold_earned
+                                player.updateCharacter()
+
+                                # victory embed
+                                victory_embed = discord.Embed(title = "Victory", description = f"You have defeated the {monster._name}.", color = discord.Color.from_rgb(0, 255, 0))
+                                victory_embed.add_field(name = health, value = "", inline = False)
+                                victory_embed.add_field(name = drops, value = "", inline = False)
+                                victory_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = victory_embed, view = None)
+                        
+                            else:
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(39, 58, 43))
+                                turn_embed.set_thumbnail(url = "https://www.dndbeyond.com/avatars/thumbnails/30836/144/1000/1000/638063929586218907.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+                        else:
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    async def health_potion_callback(interaction):
+                        if(interaction.user == member):
+                            if(player._healthPotions > 0):
+                                monster_damage = random.randint(1, monster._str)
+                                player._health = player._health + 20
+                                player._healthPotions = player._healthPotions - 1
+                                if(player._health > player._maxHealth):
+                                    player._health = player._maxHealth
+                                player._health = player._health - monster_damage
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                                damage = "You recovered health using a potion.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 25, 0))
+                                turn_embed.set_thumbnail(url = "https://www.dndbeyond.com/avatars/thumbnails/30836/144/1000/1000/638063929586218907.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+
+                            else:
+                                await interaction.response.send_message(content = "You do not have any health potions.", ephemeral = True)
+                        else:
+                            # Not the same user
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    async def mana_potion_callback(interaction):
+                        if(interaction.user == member):
+                            if(player._manaPotions > 0):
+                                monster_damage = random.randint(1, monster._str)
+                                player._mana = player._mana + 10
+                                player._manaPotions = player._manaPotions - 1
+                                if(player._mana > player._maxMana):
+                                    player._mana = player._maxMana
+                                player._health = player._health - monster_damage
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                                mana = player._name + " Mana: " + str(player._mana) + "/" + str(player._maxMana)
+                                damage = "You recovered mana using a potion.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 25, 0))
+                                turn_embed.set_thumbnail(url = "https://www.dndbeyond.com/avatars/thumbnails/30836/144/1000/1000/638063929586218907.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.add_field(name = mana, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+
+                            else:
+                                await interaction.response.send_message(content = "You do not have any mana potions.", ephemeral = True)
+                        else:
+                            # Not the same user
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    basic_attack_button.callback = basic_attack_callback
+                    health_potion_button.callback = health_potion_callback
+                    mana_potion_button.callback = mana_potion_callback
+
+                    # combat embed
+                    combat_embed = discord.Embed(title = "Combat", description = f"You have encountered a {monster._name}.\nSelect attack option", color = discord.Color.from_rgb(39, 58, 43))
+                    combat_embed.set_thumbnail(url = "https://www.dndbeyond.com/avatars/thumbnails/30836/144/1000/1000/638063929586218907.png")
+                    combat_embed.add_field(name = health, value = "")
+                    combat_embed.set_footer(text = f"{member.display_name} created this")
+
+                    await interaction.response.edit_message(embed = combat_embed, view = combat_view)
 
             else:
-                monster = monsters.Troll(player._level)
-                player._health = player._maxHealth
-                monster_health = monster._maxHealth
-                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                chance = random.randint(1, 100)
+                if(chance < 36):
+                    monster = monsters.GiantSpider(player._level)
+                    player._health = player._maxHealth
+                    player._mana = player._maxMana
+                    monster_health = monster._maxHealth
+                    health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
 
-                # combat view
-                basic_attack_button = discord.ui.Button(label = "Basic Attack", custom_id = 'basic_attack', style = discord.ButtonStyle.red, row = 0)
-                combat_view = discord.ui.View()
-                combat_view.add_item(basic_attack_button)
+                    # combat view
+                    basic_attack_button = discord.ui.Button(label = "Basic Attack", custom_id = 'basic_attack', style = discord.ButtonStyle.red, row = 0)
+                    health_potion_button = discord.ui.Button(label = "Health Potion", custom_id = 'health_potion', style = discord.ButtonStyle.green, row = 0)
+                    mana_potion_button = discord.ui.Button(label = "Mana Potion", custom_id = 'mana_potion', style = discord.ButtonStyle.blurple, row = 0)
+                    combat_view = discord.ui.View()
+                    combat_view.add_item(basic_attack_button)
+                    combat_view.add_item(health_potion_button)
+                    combat_view.add_item(mana_potion_button)
 
-                # button callbacks
-                async def basic_attack_callback(interaction):
-                    if(interaction.user == member):
-                        player_damage = random.randint(1, player._str)
-                        monster_damage = random.randint(1, monster._str)
-                        player._health = player._health - monster_damage
-                        monster._health = monster._health - player_damage
-                        health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
-                        damage = "You did " + str(player_damage) + " damage using a basic attack.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+                    # button callbacks
+                    async def basic_attack_callback(interaction):
+                        if(interaction.user == member):
+                            player_damage = random.randint(1, player._str)
+                            monster_damage = random.randint(1, monster._str)
+                            player._health = player._health - monster_damage
+                            monster._health = monster._health - player_damage
+                            health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                            damage = "You did " + str(player_damage) + " damage using a basic attack.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
 
-                        if(player._health <= 0):
-                            health = player._name + " Health: 0/" + str(player._maxHealth)
-                            gold_lost = round(player._gold * 0.05)
-                            lost = f"You have dropped {gold_lost} gold."
-                            player._gold = player._gold - gold_lost
-                            player._health = player._maxHealth
-                            player.updateCharacter()
+                            if(player._health <= 0):
+                                health = player._name + " Health: 0/" + str(player._maxHealth)
+                                gold_lost = round(player._gold * 0.05)
+                                lost = f"You have dropped {gold_lost} gold."
+                                player._gold = player._gold - gold_lost
+                                player._health = player._maxHealth
+                                player.updateCharacter()
 
-                            # loss embed
-                            loss_embed = discord.Embed(title = "Defeat", description = f"You have lost the battle against the {monster._name}.", color = discord.Color.from_rgb(255, 0, 0))
-                            loss_embed.set_thumbnail(url = "https://cdn.vectorstock.com/i/1000x1000/62/84/skull-and-crossbones-black-coin-vector-19416284.webp")
-                            loss_embed.add_field(name = damage, value = "", inline = False)
-                            loss_embed.add_field(name = health, value = "", inline = False)
-                            loss_embed.add_field(name = lost, value = "", inline = False)
-                            loss_embed.set_footer(text = f"{member.display_name} created this")
+                                # loss embed
+                                loss_embed = discord.Embed(title = "Defeat", description = f"You have lost the battle against the {monster._name}.", color = discord.Color.from_rgb(255, 0, 0))
+                                loss_embed.set_thumbnail(url = "https://cdn.vectorstock.com/i/1000x1000/62/84/skull-and-crossbones-black-coin-vector-19416284.webp")
+                                loss_embed.add_field(name = damage, value = "", inline = False)
+                                loss_embed.add_field(name = health, value = "", inline = False)
+                                loss_embed.add_field(name = lost, value = "", inline = False)
+                                loss_embed.set_footer(text = f"{member.display_name} created this")
 
-                            await interaction.response.edit_message(embed = loss_embed, view = None)
+                                await interaction.response.edit_message(embed = loss_embed, view = None)
 
-                        elif(monster._health <= 0):
-                            gold_earned = monster.calculateGold()
-                            drops = f"You have received {monster._xp} xp.\nYou have received {gold_earned} gold."
-                            health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
-                            player._xp = player._xp + monster._xp
-                            player._gold = player._gold + gold_earned
-                            player.updateCharacter()
+                            elif(monster._health <= 0):
+                                gold_earned = monster.calculateGold()
+                                drops = f"You have received {monster._xp} xp.\nYou have received {gold_earned} gold."
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
+                                player._xp = player._xp + monster._xp
+                                player._gold = player._gold + gold_earned
+                                player.updateCharacter()
 
-                            # victory embed
-                            victory_embed = discord.Embed(title = "Victory", description = f"You have defeated the {monster._name}.", color = discord.Color.from_rgb(0, 255, 0))
-                            victory_embed.add_field(name = health, value = "", inline = False)
-                            victory_embed.add_field(name = drops, value = "", inline = False)
-                            victory_embed.set_footer(text = f"{member.display_name} created this")
+                                # victory embed
+                                victory_embed = discord.Embed(title = "Victory", description = f"You have defeated the {monster._name}.", color = discord.Color.from_rgb(0, 255, 0))
+                                victory_embed.add_field(name = health, value = "", inline = False)
+                                victory_embed.add_field(name = drops, value = "", inline = False)
+                                victory_embed.set_footer(text = f"{member.display_name} created this")
 
-                            await interaction.response.edit_message(embed = victory_embed, view = None)
-                    
+                                await interaction.response.edit_message(embed = victory_embed, view = None)
+                        
+                            else:
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(32, 32, 32))
+                                turn_embed.set_thumbnail(url = "https://freepngimg.com/thumb/spider/35341-9-black-widow-spider-transparent.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
                         else:
-                            # next turn
-                            turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(39, 58, 43))
-                            turn_embed.set_thumbnail(url = "https://www.dndbeyond.com/avatars/thumbnails/30836/144/1000/1000/638063929586218907.png")
-                            turn_embed.add_field(name = damage, value = "", inline = False)
-                            turn_embed.add_field(name = health, value = "", inline = False)
-                            turn_embed.set_footer(text = f"{member.display_name} created this")
-                            await interaction.response.edit_message(embed = turn_embed, view = combat_view)
-                    else:
-                        await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
 
-                basic_attack_button.callback = basic_attack_callback
+                    async def health_potion_callback(interaction):
+                        if(interaction.user == member):
+                            if(player._healthPotions > 0):
+                                monster_damage = random.randint(1, monster._str)
+                                player._health = player._health + 20
+                                player._healthPotions = player._healthPotions - 1
+                                if(player._health > player._maxHealth):
+                                    player._health = player._maxHealth
+                                player._health = player._health - monster_damage
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                                damage = "You recovered health using a potion.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
 
-                # combat embed
-                combat_embed = discord.Embed(title = "Combat", description = f"You have encountered a {monster._name}.\nSelect attack option", color = discord.Color.from_rgb(39, 58, 43))
-                combat_embed.set_thumbnail(url = "https://www.dndbeyond.com/avatars/thumbnails/30836/144/1000/1000/638063929586218907.png")
-                combat_embed.add_field(name = health, value = "")
-                combat_embed.set_footer(text = f"{member.display_name} created this")
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 25, 0))
+                                turn_embed.set_thumbnail(url = "https://freepngimg.com/thumb/spider/35341-9-black-widow-spider-transparent.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
 
-                await interaction.response.edit_message(embed = combat_embed, view = combat_view)
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+
+                            else:
+                                await interaction.response.send_message(content = "You do not have any health potions.", ephemeral = True)
+                        else:
+                            # Not the same user
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    async def mana_potion_callback(interaction):
+                        if(interaction.user == member):
+                            if(player._manaPotions > 0):
+                                monster_damage = random.randint(1, monster._str)
+                                player._mana = player._mana + 10
+                                player._manaPotions = player._manaPotions - 1
+                                if(player._mana > player._maxMana):
+                                    player._mana = player._maxMana
+                                player._health = player._health - monster_damage
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                                mana = player._name + " Mana: " + str(player._mana) + "/" + str(player._maxMana)
+                                damage = "You recovered mana using a potion.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 25, 0))
+                                turn_embed.set_thumbnail(url = "https://freepngimg.com/thumb/spider/35341-9-black-widow-spider-transparent.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.add_field(name = mana, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+
+                            else:
+                                await interaction.response.send_message(content = "You do not have any mana potions.", ephemeral = True)
+                        else:
+                            # Not the same user
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    basic_attack_button.callback = basic_attack_callback
+                    health_potion_button.callback = health_potion_callback
+                    mana_potion_button.callback = mana_potion_callback
+
+                    # combat embed
+                    combat_embed = discord.Embed(title = "Combat", description = f"You have encountered a {monster._name}.\nSelect attack option", color = discord.Color.from_rgb(32, 32, 32))
+                    combat_embed.set_thumbnail(url = "https://freepngimg.com/thumb/spider/35341-9-black-widow-spider-transparent.png")
+                    combat_embed.add_field(name = health, value = "")
+                    combat_embed.set_footer(text = f"{member.display_name} created this")
+
+                    await interaction.response.edit_message(embed = combat_embed, view = combat_view)
+
+                elif(chance < 71):
+                    monster = monsters.Roper(player._level)
+                    player._health = player._maxHealth
+                    monster_health = monster._maxHealth
+                    health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+
+                    # combat view
+                    basic_attack_button = discord.ui.Button(label = "Basic Attack", custom_id = 'basic_attack', style = discord.ButtonStyle.red, row = 0)
+                    health_potion_button = discord.ui.Button(label = "Health Potion", custom_id = 'health_potion', style = discord.ButtonStyle.green, row = 0)
+                    mana_potion_button = discord.ui.Button(label = "Mana Potion", custom_id = 'mana_potion', style = discord.ButtonStyle.blurple, row = 0)
+                    combat_view = discord.ui.View()
+                    combat_view.add_item(basic_attack_button)
+                    combat_view.add_item(health_potion_button)
+                    combat_view.add_item(mana_potion_button)
+
+                    # button callbacks
+                    async def basic_attack_callback(interaction):
+                        if(interaction.user == member):
+                            player_damage = random.randint(1, player._str)
+                            monster_damage = random.randint(1, monster._str)
+                            player._health = player._health - monster_damage
+                            monster._health = monster._health - player_damage
+                            health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                            damage = "You did " + str(player_damage) + " damage using a basic attack.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                            if(player._health <= 0):
+                                health = player._name + " Health: 0/" + str(player._maxHealth)
+                                gold_lost = round(player._gold * 0.05)
+                                lost = f"You have dropped {gold_lost} gold."
+                                player._gold = player._gold - gold_lost
+                                player._health = player._maxHealth
+                                player.updateCharacter()
+
+                                # loss embed
+                                loss_embed = discord.Embed(title = "Defeat", description = f"You have lost the battle against the {monster._name}.", color = discord.Color.from_rgb(255, 0, 0))
+                                loss_embed.set_thumbnail(url = "https://cdn.vectorstock.com/i/1000x1000/62/84/skull-and-crossbones-black-coin-vector-19416284.webp")
+                                loss_embed.add_field(name = damage, value = "", inline = False)
+                                loss_embed.add_field(name = health, value = "", inline = False)
+                                loss_embed.add_field(name = lost, value = "", inline = False)
+                                loss_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = loss_embed, view = None)
+
+                            elif(monster._health <= 0):
+                                gold_earned = monster.calculateGold()
+                                drops = f"You have received {monster._xp} xp.\nYou have received {gold_earned} gold."
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
+                                player._xp = player._xp + monster._xp
+                                player._gold = player._gold + gold_earned
+                                player.updateCharacter()
+
+                                # victory embed
+                                victory_embed = discord.Embed(title = "Victory", description = f"You have defeated the {monster._name}.", color = discord.Color.from_rgb(0, 255, 0))
+                                victory_embed.add_field(name = health, value = "", inline = False)
+                                victory_embed.add_field(name = drops, value = "", inline = False)
+                                victory_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = victory_embed, view = None)
+                        
+                            else:
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 0, 51))
+                                turn_embed.set_thumbnail(url = "https://www.dndbeyond.com/avatars/thumbnails/30834/993/1000/1000/638063901980029135.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+                        else:
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    async def health_potion_callback(interaction):
+                        if(interaction.user == member):
+                            if(player._healthPotions > 0):
+                                monster_damage = random.randint(1, monster._str)
+                                player._health = player._health + 20
+                                player._healthPotions = player._healthPotions - 1
+                                if(player._health > player._maxHealth):
+                                    player._health = player._maxHealth
+                                player._health = player._health - monster_damage
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                                damage = "You recovered health using a potion.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 25, 0))
+                                turn_embed.set_thumbnail(url = "https://www.dndbeyond.com/avatars/thumbnails/30834/993/1000/1000/638063901980029135.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+
+                            else:
+                                await interaction.response.send_message(content = "You do not have any health potions.", ephemeral = True)
+                        else:
+                            # Not the same user
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    async def mana_potion_callback(interaction):
+                        if(interaction.user == member):
+                            if(player._manaPotions > 0):
+                                monster_damage = random.randint(1, monster._str)
+                                player._mana = player._mana + 10
+                                player._manaPotions = player._manaPotions - 1
+                                if(player._mana > player._maxMana):
+                                    player._mana = player._maxMana
+                                player._health = player._health - monster_damage
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                                mana = player._name + " Mana: " + str(player._mana) + "/" + str(player._maxMana)
+                                damage = "You recovered mana using a potion.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 25, 0))
+                                turn_embed.set_thumbnail(url = "https://www.dndbeyond.com/avatars/thumbnails/30834/993/1000/1000/638063901980029135.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.add_field(name = mana, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+
+                            else:
+                                await interaction.response.send_message(content = "You do not have any mana potions.", ephemeral = True)
+                        else:
+                            # Not the same user
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    basic_attack_button.callback = basic_attack_callback
+                    health_potion_button.callback = health_potion_callback
+                    mana_potion_button.callback = mana_potion_callback
+
+                    # combat embed
+                    combat_embed = discord.Embed(title = "Combat", description = f"You have encountered a {monster._name}.\nSelect attack option", color = discord.Color.from_rgb(51, 0, 51))
+                    combat_embed.set_thumbnail(url = "https://www.dndbeyond.com/avatars/thumbnails/30834/993/1000/1000/638063901980029135.png")
+                    combat_embed.add_field(name = health, value = "")
+                    combat_embed.set_footer(text = f"{member.display_name} created this")
+
+                    await interaction.response.edit_message(embed = combat_embed, view = combat_view)
+
+
+                elif(chance < 91):
+                    monster = monsters.Goblin(player._level)
+                    player._health = player._maxHealth
+                    monster_health = monster._maxHealth
+                    health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+
+                    # combat view
+                    basic_attack_button = discord.ui.Button(label = "Basic Attack", custom_id = 'basic_attack', style = discord.ButtonStyle.red, row = 0)
+                    health_potion_button = discord.ui.Button(label = "Health Potion", custom_id = 'health_potion', style = discord.ButtonStyle.green, row = 0)
+                    mana_potion_button = discord.ui.Button(label = "Mana Potion", custom_id = 'mana_potion', style = discord.ButtonStyle.blurple, row = 0)
+                    combat_view = discord.ui.View()
+                    combat_view.add_item(basic_attack_button)
+                    combat_view.add_item(health_potion_button)
+                    combat_view.add_item(mana_potion_button)
+
+                    # button callbacks
+                    async def basic_attack_callback(interaction):
+                        if(interaction.user == member):
+                            player_damage = random.randint(1, player._str)
+                            monster_damage = random.randint(1, monster._str)
+                            player._health = player._health - monster_damage
+                            monster._health = monster._health - player_damage
+                            health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                            damage = "You did " + str(player_damage) + " damage using a basic attack.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                            if(player._health <= 0):
+                                health = player._name + " Health: 0/" + str(player._maxHealth)
+                                gold_lost = round(player._gold * 0.05)
+                                lost = f"You have dropped {gold_lost} gold."
+                                player._gold = player._gold - gold_lost
+                                player._health = player._maxHealth
+                                player.updateCharacter()
+
+                                # loss embed
+                                loss_embed = discord.Embed(title = "Defeat", description = f"You have lost the battle against the {monster._name}.", color = discord.Color.from_rgb(255, 0, 0))
+                                loss_embed.set_thumbnail(url = "https://cdn.vectorstock.com/i/1000x1000/62/84/skull-and-crossbones-black-coin-vector-19416284.webp")
+                                loss_embed.add_field(name = damage, value = "", inline = False)
+                                loss_embed.add_field(name = health, value = "", inline = False)
+                                loss_embed.add_field(name = lost, value = "", inline = False)
+                                loss_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = loss_embed, view = None)
+
+                            elif(monster._health <= 0):
+                                gold_earned = monster.calculateGold()
+                                drops = f"You have received {monster._xp} xp.\nYou have received {gold_earned} gold."
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
+                                player._xp = player._xp + monster._xp
+                                player._gold = player._gold + gold_earned
+                                player.updateCharacter()
+
+                                # victory embed
+                                victory_embed = discord.Embed(title = "Victory", description = f"You have defeated the {monster._name}.", color = discord.Color.from_rgb(0, 255, 0))
+                                victory_embed.add_field(name = health, value = "", inline = False)
+                                victory_embed.add_field(name = drops, value = "", inline = False)
+                                victory_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = victory_embed, view = None)
+                        
+                            else:
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(7, 50, 27))
+                                turn_embed.set_thumbnail(url = "https://i.pinimg.com/originals/5b/9a/86/5b9a862f2e584eae40d8851e025847b8.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+                        else:
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    async def health_potion_callback(interaction):
+                        if(interaction.user == member):
+                            if(player._healthPotions > 0):
+                                monster_damage = random.randint(1, monster._str)
+                                player._health = player._health + 20
+                                player._healthPotions = player._healthPotions - 1
+                                if(player._health > player._maxHealth):
+                                    player._health = player._maxHealth
+                                player._health = player._health - monster_damage
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                                damage = "You recovered health using a potion.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 25, 0))
+                                turn_embed.set_thumbnail(url = "https://i.pinimg.com/originals/5b/9a/86/5b9a862f2e584eae40d8851e025847b8.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+
+                            else:
+                                await interaction.response.send_message(content = "You do not have any health potions.", ephemeral = True)
+                        else:
+                            # Not the same user
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    async def mana_potion_callback(interaction):
+                        if(interaction.user == member):
+                            if(player._manaPotions > 0):
+                                monster_damage = random.randint(1, monster._str)
+                                player._mana = player._mana + 10
+                                player._manaPotions = player._manaPotions - 1
+                                if(player._mana > player._maxMana):
+                                    player._mana = player._maxMana
+                                player._health = player._health - monster_damage
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                                mana = player._name + " Mana: " + str(player._mana) + "/" + str(player._maxMana)
+                                damage = "You recovered mana using a potion.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 25, 0))
+                                turn_embed.set_thumbnail(url = "https://i.pinimg.com/originals/5b/9a/86/5b9a862f2e584eae40d8851e025847b8.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.add_field(name = mana, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+
+                            else:
+                                await interaction.response.send_message(content = "You do not have any mana potions.", ephemeral = True)
+                        else:
+                            # Not the same user
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    basic_attack_button.callback = basic_attack_callback
+                    health_potion_button.callback = health_potion_callback
+                    mana_potion_button.callback = mana_potion_callback
+
+                    # combat embed
+                    combat_embed = discord.Embed(title = "Combat", description = f"You have encountered a {monster._name}.\nSelect attack option", color = discord.Color.from_rgb(7, 50, 27))
+                    combat_embed.set_thumbnail(url = "https://i.pinimg.com/originals/5b/9a/86/5b9a862f2e584eae40d8851e025847b8.png")
+                    combat_embed.add_field(name = health, value = "")
+                    combat_embed.set_footer(text = f"{member.display_name} created this")
+
+                    await interaction.response.edit_message(embed = combat_embed, view = combat_view)
+
+                else:
+                    monster = monsters.Troll(player._level)
+                    player._health = player._maxHealth
+                    monster_health = monster._maxHealth
+                    health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+
+                    # combat view
+                    basic_attack_button = discord.ui.Button(label = "Basic Attack", custom_id = 'basic_attack', style = discord.ButtonStyle.red, row = 0)
+                    health_potion_button = discord.ui.Button(label = "Health Potion", custom_id = 'health_potion', style = discord.ButtonStyle.green, row = 0)
+                    mana_potion_button = discord.ui.Button(label = "Mana Potion", custom_id = 'mana_potion', style = discord.ButtonStyle.blurple, row = 0)
+                    combat_view = discord.ui.View()
+                    combat_view.add_item(basic_attack_button)
+                    combat_view.add_item(health_potion_button)
+                    combat_view.add_item(mana_potion_button)
+
+                    # button callbacks
+                    async def basic_attack_callback(interaction):
+                        if(interaction.user == member):
+                            player_damage = random.randint(1, player._str)
+                            monster_damage = random.randint(1, monster._str)
+                            player._health = player._health - monster_damage
+                            monster._health = monster._health - player_damage
+                            health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                            damage = "You did " + str(player_damage) + " damage using a basic attack.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                            if(player._health <= 0):
+                                health = player._name + " Health: 0/" + str(player._maxHealth)
+                                gold_lost = round(player._gold * 0.05)
+                                lost = f"You have dropped {gold_lost} gold."
+                                player._gold = player._gold - gold_lost
+                                player._health = player._maxHealth
+                                player.updateCharacter()
+
+                                # loss embed
+                                loss_embed = discord.Embed(title = "Defeat", description = f"You have lost the battle against the {monster._name}.", color = discord.Color.from_rgb(255, 0, 0))
+                                loss_embed.set_thumbnail(url = "https://cdn.vectorstock.com/i/1000x1000/62/84/skull-and-crossbones-black-coin-vector-19416284.webp")
+                                loss_embed.add_field(name = damage, value = "", inline = False)
+                                loss_embed.add_field(name = health, value = "", inline = False)
+                                loss_embed.add_field(name = lost, value = "", inline = False)
+                                loss_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = loss_embed, view = None)
+
+                            elif(monster._health <= 0):
+                                gold_earned = monster.calculateGold()
+                                drops = f"You have received {monster._xp} xp.\nYou have received {gold_earned} gold."
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth)
+                                player._xp = player._xp + monster._xp
+                                player._gold = player._gold + gold_earned
+                                player.updateCharacter()
+
+                                # victory embed
+                                victory_embed = discord.Embed(title = "Victory", description = f"You have defeated the {monster._name}.", color = discord.Color.from_rgb(0, 255, 0))
+                                victory_embed.add_field(name = health, value = "", inline = False)
+                                victory_embed.add_field(name = drops, value = "", inline = False)
+                                victory_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = victory_embed, view = None)
+                        
+                            else:
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(39, 58, 43))
+                                turn_embed.set_thumbnail(url = "https://www.dndbeyond.com/avatars/thumbnails/30836/144/1000/1000/638063929586218907.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+                        else:
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    async def health_potion_callback(interaction):
+                        if(interaction.user == member):
+                            if(player._healthPotions > 0):
+                                monster_damage = random.randint(1, monster._str)
+                                player._health = player._health + 20
+                                player._healthPotions = player._healthPotions - 1
+                                if(player._health > player._maxHealth):
+                                    player._health = player._maxHealth
+                                player._health = player._health - monster_damage
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                                damage = "You recovered health using a potion.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 25, 0))
+                                turn_embed.set_thumbnail(url = "https://www.dndbeyond.com/avatars/thumbnails/30836/144/1000/1000/638063929586218907.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+
+                            else:
+                                await interaction.response.send_message(content = "You do not have any health potions.", ephemeral = True)
+                        else:
+                            # Not the same user
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    async def mana_potion_callback(interaction):
+                        if(interaction.user == member):
+                            if(player._manaPotions > 0):
+                                monster_damage = random.randint(1, monster._str)
+                                player._mana = player._mana + 10
+                                player._manaPotions = player._manaPotions - 1
+                                if(player._mana > player._maxMana):
+                                    player._mana = player._maxMana
+                                player._health = player._health - monster_damage
+                                health = player._name + " Health: " + str(player._health) + "/" + str(player._maxHealth) + "   " + monster._name + " Health: " + str(monster._health) + "/" + str(monster._maxHealth)
+                                mana = player._name + " Mana: " + str(player._mana) + "/" + str(player._maxMana)
+                                damage = "You recovered mana using a potion.\nThe " + monster._name + " did " + str(monster_damage) + " damage"
+
+                                # next turn
+                                turn_embed = discord.Embed(title = "Combat", description = "Select attack option", color = discord.Color.from_rgb(51, 25, 0))
+                                turn_embed.set_thumbnail(url = "https://www.dndbeyond.com/avatars/thumbnails/30836/144/1000/1000/638063929586218907.png")
+                                turn_embed.add_field(name = damage, value = "", inline = False)
+                                turn_embed.add_field(name = health, value = "", inline = False)
+                                turn_embed.add_field(name = mana, value = "", inline = False)
+                                turn_embed.set_footer(text = f"{member.display_name} created this")
+
+                                await interaction.response.edit_message(embed = turn_embed, view = combat_view)
+
+                            else:
+                                await interaction.response.send_message(content = "You do not have any mana potions.", ephemeral = True)
+                        else:
+                            # Not the same user
+                            await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
+
+                    basic_attack_button.callback = basic_attack_callback
+                    health_potion_button.callback = health_potion_callback
+                    mana_potion_button.callback = mana_potion_callback
+
+                    # combat embed
+                    combat_embed = discord.Embed(title = "Combat", description = f"You have encountered a {monster._name}.\nSelect attack option", color = discord.Color.from_rgb(39, 58, 43))
+                    combat_embed.set_thumbnail(url = "https://www.dndbeyond.com/avatars/thumbnails/30836/144/1000/1000/638063929586218907.png")
+                    combat_embed.add_field(name = health, value = "")
+                    combat_embed.set_footer(text = f"{member.display_name} created this")
+
+                    await interaction.response.edit_message(embed = combat_embed, view = combat_view)
         
         else:
             await interaction.response.send_message(content = "This is not your battle", ephemeral = True)
